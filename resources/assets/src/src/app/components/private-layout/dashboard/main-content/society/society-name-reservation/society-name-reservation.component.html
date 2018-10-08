@@ -1,0 +1,159 @@
+<div class="container mt-4">
+  <div class="row wow fadeIn">
+    <div class="col-md-12 mb-4">
+
+      <div class="mian-featured-area">
+        <div class="directory-searcher">
+          <form [formGroup]="formGroup">
+            <div class="row">
+              <div class="col-3 field" *ngIf="Auth.AuthGuard()">
+                <div>
+                  <select class="shadow_select form-control custom-select" formControlName="companyType">
+                    <option *ngFor="let companyType of companyTypes" (click)="getSubCatogory(companyType.id)" [value]="companyType.id">
+                      {{ companyType.value | uppercase }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-5 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
+                <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
+                  (keydown.enter)="ckSearch()" placeholder="Search Company Name " aria-label="Search">
+              </div>
+              <div class="col-7 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length <= 0">
+                <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
+                  (keydown.enter)="ckSearch()" placeholder="Search Company Name" aria-label="Search">
+              </div>
+              <div class="col-2 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
+                <div class="mt-1 mr-1">
+                  <select class="shadow_select form-control custom-select" formControlName="postfix">
+                    <option *ngFor="let subCatogory of subCatogorys" [value]="subCatogory.postfix">
+                      {{subCatogory.postfix | uppercase}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-1 field">
+                <button type="button" class="clear-button" mdbTooltip="Clean" (click)="this.Clean();" mdbWavesEffect>
+                  <span>
+                    <i class="fas fa-times-circle"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="col-1 field">
+                <button type="button" class="sh-button" mdbTooltip="Click" (click)="ckSearch();" mdbWavesEffect>
+                  <span>
+                    <i class="fas fa-search"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="this.notHasData?.data?.length > 0 || this.availableData?.data?.length > 0 ">
+          <small class="red-text float-right mt-2">About {{ this.meta['total'] }} results ({{ startFrom }} seconds)</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 100px !important;" *ngIf="availableData">
+    <!-- <div class="section padding-bottom-75"> -->
+    <!-- <div class="container"> -->
+    <div class="row">
+      <div class="col-xl-12">
+        <section *ngIf="notHasData.available">
+          <div class="task-listing mt-5">
+            <div class="task-listing-details">
+              <div class="task-listing-description">
+                <h3 class="task-listing-title">
+                  <b>{{ searchName | uppercase }} {{ postfixName }}</b>
+                </h3>
+                <ul class="task-icons">
+                  <li>
+                    <i class="fab fa-cc-visa fa-money" aria-hidden="true"></i>
+                  </li>
+                  <li>
+                    <i class="fab fa-cc-mastercard fa-money" aria-hidden="true"></i>
+                  </li>
+                </ul>
+                <div class="task-tags margin-top-15">
+                  <div class="row" *ngIf="notHasData.data?.length > 0">
+                    <div class="col-1">
+                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-10">
+                      <small class="text text-danger" *ngFor='let avbData of notHasData.data'>* {{ avbData.message }}
+                        <br>
+                      </small>
+                      <small class="text text-primary">The name contradicts with the above rules but you can proceed.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="task-listing-bid">
+              <div class="task-listing-bid-inner">
+                <div class="task-offers" style="margin-bottom: 43px !important;">
+                  <strong class="money">
+                    <small>Rs.</small>3600.00</strong>
+                </div>
+                <button (click)="!this.Auth.AuthGuard() ? modal.onShow() : onResavation()" class="button button-sliding-icon ripple-effect"
+                  style="background-color: #00027c;">
+                  Proceed Now
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                </button>
+              </div>
+            </div>
+            <span class="tg-themetag tg-featuretag">Available</span>
+          </div>
+        </section>
+
+        <section *ngIf="!availableData.available">
+          <div class="listings-container compact-list-layout margin-top-35">
+            <div class="job-listing with-apply-button" *ngFor='let result of availableData.data'>
+              <div class="job-listing-details">
+                <div class="job-listing-description">
+                  <h3 class="job-listing-title">
+                    <b>{{ result.name }} {{ result.postfix }}</b>
+                  </h3>
+                </div>
+                <div class="mr-auto" style="text-align: right;font-weight: bold;">
+                  <small class="dashboard-status-button yellow"  *ngIf="result.registration_no == null">Under Incorporation</small>
+                  <b *ngIf="result.registration_no != null">{{ result.registration_no }}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+
+    <div class="row justify-content-md-center">
+      <nav aria-label="pagination " *ngIf="pages.length > 1">
+        <ul class="pagination pagination-circle pg-blue mb-0">
+          <li class="page-item " *ngIf="current_page >= 1">
+            <a class="page-link" aria-label="Previous" (click)="setPages(current_page - 1)">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item" [ngClass]="{'active' : i == current_page}" *ngFor='let p of loopNumber; let i = index'>
+            <a class="page-link" (click)="setPages(i)">{{ i + 1 }}</a>
+          </li>
+          <li class="page-item" *ngIf="current_page < pages.length -1">
+            <a class="page-link" aria-label="Next" (click)="setPages(current_page + 1)">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <app-confirm-model #modal></app-confirm-model>
+
+</div>
+

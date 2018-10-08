@@ -31,6 +31,12 @@ import { RegisterSecretaryNaturalpComponent } from './components/private-layout/
 import { RegisterSecretaryFirmComponent } from './components/private-layout/dashboard/main-content/secretary/register-secretary-firm/register-secretary-firm.component';
 import { RegisterSecretaryPvtComponent } from './components/private-layout/dashboard/main-content/secretary/register-secretary-pvt/register-secretary-pvt.component';
 
+// society components
+import { SelectSocietyRegistrationTypeComponent } from './components/private-layout/dashboard/main-content/society/select-society-registration-type/select-society-registration-type.component';
+import { SocietyNameReservationComponent } from './components/private-layout/dashboard/main-content/society/society-name-reservation/society-name-reservation.component';
+
+
+
 
 const routes: Routes = [
   { path: 'user/activation', component: ActivationComponent },
@@ -109,6 +115,19 @@ const routes: Routes = [
         data: {
           breadcrumb: 'My Company'
         }
+      },
+
+      // society dashboard routes
+      {
+        path: 'selectregistersociety',
+        component: SelectSocietyRegistrationTypeComponent,
+        canActivate: [AuthGuard],
+      },
+
+      {
+        path: 'selectregistersociety/namereservation',
+        component: SocietyNameReservationComponent,
+        canActivate: [AuthGuard],
       },
 
 
