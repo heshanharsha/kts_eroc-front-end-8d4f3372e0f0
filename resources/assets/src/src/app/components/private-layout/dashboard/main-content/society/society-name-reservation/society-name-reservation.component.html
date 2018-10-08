@@ -6,23 +6,26 @@
         <div class="directory-searcher">
           <form [formGroup]="formGroup">
             <div class="row">
-              <!-- <div class="col-3 field" *ngIf="Auth.AuthGuard()">
-                <div>
+
+              <div class="col-3 field" >
+                <!-- <div>
                   <select class="shadow_select form-control custom-select" formControlName="companyType">
                     <option *ngFor="let companyType of companyTypes" (click)="getSubCatogory(companyType.id)" [value]="companyType.id">
                       {{ companyType.value | uppercase }}
                     </option>
                   </select>
-                </div>
-              </div> -->
-              <div class="col-5 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
+                </div> -->
+              </div>
+
+              <div class="col-7 field" *ngIf="Auth.AuthGuard() ">
                 <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
                   (keydown.enter)="ckSearch()" placeholder="Search Company Name " aria-label="Search">
               </div>
-              <div class="col-7 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length <= 0">
+
+              <!-- <div class="col-7 field" *ngIf="Auth.AuthGuard() ">
                 <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
                   (keydown.enter)="ckSearch()" placeholder="Search Company Name" aria-label="Search">
-              </div>
+              </div> -->
               <!-- <div class="col-2 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
                 <div class="mt-1 mr-1">
                   <select class="shadow_select form-control custom-select" formControlName="postfix">
@@ -66,7 +69,7 @@
             <div class="task-listing-details">
               <div class="task-listing-description">
                 <h3 class="task-listing-title">
-                  <b>{{ searchName | uppercase }} {{ postfixName }}</b>
+                  <b>{{ searchName | uppercase }} </b>
                 </h3>
                 <ul class="task-icons">
                   <li>
@@ -115,7 +118,8 @@
               <div class="job-listing-details">
                 <div class="job-listing-description">
                   <h3 class="job-listing-title">
-                    <b>{{ result.name }} {{ result.postfix }}</b>
+                    <!-- <b>{{ result.name }} {{ result.postfix }}</b> -->
+                    <b>{{ result.name }}</b>
                   </h3>
                 </div>
                 <div class="mr-auto" style="text-align: right;font-weight: bold;">
