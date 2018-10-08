@@ -1,0 +1,139 @@
+<section>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="dashboard-box">
+          <ul class="dashboard-box-list">
+            <li *ngFor="let name of names">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="job-listing">
+                    <div class="job-listing-details">
+                      <a class="job-listing-company-logo">
+                        <img src="assets/images/icon/company-logo-05.png" alt>
+                      </a>
+                      <div class="job-listing-description">
+                        <h3 class="job-listing-title">
+                          <strong>
+                              <a [routerLink]="['company/card', name.id ]">
+                              {{ name.name | uppercase }} {{ name.postfix | uppercase }}
+                            </a>
+                          </strong>
+                        </h3>
+                        <div class="job-listing-footer">
+                          <ul>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-business"></i>
+                                {{ name.id }}
+                                <div *ngIf="name.key === 'COMPANY_NAME_APPROVED'" class="verified-badge" data-tippy-placement="top" data-tippy="" data-original-title="Verified Employer"></div>
+                              </small>
+                            </li>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-access-time"></i>
+                                Date : {{ name.created_at | date:'yyyy-MM-dd' }} Time : {{ name.created_at |
+                                date:'shortTime'
+                                }}
+                              </small>
+                            </li>
+                          </ul>
+                        </div>
+                        <small>
+                          <strong>Address :</strong>
+                          {{ name.address1 }}, {{ name.address2 }}, {{ name.city }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="col-md-12" *ngIf="name.key !== 'COMPANY_NAME_APPROVED'">
+                      <div class="float-right">
+                        <small class="dashboard-status-button red">{{ name.status }}</small>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="float-right" *ngIf="name.key === 'COMPANY_NAME_REQUEST_TO_RESUBMIT'">
+                        <a [routerLink]="['/dashboard/name/re-submition', name.id ]" data-tippy-placement="top" data-tippy
+                          data-original-title="Edit" class="button gray ripple-effect">
+                          <i class="icon-feather-edit"></i> Edit Review
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7 timeline">
+                  <ul>
+                    <li>
+                      <div class="col-md-4">
+                        <div class="icon-box with-line">
+                          <div class="icon-box-check">
+                            <i class="icon-material-outline-check"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="col-md-4">
+                        <div class="icon-box with-line">
+                          <div class="icon-box-check">
+                            <i class="icon-material-outline-check"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="col-md-4">
+                        <div class="icon-box with-line">
+                          <div class="icon-box-check">
+                            <i class="icon-material-outline-check"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-5" *ngIf="name.key === 'COMPANY_NAME_APPROVED' || name.key === 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+                  <div class="float-right">
+                      <a [routerLink]="['/dashboard/incorporation', name.id ]"  class="button button-sliding-icon ripple-effect">
+                        <i class="icon-material-outline-arrow-right-alt"></i>
+                        {{ name.key === 'COMPANY_NAME_APPROVED' ? 'Incorperate' : 'Incorperation Resubmission' }}
+                      </a>
+                    <!-- <a class="btn btn-primary btn-sm">Incorperate</a> -->
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row justify-content-md-center mb-5 mt-5">
+      <nav aria-label="pagination" *ngIf="pages.length > 1">
+        <ul class="pagination pagination-circle pg-blue mb-0">
+          <li class="page-item" *ngIf="current_page >= 1">
+            <a class="page-link" aria-label="Previous" (click)="setPages(current_page - 1)">
+              <span aria-hidden="true">«</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item" [ngClass]="{'active' : i == current_page}" *ngFor="let p of pages; let i = index">
+            <a class="page-link" (click)="setPages(i)">
+              {{ i + 1 }}
+            </a>
+          </li>
+          <li class="page-item" *ngIf="current_page < pages.length -1">
+            <a class="page-link" aria-label="Next" (click)="setPages(current_page + 1)">
+              <span aria-hidden="true">»</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+  

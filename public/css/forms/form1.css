@@ -1,0 +1,96 @@
+body{
+    margin:0;
+    padding:0
+}
+
+.form-body {
+    display: block;
+    max-width: 800px;
+    margin:  auto;
+    padding:  0;
+
+    height: 842px;
+    width: 98%;
+   
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 10pt
+}
+.form-body *{
+    margin:0;
+    padding:0;
+}
+header.form-header {
+    display:  flex;
+    flex-flow:  row;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+header.form-header img{
+    height: 110px;
+    width: auto;
+}
+.form-header-center {
+    text-align:  center;
+}
+
+.form-header-center * {
+    margin: 4px 0;
+}
+
+.form-header-center h1 {
+    text-transform:  uppercase;
+}
+
+.form-header-center p {   font-size: 13px;}
+
+.tg  {border-collapse:collapse;border-spacing:0; width:100%}
+.tg .tg-yw4l{vertical-align:middle;border:1px solid }
+
+.table1-section th.tg-yw4l {
+    width: calc( 100% / 12 );
+    height: 33px;
+}
+
+.table1-section th.tg-yw4l:nth-child(3) {
+    width: calc( (100% /12 ) * 8 );
+}
+.table1-section .field-label {
+    width: 30%;
+    display: inline-block;
+    vertical-align: middle;
+    height: 33px;
+    line-height: 33px;
+}
+
+.table1-section .field-table {
+    width: calc( 70% - 5px );
+    display:  inline-block;
+    vertical-align: top;
+    box-sizing:  border-box;
+}
+
+.table2-section th.tg-yw4l:nth-child(3) {
+    width: 100%;
+}
+.table2-section th.tg-yw4l {
+    width: calc( 100% / 12 );
+    height: 33px;
+}
+.table2-section .field-label {
+    width: 30%;
+    display: inline-block;
+    vertical-align: middle;
+    height: 33px;
+    line-height: 33px;
+}
+
+.table2-section .field-table {
+    width: calc( 70% - 5px );
+    display:  inline-block;
+    vertical-align: top;
+    box-sizing:  border-box;
+}
+
+table td span {
+    font-weight: normal !important;
+}

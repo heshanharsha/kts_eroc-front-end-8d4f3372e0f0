@@ -1,0 +1,82 @@
+<header>
+  <div class="content-glass"></div>
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="home">
+        <img src="assets/images/header/e-roc-bottom.png" alt="eRoc" srcset="">
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <span class="seperate"></span>
+
+        <ul class="navbar-nav nav-flex-icons">
+
+          <li class="nav-item" *ngIf="!Auth.AuthGuard()">
+            <a class="btn-mr nav-link light-orenge-text" routerLink="/home" mdbWavesEffect>Home</a>
+          </li>
+          <li class="nav-item" *ngIf="Auth.AuthGuard()">
+            <a class=" btn-mr nav-link light-orenge-text" routerLink="/dashboard/home" mdbWavesEffect>Dashboard</a>
+          </li>
+          <li class="nav-item" *ngIf="Auth.AuthGuard()">
+            <a class=" btn-mr nav-link light-orenge-text" mdbWavesEffect>
+              <i class="far fa-question-circle"></i> Help
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="Auth.AuthGuard()">
+            <div class="header-notifications">
+              <div class="header-notifications-trigger">
+                <i class="icon-feather-bell"></i>
+                <span>4</span>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item" *ngIf="!Auth.AuthGuard()">
+            <div class="header-widget">
+              <a class="btn btn-blur nav-link light-orenge-text" (click)="modal.showModal()" mdbWavesEffect>
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+              </a>
+            </div>
+          </li>
+
+
+
+          <li class="nav-item" *ngIf="Auth.AuthGuard()">
+            <div class="header-widget">
+              <div class="header-notifications user-menu">
+                <div class="header-notifications-trigger">
+                  <div class="btn-group" mdbDropdown>
+                    <a mdbDropdownToggle class="avater">
+                      <div class="user-avatar status-online">
+                        <img src="assets/images/avatar/user-avatar.png" alt="">
+                      </div>
+                      <h4>Hi {{  dataService.user.first_name }}</h4>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <div class="drop-header">
+                        <h4>{{ dataService.user.first_name }} {{ dataService.user.last_name }}</h4>
+                      </div>
+                      <div class="divider dropdown-divider"></div>
+                      <a class="dropdown-item">
+                        <i class="fas fa-user-circle mr-3"></i> Profile</a>
+                      <a class="dropdown-item" (click)="this.cklogOut()">
+                        <i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="ml-4 btn-ml btn-mr nav-link light-orenge-text" mdbWavesEffect> සිංහල</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn-mr nav-link light-orenge-text" mdbWavesEffect>தமிழ் </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<app-sign-in #modal></app-sign-in>

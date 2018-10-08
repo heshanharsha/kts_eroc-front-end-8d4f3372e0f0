@@ -1,0 +1,3686 @@
+<div class="clearfix">
+</div>
+<section>
+  <div class="container" style="padding-bottom: 50px;">
+    <div class="row">
+
+
+      <!--end left col-->
+
+
+      <div class="col-md-11 nopadding">
+
+
+        <form role="form" action="" method="post" class="f1">
+
+          <h3 style="text-align: center">Incorporation of Company</h3>
+          <p style="text-align: center">Fill in all steps for completing Incorporation process.</p>
+          <div class="f1-steps">
+            <div class="f1-progress">
+              <div class="f1-progress-line" data-now-value="10" data-number-of-steps="5" [ngStyle]="{'width': progress.progressPercentage}"></div>
+            </div>
+
+            <div *ngFor="let item of progress['stepArr']; let i = index" class="f1-step {{item.status}}">
+              <div class="f1-step-icon">
+                <i class="{{item.icon}}"></i>
+              </div>
+              <p>{{item.label}}</p>
+            </div>
+
+          </div>
+
+          <fieldset [hidden]="stepOn != 0">
+
+            <div class="form-group row">
+              <label f class="col-sm-3 col-form-label col-form-label-sm">Name Approval Number
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">{{companyInfo.id}}
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Comapany Type</label>
+              <div class="col-sm-9">{{compayType.value}}
+              </div>
+
+            </div>
+
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Name In English</label>
+              <div class="col-sm-9">{{companyInfo.name}} {{companyInfo.postfix}}
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Name In Sinhala</label>
+              <div class="col-sm-9">{{companyInfo.name_si}} {{companyInfo.postfix}}</div>
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Name In Tamil</label>
+              <div class="col-sm-9">{{companyInfo.name_ta}} {{companyInfo.postfix}}</div>
+
+            </div>
+
+            <!--<div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Type of Company
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+
+                <select (change)="step1Validation()" class="form-control form-control-sm" [(ngModel)]="companyInfo.type_id" name="company_type">
+
+                  <option>Choose...</option>
+
+                  <option *ngFor="let type of companyTypes[0]; let i = index" value="{{type.company_type_id}}" [selected]="type.company_type_id == companyInfo.type_id">{{type.postfix}}</option>
+                </select>
+              </div>
+            </div>-->
+
+            <div class="form-group row">
+              <label class="col-sm-12 col-form-label col-form-label-sm">Registerd Office Address
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-6">
+                <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="step1Validation()"
+                  class="form-control form-control-sm" [(ngModel)]="companyAddress.address1" name="company_address1"
+                  placeholder="No 400,">
+
+              </div>
+              <div class="col-sm-6">
+                <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" class="form-control form-control-sm"
+                  [(ngModel)]="companyAddress.address2" name="company_address2" placeholder="McCallum Rd,">
+
+              </div>
+
+
+            </div>
+
+
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm"> Province
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+                <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="step1Validation()"
+                  class="form-control form-control-sm" [(ngModel)]="companyAddress.province" name="company_province">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm"> District
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+                <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="step1Validation()"
+                  class="form-control form-control-sm" [(ngModel)]="companyAddress.district" name="company_district">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm"> City
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+                <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="step1Validation()"
+                  class="form-control form-control-sm" [(ngModel)]="companyAddress.city" name="company_city">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm">Email of the Company
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+                <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="step1Validation()"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" type="email" class="form-control form-control-sm"
+                  [(ngModel)]="companyInfo.email" name="company_email" placeholder="">
+                <span class="req-message">Valid email required</span>
+
+
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label col-form-label-sm"> Select Main Objective of the Company
+                <span class="req">*</span>
+              </label>
+              <div class="col-sm-9">
+                <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="step1Validation()"
+                  class="form-control form-control-sm" [(ngModel)]="companyInfo.objective" name="company_objective">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let obj of companyObjectives[0]; let i = index" value="{{obj.id}}">{{obj.value}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="f1-buttons">
+
+              <button [disabled]="!enableStep1Submission" type="button" class="btn btn-next" id="btn1-next" (click)="submitStep1()">Next
+                <i class="fas fa-forward"></i></button>
+            </div>
+          </fieldset>
+          <!-- end of fist step -->
+
+          <fieldset [hidden]="stepOn != 1">
+
+            <div *ngIf="step2SubmitStatus && step2SubmitMessage" class="alert alert-success" role="alert">
+              {{step2SubmitMessage}}
+            </div>
+            <div *ngIf="!step2SubmitStatus && step2SubmitMessage" class="alert alert-danger" role="alert">
+              {{step2SubmitMessage}}
+            </div>
+
+            <div class="director-secton stakeholder-section">
+
+              <div class="add-new-wrapper director-add-new-wrapper">
+
+                <h2>
+                  <span class="add-new-wrapper-label">Directors</span>
+                  <div class="line"></div>
+
+                  <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                    (click)="basicModal.show()" mdbWavesEffect>
+                    <i class="fa fa-plus"></i> Add New</button>
+
+                </h2>
+
+              </div>
+
+
+              <div class="director-list stakeholder-list-wrapper">
+
+                <!-- list-->
+
+                <div *ngFor="let director of directorList.directors; let i = index" class="director-record stakeholder-record"
+                  style=" margin: 30px 0;border-radius: 20px;background: #fff;border: 1px solid rgb(243, 91, 63);">
+
+                  <div (click)="showToggle('director', director.id)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                      color: #fff;
+                      padding: 5px 10px;
+                      font-weight: lighter;
+                      font-size: 14px;
+                      border-top-left-radius: 18px;
+                      box-shadow: 1px 1px 2px #b3aea9;
+                      border-top-right-radius: 18px;
+                      cursor: pointer;
+                      width: 100%;
+                      border-radius: 20px;">
+
+                    {{director.firstname}} {{director.lastname}}- Director
+
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)=" removeDirectorRecord(i,director.id)"
+                      title="remove record" style="float:right;" class="record-handler record-handler-remove">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-pencil-alt"></i>
+                    </span>
+                    <span *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-eye"></i>
+                    </span>
+
+                  </div>
+
+                  <div [hidden]="director.showEditPaneForDirector != director.id" [class]="'stakeholder-record-inner'"
+                    class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
+
+                    <div class="create-other-user-block" *ngIf="director.type != 'foreign' && processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+
+                      <div class="form-row" *ngIf="director.directors_as_sec == 1">
+                        <div class="form-group col-md-12">
+                          <button (click)="removeDirSec(director.id)" class="btn btn-danger"><i class="fas fa-unlink"></i>
+                            Remove Secretory position</button>
+                        </div>
+
+                      </div>
+
+                      <div class="form-row" *ngIf="director.directors_as_sec != 1">
+                        <div class="form-group col-md-12">
+                          <input type="checkbox" checked="checked" id="directorToSecedit" class="custom-control-input"
+                            [(ngModel)]="director.isSecEdit" [ngModelOptions]="{standalone: true}">
+                          <label style="font-size:14px;" class="custom-control-label" for="directorToSecedit">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                            this director as a secretory</label>
+                        </div>
+
+                      </div>
+
+
+                      <div class="form-row" *ngIf="director.directors_as_sh == 1">
+                        <div class="form-group col-md-12">
+                          <button (click)="removeDirSh(director.id)" class="btn btn-danger"><i class="fas fa-unlink"></i>
+                            Remove Shareholder position</button>
+                        </div>
+
+                      </div>
+
+                      <div class="form-row" *ngIf="director.directors_as_sh !=1">
+                        <div class="form-group col-md-12">
+                          <input (change)="validateDirectorEdit(i)" type="checkbox" checked="checked" id="directorToShedit"
+                            class="custom-control-input" [(ngModel)]="director.isShareholderEdit" [ngModelOptions]="{standalone: true}">
+                          <label style="font-size:14px;" class="custom-control-label" for="directorToShedit">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                            this director as a shareholder</label>
+                        </div>
+
+                        <div class="form-group col-md-12" *ngIf="director.isShareholderEdit">
+
+                          <div class="form-group col-md-5">
+                            <input (change)="validateDirectorEdit(i)" type="radio" id="directorShareTypeEdit-single"
+                              class="custom-control-input" [(ngModel)]="director.shareTypeEdit" value="single" name="directoredit_sharetype">
+                            <label style="font-size:14px;" class="custom-control-label" for="directorShareTypeEdit-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                              Share</label>
+
+                            <div class="form-group col-md-12" *ngIf="director.shareTypeEdit =='single'">
+
+                              <label class="col-form-label col-form-label-sm">No of Shares
+                                <span class="req">*</span>
+                              </label>
+
+                              <input (change)="validateDirectorEdit(i)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                [(ngModel)]="director.noOfSingleSharesEdit" name="directoredit_noOfSingleSharesEdit"
+                                min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
+                                placeholder="">
+
+                            </div>
+                          </div>
+                          <div class="form-group col-md-10">
+                            <input (change)="validateDirectorEdit(i)" type="radio" id="directorShareTypeEdit-core"
+                              class="custom-control-input" [(ngModel)]="director.shareTypeEdit" value="core" name="directoredit_sharetype">
+                            <label style="font-size:14px;" class="custom-control-label" for="directorShareTypeEdit-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                              Share</label>
+
+                            <div class="form-group col-md-12" *ngIf="director.shareTypeEdit =='core'" style="background: #eee;
+                                                  padding: 10px;">
+
+                              <p style="font-weight: bold;
+                                                  border-bottom: 1px solid #999">Please
+                                select your share group</p>
+                              <select (change)="validateDirectorEdit(i)" class="form-control form-control-sm modal-input-director-sharegroup"
+                                [(ngModel)]="director.coreGroupSelectedEdit" name="directoredit_coreGroupSelectedEdit">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                              </select>
+
+                              <br />
+                              <p style="font-weight: bold;
+                                                      border-bottom: 1px solid #999">
+                                Not Found your core share group ? Add one.</p>
+
+                              <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                                <div class="form-group col-md-6">
+
+                                  <label class="col-form-label col-form-label-sm">Group Name</label>
+                                  <input (input)="validateDirectorEdit(i)" [(ngModel)]="director.coreShareGroupNameEdit"
+                                    name="directoredit_coreShareGroupNameEdit" class="form-control form-control-sm modal-input-director-oppointment"
+                                    placeholder="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                                  <input (input)="validateDirectorEdit(i)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    [(ngModel)]="director.coreShareValueEdit" name="directoredit_coreShareValueEdit"
+                                    type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                                    placeholder="">
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6" [hidden]="director.type != 'local'">
+
+                        <label class="col-form-label col-form-label-sm">Nic</label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[0-9]{9}[x|X|v|V]"
+                          maxlength="10" [(ngModel)]="directorList.directors[i].nic" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{director.nic}}"
+                          (input)="validateDirectorEdit(i)">
+                        <span class="req-message">Valid NIC required</span>
+                      </div>
+
+                      <div class="form-group col-md-6" [hidden]="director.type != 'foreign'">
+
+                        <label class="col-form-label col-form-label-sm">Passport No.</label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].passport"
+                          [ngModelOptions]="{standalone: true}" (input)="validateDirectorEdit(i)" class="form-control form-control-sm modal-input-director-passport"
+                          placeholder="" value="{{director.passport}}">
+                      </div>
+
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">First Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                          [(ngModel)]="directorList.directors[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
+                          placeholder="" value="{{director.firstname}}">
+                      </div>
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Last Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                          [(ngModel)]="directorList.directors[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
+                          placeholder="" value="{{director.lastname}}">
+                      </div>
+                    </div>
+
+
+
+                    <div class="address-block local-address" *ngIf="director.type == 'local' ">
+
+
+                      <div class="form-row">
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Province
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            class="form-control form-control-sm modal-input-director-province" [(ngModel)]="directorList.directors[i].province"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="director.province ==p.name">{{p.name}}</option>
+
+                          </select>
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">District
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            class="form-control form-control-sm modal-input-director-district" [(ngModel)]="directorList.directors[i].district"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let d of districts" value="{{d.name}}" [selected]="director.district ==d.name">{{d.name}}</option>
+                          </select>
+
+
+
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">City
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="directorList.directors[i].city"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let c of cities" value="{{c.name}}" [selected]="director.city ==c.name">{{c.name}}</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address1
+                            <span class="req">*</span>
+                          </label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                            [(ngModel)]="directorList.directors[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                            class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
+                            value="{{ director.localAddress1}}">
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            (input)="validateDirector()" [(ngModel)]="directorList.directors[i].localAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                            placeholder="" value="{{ director.localAddress2}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Post Code <span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            (input)="validateDirector()" [(ngModel)]="directorList.directors[i].postcode"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                            placeholder="" value="{{ director.postcode}}">
+                        </div>
+
+
+                      </div>
+
+                    </div>
+
+                    <div class="address-block foriegn-address" *ngIf="director.type == 'foreign' ">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 1</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            [(ngModel)]="directorList.directors[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                            class="form-control form-control-sm modal-input-director-address1" placeholder="" value="{{director.localAddress1}}">
+                        </div>
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].localAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address2"
+                            placeholder="" value="{{director.localAddress2}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">City</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                            [(ngModel)]="directorList.directors[i].city" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-city"
+                            placeholder="" value="{{director.city}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">State/Region/Province</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].province"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-province"
+                            placeholder="" value="{{director.province}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Postal/ZIP code <span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                            [(ngModel)]="directorList.directors[i].postcode" [ngModelOptions]="{standalone: true}"
+                            class="form-control form-control-sm modal-input-director-postcode" placeholder="" value="{{director.postcode}}">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="form-row" [hidden]="director.type == 'local' ">
+
+                      <div class="form-group col-md-4">
+
+                        <label class="col-form-label col-form-label-sm">Country
+                          <span class="req">*</span>
+                        </label>
+                        <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                          class="form-control form-control-sm modal-input-director-country" [(ngModel)]="directorList.directors[i].country"
+                          [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let country of countries" value="{{country.name}}" [selected]="director.country ==country.name">{{country.name}}</option>
+                        </select>
+
+
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Residential Phone No.</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="\d{10}"
+                          maxlength="10" [(ngModel)]="directorList.directors[i].phone" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-director-phone" placeholder="" value="{{director.phone}}">
+                        <span class="req-message">10 Digits mobile number requried</span>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Mobile</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
+                          pattern="\d{10}" (input)="validateDirectorEdit(i)" [(ngModel)]="directorList.directors[i].mobile"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-mobile"
+                          placeholder="" value="{{director.mobile}}">
+                        <span class="req-message">Valid email required</span>
+                      </div>
+
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm modal-input-director-email">Email Address</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+                          (change)="validateDirectorEdit(i)" [(ngModel)]="directorList.directors[i].email"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" placeholder=""
+                          value="{{director.email}}">
+                        <span class="req-message">Valid email required</span>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Date of Appointment</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateOppDate('edit','director',i)"
+                          [(ngModel)]="directorList.directors[i].date" [ngModelOptions]="{standalone: true}" type="date"
+                          class="form-control form-control-sm modal-input-director-oppointment" placeholder="" value="{{director.date}}">
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Occupation</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].occupation"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
+                          placeholder="" value="{{director.occupation}}">
+                      </div>
+                    </div>
+
+                    <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
+                      [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
+                      Edit</button>
+                    <div style="clear:both"></div>
+
+                  </div>
+                  <!-- end rerord inner -->
+
+                </div>
+
+                <!-- end list -->
+
+                <p [hidden]="directorList.directors.length" class="no-stakeholder no-director">No Directors added</p>
+
+              </div>
+
+            </div>
+            <!-- add director block-->
+
+
+            <div class="sec-secton stakeholder-section">
+
+              <div class="add-new-wrapper sec-add-new-wrapper">
+
+                <h2>
+                  <span class="add-new-wrapper-label">Secretaries</span>
+                  <div class="line"></div>
+
+                  <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                    (click)="secModal.show()" mdbWavesEffect>
+                    <i class="fa fa-plus"></i> Add New</button>
+
+                </h2>
+
+              </div>
+              <div class="sec-list stakeholder-list-wrapper">
+
+
+                <!-- list start-->
+
+                <div *ngFor="let sec of secList.secs; let i = index" class="sec-record stakeholder-record" style=" margin: 30px 0;border-radius: 20px;background: #fff;    border: 1px solid rgb(243, 91, 63);">
+
+                  <div (click)="showToggle('sec', sec.id)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                        color: #fff;
+                        padding: 5px 10px;
+                        font-weight: lighter;
+                        font-size: 14px;
+                        border-top-left-radius: 18px;
+                        box-shadow: 1px 1px 2px #b3aea9;
+                        border-top-right-radius: 18px;
+                        cursor: pointer;
+                        width: 100%;
+                        border-radius: 20px;
+                      ">
+
+                    <span *ngIf="sec.secType !='yes'">{{sec.firstname}} {{sec.lastname}} - Secretary Firm</span>
+                    <span *ngIf="sec.secType =='yes'">{{sec.firstname}} {{sec.lastname}} - Secretary</span>
+
+
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)=" removeSecRecord(i,sec.id)"
+                      title="remove record" style="float:right;" class="record-handler record-handler-remove">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-pencil-alt"></i>
+                    </span>
+                    <span *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-eye"></i>
+                    </span>
+
+                  </div>
+
+
+
+                  <div [hidden]="sec.showEditPaneForSec != sec.id" class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
+
+                    <input type="hidden" [(ngModel)]="secList.secs[i].secType" [ngModelOptions]="{standalone: true}"
+                      value="{{sec.secType}}" />
+
+                    <input type="hidden" [ngModelOptions]="{standalone: true}" value="yes" [(ngModel)]="secList.secs[i].savedSec" />
+
+                    <input *ngIf="sec.secType=='no' && sec.secCompanyFirmId" type="hidden" [(ngModel)]="secList.secs[i].secCompanyFirmId"
+                      [ngModelOptions]="{standalone: true}" value="{{sec.secCompanyFirmId}}" />
+
+                    <div class="form-row" *ngIf="sec.sec_as_sh ==1 && !sec.sec_sh_comes_from_director && processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+                      <div class="form-group col-md-12">
+                        <button (click)="removeSecSh(sec.id)" class="btn btn-danger"><i class="fas fa-unlink"></i>
+                          Remove shareholder position</button>
+                      </div>
+
+                    </div>
+
+
+                    <div class="form-row" *ngIf="sec.sec_as_sh !=1 && !sec.sec_sh_comes_from_director && processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+                      <div class="form-group col-md-12">
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                          type="checkbox" checked="checked" id="secToShedit" class="custom-control-input" [(ngModel)]="sec.isShareholderEdit"
+                          [ngModelOptions]="{standalone: true}">
+                        <label style="font-size:14px;" class="custom-control-label" for="secToShedit">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                          this secretory as a shareholder</label>
+                      </div>
+
+                      <div class="form-group col-md-12" *ngIf="sec.isShareholderEdit">
+
+                        <div class="form-group col-md-5">
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                            type="radio" id="secShareTypeEdit-single" class="custom-control-input" [(ngModel)]="sec.shareTypeEdit"
+                            value="single" name="secedit_sharetype">
+                          <label style="font-size:14px;" class="custom-control-label" for="secShareTypeEdit-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                            Share</label>
+
+                          <div class="form-group col-md-12" *ngIf="sec.shareTypeEdit =='single'">
+
+                            <label class="col-form-label col-form-label-sm">No of Shares
+                              <span class="req">*</span>
+                            </label>
+
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                              onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                              [(ngModel)]="sec.noOfSingleSharesEdit" name="secedit_noOfSingleSharesEdit" min="0" type="number"
+                              class="form-control form-control-sm modal-input-sec-oppointment" placeholder="">
+
+                          </div>
+                        </div>
+                        <div class="form-group col-md-10">
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                            type="radio" id="secShareTypeEdit-core" class="custom-control-input" [(ngModel)]="sec.shareTypeEdit"
+                            value="core" name="secedit_sharetype">
+                          <label style="font-size:14px;" class="custom-control-label" for="secShareTypeEdit-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                            Share</label>
+
+                          <div class="form-group col-md-12" *ngIf="sec.shareTypeEdit =='core'" style="background: #eee;
+                                        padding: 10px;">
+
+                            <p style="font-weight: bold;
+                                        border-bottom: 1px solid #999">Please
+                              select your share group</p>
+                            <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                              class="form-control form-control-sm modal-input-sec-sharegroup" [(ngModel)]="sec.coreGroupSelectedEdit"
+                              name="secedit_coreGroupSelectedEdit">
+                              <option value="">Choose...</option>
+                              <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                            </select>
+
+                            <br />
+                            <p style="font-weight: bold;
+                                            border-bottom: 1px solid #999">
+                              Not Found your core share group ? Add one.</p>
+
+                            <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                              <div class="form-group col-md-6">
+
+                                <label class="col-form-label col-form-label-sm">Group Name</label>
+                                <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                                  [(ngModel)]="sec.coreShareGroupNameEdit" name="secedit_coreShareGroupNameEdit" class="form-control form-control-sm modal-input-director-oppointment"
+                                  placeholder="">
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                                <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                                  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                  [(ngModel)]="sec.coreShareValueEdit" name="secedit_coreShareValueEdit" type="number"
+                                  min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                                  placeholder="">
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="for-row">
+
+                      <div class="form-group col-md-6" [hidden]="sec.type != 'local'">
+
+                        <label class="col-form-label col-form-label-sm">Nic</label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                          pattern="[0-9]{9}[x|X|v|V]" maxlength="10" [(ngModel)]="secList.secs[i].nic" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-sec-nic" placeholder="" value="{{sec.nic}}"
+                          (input)="validateSecEdit(i)">
+                        <span class="req-message">Valid NIC required</span>
+                      </div>
+
+
+                    </div>
+
+                    <div class="companyFirmInfo" *ngIf="sec.secCompanyFirmId">
+                      <h4>Firm Infomation</h4>
+                      <div class="sec_type_item form-group col-md-12">
+
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+
+
+
+                            <label class="col-form-label col-form-label-sm">PV Number
+                              <span *ngIf="compayType.value === 'Private'" class="noreq">*</span>
+                              <span *ngIf="compayType.value === 'Public'" class="req">*</span>
+                            </label>
+
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].pvNumber"
+                              [ngModelOptions]="{standalone: true}" value="{{sec.firm_info.registration_no}}" class="form-control form-control-sm modal-input-sh-nic"
+                              placeholder="">
+
+                          </div>
+
+                        </div>
+
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+
+                            <label class="col-form-label col-form-label-sm">Company Name
+                              <span class="req">*</span>
+                            </label>
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].firm_name"
+                              [ngModelOptions]="{standalone: true}" value="{{sec.firm_info.name}}" class="form-control form-control-sm modal-input-sh-nic"
+                              placeholder="">
+
+                          </div>
+
+                        </div>
+
+                        <div class="address-block local-address">
+
+                          <p style="font-size: 15px;font-weight: bold;">Firm Address</p>
+
+                          <div class="form-row">
+                            <div class="form-group col-md-4">
+
+                              <label class="col-form-label col-form-label-sm">Province<span class="req">*</span></label>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" class="form-control form-control-sm modal-input-director-country"
+                                [(ngModel)]="secList.secs[i].firm_province" [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let p of provinces" [selected]="p.name == sec.firm_info.address.province"
+                                  value="{{p.name}}">{{p.name}}</option>
+                              </select>
+
+                            </div>
+
+                            <div class="form-group col-md-4">
+
+                              <label class="col-form-label col-form-label-sm">District <span class="req">*</span></label>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" class="form-control form-control-sm modal-input-director-country"
+                                [(ngModel)]="secList.secs[i].firm_district" [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let d of districts" [selected]="d.name == sec.firm_info.address.district"
+                                  value="{{d.name}}">{{d.name}}</option>
+                              </select>
+
+                            </div>
+
+
+                            <div class="form-group col-md-4">
+
+                              <label class="col-form-label col-form-label-sm">city<span class="req">*</span></label>
+
+
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" class="form-control form-control-sm modal-input-director-address2"
+                                [(ngModel)]="secList.secs[i].firm_city" [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let c of cities" [selected]="c.name == sec.firm_info.address.city"
+                                  value="{{c.name}}">{{c.name}}</option>
+                              </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
+
+                              <label class="col-form-label col-form-label-sm">Address 1<span class="req">*</span></label>
+
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].firm_localAddress1"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                                value="{{sec.firm_info.address.address1}}" placeholder="">
+                            </div>
+
+                            <div class="form-group col-md-4">
+
+                              <label class="col-form-label col-form-label-sm">Address 2<span class="noreq">*</span></label>
+
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].firm_localAddress2"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                                value="{{sec.firm_info.address.address2}}" placeholder="">
+                            </div>
+                            <div class="form-group col-md-2">
+
+                              <label class="col-form-label col-form-label-sm">Postal code<span class="req">*</span></label>
+
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSec()"
+                                [(ngModel)]="secList.secs[i].firm_postcode" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                                placeholder="" value="{{sec.firm_info.address.postcode}}">
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <h4 class="benif-title" *ngIf="sec.secCompanyFirmId">Beneficiary Infomation</h4>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">First Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                          [(ngModel)]="secList.secs[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-firstname"
+                          placeholder="" value="{{sec.firstname}}">
+                      </div>
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Last Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                          [(ngModel)]="secList.secs[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-lastname"
+                          placeholder="" value="{{sec.lastname}}">
+                      </div>
+                    </div>
+
+
+
+                    <div class="address-block local-address" [hidden]="sec.type != 'local' ">
+
+
+                      <div class="form-row">
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Province
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                            class="form-control form-control-sm modal-input-sec-province" [(ngModel)]="secList.secs[i].province"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="sec.province == p.name">{{p.name}}</option>
+
+                          </select>
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">District
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                            class="form-control form-control-sm modal-input-sec-district" [(ngModel)]="secList.secs[i].district"
+                            [ngModelOptions]="{standalone: true}">
+
+                            <option value="">Choose..</option>
+                            <option *ngFor="let d of districts" value="{{d.name}}" [selected]="sec.district == d.name">{{d.name}}</option>
+
+                          </select>
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">City
+                            <span class="req">*</span>
+                          </label>
+
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateSecEdit(i)"
+                            class="form-control form-control-sm modal-input-sec-city" [(ngModel)]="secList.secs[i].city"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let c of cities" value="{{c.name}}" [selected]="sec.city ==c.name">{{c.name}}</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address1
+                            <span class="req">*</span>
+                          </label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                            [(ngModel)]="secList.secs[i].localAddress1" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-localaddress1"
+                            placeholder="" value="{{ sec.localAddress1}}">
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].localAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-address3"
+                            placeholder="" value="{{ sec.localAddress2}}">
+                        </div>
+
+
+                      </div>
+
+                    </div>
+
+                    <div class="address-block foriegn-address" [hidden]="sec.type == 'local' ">
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 1</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].forAddress1"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-address1"
+                            placeholder="" value="{{sec.forAddress1}}">
+                        </div>
+                        <div class="form-group col-md-5">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].forAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-address2"
+                            placeholder="" value="{{sec.forAddress2}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 3</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].forAddress3"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-address3"
+                            placeholder="" value="{{sec.forAddress3}}">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="form-row" [hidden]="sec.type == 'local' ">
+
+                      <div class="form-group col-md-4">
+
+                        <label class="col-form-label col-form-label-sm">Country
+                          <span class="req">*</span>
+                        </label>
+                        <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" class="form-control form-control-sm modal-input-sec-country"
+                          [(ngModel)]="secList.secs[i].country" [ngModelOptions]="{standalone: true}">
+                          <option selected>Choose...</option>
+                          <option *ngFor="let country of countries" value="{{country.name}}" [selected]="sec.country ==country.name">{{country.name}}</option>
+
+
+                        </select>
+                      </div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Residential Phone No.</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
+                          pattern="\d{10}" [(ngModel)]="secList.secs[i].phone" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-sec-phone" placeholder="" value="{{sec.phone}}">
+                        <span class="req-message">Please enter 10 digits phone number</span>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Mobile</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
+                          pattern="\d{10}" (input)="validateSecEdit(i)" [(ngModel)]="secList.secs[i].mobile"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-mobile"
+                          placeholder="" value="{{sec.mobile}}">
+                        <span class="req-message">10 Digits mobile number requried</span>
+                      </div>
+
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm modal-input-sec-email">Email Address</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" [(ngModel)]="secList.secs[i].email"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" placeholder=""
+                          value="{{sec.email}}">
+                        <span class="req-message">Valid email required</span>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Date of Appointment</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateOppDate('edit','sec',i)"
+                          [(ngModel)]="secList.secs[i].date" [ngModelOptions]="{standalone: true}" type="date" class="form-control form-control-sm modal-input-sec-oppointment"
+                          placeholder="" value="{{sec.date}}">
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Occupation</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secList.secs[i].occupation"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sec-occupation"
+                          placeholder="" value="{{sec.occupation}}">
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-3">
+
+                        <label class="col-form-label col-form-label-sm">Registered Secretary</label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (ngModelChange)="validateRegCheckEdit($event,i)"
+                          [(ngModel)]="secList.secs[i].isReg" [ngModelOptions]="{standalone: true}" type="checkbox"
+                          [checked]="sec.isReg" class="form-control form-control-sm  modal-input-sec-for-is-reg">
+                      </div>
+                      <div class="form-group col-md-9">
+
+                        <label class="col-form-label col-form-label-sm">Registration No</label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecEdit(i)"
+                          [(ngModel)]="secList.secs[i].regDate" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm  modal-input-sec-regdate"
+                          placeholder="" value="{{sec.regDate}}">
+                        <small style="color:red;font-size: 11px;text-transform: none;font-weight: normal">Please Enter
+                          Registration Number Only If Member Is A Registered Secretary</small>
+
+                      </div>
+
+
+                    </div>
+
+
+                    <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
+                      [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
+                      Edit</button>
+                    <div style="clear:both"></div>
+                  </div>
+                  <!-- end rerord inner -->
+
+                </div>
+
+                <!-- list end -->
+
+                <p [hidden]="secList.secs.length" class="no-stakeholder no-sec">No Secretaries added</p>
+
+              </div>
+
+            </div>
+            <!-- add secretory block-->
+
+            <div class="shareholder-secton stakeholder-section">
+
+              <div class="add-new-wrapper shareholder-add-new-wrapper">
+
+                <h2>
+                  <span class="add-new-wrapper-label">Shareholders</span>
+                  <div class="line"></div>
+
+                  <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                    (click)="shareModal.show()" mdbWavesEffect>
+                    <i class="fa fa-plus"></i> Add New</button>
+
+                </h2>
+
+              </div>
+
+
+              <div class="shareholder-list stakeholder-list-wrapper">
+
+                <div *ngFor="let sh of shList.shs; let i= index" class="shareholder-record stakeholder-record" style=" margin: 30px 0;border-radius: 20px;background: #fff;    border: 1px solid rgb(243, 91, 63);">
+
+                  <div (click)="showToggle('sh', sh.id)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                        color: #fff;
+                        padding: 5px 10px;
+                        font-weight: lighter;
+                        font-size: 14px;
+                        border-top-left-radius: 18px;
+                        box-shadow: 1px 1px 2px #b3aea9;
+                        border-top-right-radius: 18px;
+                        cursor: pointer;
+                        width: 100%;
+                        border-radius: 20px;
+                      ">
+
+                    {{sh.firstname}} {{sh.lastname}}
+                    <span class="role">Shareholder</span>
+
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="removeShRecord(i,sh.id)"
+                      title="remove record" style="float:right;" class="record-handler record-handler-remove">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                    <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-pencil-alt"></i>
+                    </span>
+                    <span *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                      class="record-handler">
+                      <i class="fa fa-eye"></i>
+                    </span>
+
+                  </div>
+
+                  <div [hidden]="sh.showEditPaneForSh != sh.id" class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
+
+
+                    <div class="create-other-user-block">
+                      <div class="form-row">
+
+                        <div class="form-group col-md-12">
+
+                          <div class="form-group col-md-5">
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                              type="radio" id="shShareTypeEdit-single" class="custom-control-input" [(ngModel)]="shList.shs[i].shareType"
+                              value="single" [ngModelOptions]="{standalone: true}">
+                            <label style="font-size:14px;" class="custom-control-label" for="shShareTypeEdit-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                              Share</label>
+
+                            <div class="form-group col-md-12" *ngIf="shList.shs[i].shareType =='single'">
+
+                              <label class="col-form-label col-form-label-sm">No of Shares
+                                <span class="req">*</span>
+                              </label>
+
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                (change)="validateShareHolderEdit(i)" [(ngModel)]="shList.shs[i].noOfShares"
+                                [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                                placeholder="">
+
+                            </div>
+                          </div>
+                          <div class="form-group col-md-10">
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                              type="radio" id="shShareTypeedit-core" class="custom-control-input" [(ngModel)]="shList.shs[i].shareType"
+                              [ngModelOptions]="{standalone: true}" value="core">
+                            <label style="font-size:14px;" class="custom-control-label" for="shShareTypeedit-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                              Share</label>
+
+                            <div class="form-group col-md-12" *ngIf="shList.shs[i].shareType =='core'" style="background: #eee;
+                                      padding: 10px;">
+
+                              <p style="font-weight: bold;
+                                      border-bottom: 1px solid #999">Please
+                                select your share group</p>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                                class="form-control form-control-sm modal-input-director-sharegroup" [(ngModel)]="shList.shs[i].coreGroupSelected"
+                                [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                              </select>
+
+                              <br />
+                              <p *ngIf="!shList.shs[i].coreGroupSelected" style="font-weight: bold;
+                                          border-bottom: 1px solid #999">
+                                Not Found your core share group ? Add one.</p>
+
+                              <div *ngIf="!shList.shs[i].coreGroupSelected" class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                                <div class="form-group col-md-6">
+
+                                  <label class="col-form-label col-form-label-sm">Group Name</label>
+                                  <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                                    [(ngModel)]="shList.shs[i].coreShareGroupName" [ngModelOptions]="{standalone: true}"
+                                    value="" class="form-control form-control-sm modal-input-director-oppointment"
+                                    placeholder="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                                  <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    (change)="validateShareHolderEdit(i)" [(ngModel)]="shList.shs[i].noOfShares"
+                                    [ngModelOptions]="{standalone: true}" value="0" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                                    placeholder="">
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6" [hidden]="sh.type != 'local'">
+
+                        <label class="col-form-label col-form-label-sm">Nic<span class="req">*</span></label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[0-9]{9}[x|X|v|V]"
+                          maxlength="10" (input)="validateShareHolderEdit(i)" [(ngModel)]="shList.shs[i].nic"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sh-nic"
+                          placeholder="" value="{{sh.nic}}">
+                        <span class="req-message">Valid NIC required</span>
+                        <span *ngIf="shAlreadyExistMessage" class="already-exist-message">{{ shAlreadyExistMessage }}</span>
+                      </div>
+
+                      <div class="form-group col-md-6" [hidden]="sh.type != 'foreign'">
+
+                        <label class="col-form-label col-form-label-sm">Passport No.<span class="req">*</span></label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                          [(ngModel)]="shList.shs[i].passport" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-sh-passport"
+                          placeholder="">
+                        <span class="req-message">Valid Passport Number required.</span>
+                      </div>
+
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">First Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                          [(ngModel)]="shList.shs[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-share-firstname"
+                          placeholder="">
+                      </div>
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Last Name
+                          <span class="req">*</span>
+                        </label>
+
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                          [(ngModel)]="shList.shs[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-share-lastname"
+                          placeholder="">
+                      </div>
+                    </div>
+
+                    <div class="address-block local-address" *ngIf="sh.type == 'local' ">
+
+
+                      <div class="form-row">
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Province
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                            class="form-control form-control-sm modal-input-director-province" [(ngModel)]="shList.shs[i].province"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="sh.province ==p.name">{{p.name}}</option>
+
+                          </select>
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">District
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                            class="form-control form-control-sm modal-input-director-district" [(ngModel)]="shList.shs[i].district"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let d of districts" value="{{d.name}}" [selected]="sh.district ==d.name">{{d.name}}</option>
+                          </select>
+
+
+
+
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">City
+                            <span class="req">*</span>
+                          </label>
+                          <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                            class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="shList.shs[i].city"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let c of cities" value="{{c.name}}" [selected]="sh.city ==c.name">{{c.name}}</option>
+                          </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address1
+                            <span class="req">*</span>
+                          </label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                            [(ngModel)]="shList.shs[i].localAddress1" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-localaddress1"
+                            placeholder="" value="{{ sh.localAddress1}}">
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="shList.shs[i].localAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                            placeholder="" value="{{ sh.localAddress2}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Post Code<span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                            [(ngModel)]="shList.shs[i].postcode" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                            placeholder="" value="{{ sh.postcode}}">
+                        </div>
+
+
+                      </div>
+
+                    </div>
+
+                    <div class="address-block foriegn-address" *ngIf="sh.type == 'foreign' ">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 1<span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="shList.shs[i].localAddress1"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address1"
+                            placeholder="" value="{{sh.localAddress1}}">
+                        </div>
+                        <div class="form-group col-md-6">
+
+                          <label class="col-form-label col-form-label-sm">Address Line 2</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="shList.shs[i].localAddress2"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address2"
+                            placeholder="" value="{{sh.localAddress2}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">City<span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                            [(ngModel)]="shList.shs[i].city" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-city"
+                            placeholder="" value="{{sh.city}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">State/Region/Province</label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="shList.shs[i].province"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-province"
+                            placeholder="" value="{{sh.province}}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+
+                          <label class="col-form-label col-form-label-sm">Postal/ZIP code<span class="req">*</span></label>
+
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                            [(ngModel)]="shList.shs[i].postcode" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                            placeholder="" value="{{director.postcode}}">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="form-row" [hidden]="sh.type == 'local' ">
+
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Country
+                          <span class="req">*</span>
+                        </label>
+                        <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateShareHolderEdit(i)"
+                          class="form-control form-control-sm modal-input-sh-country" [(ngModel)]="shList.shs[i].country"
+                          [ngModelOptions]="{standalone: true}">
+
+                          <option *ngFor="let country of countries" value="{{country.name}}" [selected]="sh.country == country.name">{{country.name}}</option>
+
+
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Residential Phone No.</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
+                          pattern="\d{10}" [(ngModel)]="shList.shs[i].phone" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-share-phone" placeholder="" value="{{sh.phone}}">
+                        <span class="req-message">Please enter 10 digits phone number</span>
+
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm">Mobile</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
+                          pattern="\d{10}" (input)="validateShareHolderEdit(i)" [(ngModel)]="shList.shs[i].mobile"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-share-mobile"
+                          placeholder="">
+                        <span class="req-message">10 Digits mobile number requried</span>
+                      </div>
+
+                      <div class="form-group col-md-4">
+                        <label class="col-form-label col-form-label-sm modal-input-share-email">Email Address</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateShareHolderEdit(i)"
+                          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" [(ngModel)]="shList.shs[i].email"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" placeholder=""
+                          value="{{sh.email}}">
+                        <span class="req-message">Valid email required</span>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <!--<div class="form-group col-md-12">
+                        <label class="col-form-label col-form-label-sm">No of Shares</label>
+                        <input [(ngModel)]="shList.shs[i].share" [ngModelOptions]="{standalone: true}" type="number" min="0" max="100" value="{{sh.share}}"
+                          class="form-control form-control-sm modal-input-share-share" placeholder="">
+                      </div>-->
+
+                      <div class="form-group col-md-12" *ngIf="sh.shareRow.type =='single_share'" style="    background: #222;padding: 10px; color: #fff;">
+
+                        <p>
+                          <strong>Share Type:</strong> Single</p>
+                        <p>
+                          <strong>Shares:</strong> {{sh.shareRow.no_of_shares}}</p>
+
+                      </div>
+
+                      <div class="form-group col-md-12" *ngIf="sh.shareRow.type =='core_share'" style="    background: #222;padding: 10px; color: #fff;">
+
+                        <p>
+                          <strong>Share Type:</strong> Core</p>
+                        <p>
+                          <strong>Share Group:</strong> {{sh.shareRow.name}}</p>
+                        <p>
+                          <strong>Shares:</strong> {{sh.shareRow.no_of_shares}}</p>
+
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Date of Appointment</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateOppDate('edit','sh',i)"
+                          [(ngModel)]="shList.shs[i].date" [ngModelOptions]="{standalone: true}" type="date" class="form-control form-control-sm modal-input-share-oppointment"
+                          placeholder="" value="{{sh.date}}">
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Occupation</label>
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="shList.shs[i].occupation"
+                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-share-occupation"
+                          placeholder="" value="{{sh.occupation}}">
+                      </div>
+                    </div>
+
+
+                    <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
+                      [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
+                      Edit</button>
+                    <div style="clear:both"></div>
+                  </div>
+                  <!-- end rerord inner -->
+
+                </div>
+
+                <p [hidden]="shList.shs.length" class="no-stakeholder no-shareholder">No Shareholder added</p>
+
+              </div>
+
+            </div>
+            <!-- add shareholder block-->
+
+            <div class="designation-rule-message" *ngIf="designationValidationRule">{{designationValidationRule}}</div>
+            <div class="f1-buttons">
+              <button (click)="changeProgressStatuses(0)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
+                Previous</button>
+              <button (click)="submitStakeholers()" [disabled]="!enableStep2Next || !enableStep2Submission" type="button"
+                class="btn btn-next">Next <i class="fas fa-forward"></i></button>
+            </div>
+          </fieldset>
+          <!--end of second step-->
+
+          <fieldset [hidden]="stepOn != 2">
+
+            <!-- <div class="container download-container" *ngFor="let docGroup of companyDocuments; let i = index">
+              <h3>{{docGroup.group_name}}</h3>
+
+
+              <div class="row download row" *ngFor="let doc of docGroup.documents">
+                <div class="col-9 doc">
+                  {{doc.name}}
+                </div>
+                <div class="col">
+                  <button type="button" class="btn btn-primary btn-sm download">
+                    <i class="fas fa-cloud-download-alt"></i> Download</button>
+
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>-->
+
+
+            <!--   <div class="container download-container" *ngFor="let docGroup of companyDocuments; let i = index">-->
+
+            <div class="container download-container">
+
+
+              <h3>Document List</h3>
+
+              <div class="doc-block-wrapper">
+
+                <div class="doc-block" *ngFor="let doc of docList['other']">
+
+                  <div class="stakeholder-doc-row">
+
+                    <div class="stakeholder-name">{{doc.name}}</div>
+                    <div class="doc-download">
+                      <!--<button type="button" class="btn btn-primary btn-sm download">
+                            <i class="fas fa-cloud-download-alt"></i> Download
+                          </button>-->
+
+                      <a [href]="sanitize(doc.download_link)" target="_blank"  download="doc.pdf" class="btn btn-primary btn-sm download doc-download-link">
+                        <i class="fas fa-cloud-download-alt"></i> Download
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="doc-block-wrapper">
+
+                <div class="doc-block" *ngFor="let doc of docList['director']">
+
+                  <h4>{{doc.stakeholder_name}} - Director</h4>
+
+                  <div class="stakeholder-doc-row">
+
+                    <div class="stakeholder-name">{{doc.name}}</div>
+                    <div class="doc-download">
+                      <!--<button type="button" class="btn btn-primary btn-sm download">
+                            <i class="fas fa-cloud-download-alt"></i> Download
+                          </button>-->
+
+                      <a target="_blank" [href]="sanitize(doc.download_link)" download="doc.pdf" class="btn btn-primary btn-sm download doc-download-link">
+                        <i class="fas fa-cloud-download-alt"></i> Download
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="doc-block-wrapper">
+
+                <div class="doc-block" *ngFor="let doc of docList['sec']">
+
+                  <h4>{{doc.stakeholder_name}} - Secretory</h4>
+
+                  <div class="stakeholder-doc-row">
+
+                    <div class="stakeholder-name">{{doc.name}}</div>
+                    <div class="doc-download">
+                      <!--<button type="button" class="btn btn-primary btn-sm download">
+                            <i class="fas fa-cloud-download-alt"></i> Download
+                          </button>-->
+
+                      <a target="_blank" [href]="sanitize(doc.download_link)" download="doc.pdf" class="btn btn-primary btn-sm download doc-download-link">
+                        <i class="fas fa-cloud-download-alt"></i> Download
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+            <!--<div class="container download-container">
+                  <div class="row download row">
+                    <div class="col-9 doc">
+                        FORM 1 - Application for Registration of a Company
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary btn-sm download"><i class="fas fa-cloud-download-alt"></i> Download</button>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <div class="container download-container">
+                  <h3>FORM 19 - Consent and Certificate of Secretary / Secretaries</h3>
+                  <div class="row download row">
+                    <div class="col-9 doc">
+                        TOM JONES
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary btn-sm download"><i class="fas fa-cloud-download-alt"></i> Download</button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="row download row">
+                      <div class="col-9 doc">
+                          TOM CRUIZ
+                      </div>
+                      <div class="col">
+                          <button type="button" class="btn btn-primary btn-sm download"><i class="fas fa-cloud-download-alt"></i> Download</button>
+
+                      </div>
+
+                    </div>
+
+              </div>
+
+              <div class="container download-container">
+                  <h3>FORM 18 - Consent and Certificate of Director</h3>
+                  <div class="row download row">
+                    <div class="col-9 doc">
+                        SHUYANTHAN TES
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary btn-sm download"><i class="fas fa-cloud-download-alt"></i> Download</button>
+
+                    </div>
+
+                  </div>
+
+
+
+              </div>-->
+
+            <div class="f1-buttons">
+              <button (click)="changeProgressStatuses(1)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
+                Previous</button>
+              <button (click)="changeProgressStatuses(3)" type="button" class="btn btn-next">Next <i class="fas fa-forward"></i></button>
+            </div>
+
+
+          </fieldset>
+          <!--end of third step-->
+
+          <fieldset [hidden]="stepOn != 3">
+
+
+            <div class="alert alert-warning" role="alert">
+
+              <!--<h4>
+                <strong>
+                  <i class="fas fa-exclamation-triangle"></i> Warning!</strong>
+              </h4> -->
+              <p>
+                <small>Please upload all files in pdf format,upload only A4 Size, portrait orientation and file size
+                  should be less
+                  than 4 MB.</small>
+              </p>
+              <p>
+                <small>Please remove cover page of 'ARTICLES OF THE ASSOCIATION' Document</small>.</p>
+            </div>
+
+            <div class="container uploaded-container">
+              <div class="row upload-row" *ngFor="let doc of uploadList['other']; let i = index">
+                <div class="col-9 doc">
+                  {{doc.file_name}}
+                </div>
+                <div class="col">
+                  <!-- <button type="button" class="btn btn-primary btn-sm download">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload</button>-->
+
+                  <label for="other-{{i}}" class="upload-wrapper btn btn-primary btn-sm download">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                  </label>
+                  <input style="display:block;position: fixed;top:-100000px" id="other-{{i}}" type="file" (change)="fileChange($event,doc.file_type,doc.file_name )"
+                    placeholder="Upload file" accept=".pdf">
+
+                </div>
+
+                <div class="col-12 uploaded-doc" *ngIf="uploadedList[doc.dbid]">
+                  <i class="fas fa-file-pdf"></i> {{uploadedList[doc.dbid]}}
+                  <span (click)="removeDoc( companyId, doc.dbid )"  class="remove-file"><i class="fas fa-minus-circle"></i></span>
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="container uploaded-container" *ngIf="
+            compayType.key === 'COMPANY_TYPE_PRIVATE' ||
+            compayType.key === 'COMPANY_TYPE_PUBLIC' ||
+            compayType.key === 'COMPANY_TYPE_UNLIMITED' ||
+            compayType.key === 'COMPANY_TYPE_GUARANTEE_32' ||
+            compayType.key === 'COMPANY_TYPE_GUARANTEE_34'">
+
+
+              <h3>FORM 19 - Consent and Certificate of Secretary / Secretaries</h3>
+
+              <div  class="row uploaded-row" *ngFor="let doc of uploadList['sec']">
+                <div class="col-9 doc">
+                  {{doc.stakeholder_name}}
+                </div>
+                <div class="col">
+                 
+
+                  <label  for="a-sec-{{doc.stakeholder_id}}-{{doc.dbid}}" class="upload-wrapper btn btn-primary btn-sm download">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                  </label>
+                  <input style="display:block;position: fixed;top:-100000px" id="a-sec-{{doc.stakeholder_id}}-{{doc.dbid}}" type="file"
+                    (change)="fileChange($event,doc.file_type,doc.stakeholder_id)" placeholder="Upload file" accept=".pdf">
+
+                </div>
+
+                <div class="col-12 uploaded-doc" *ngIf="uploadedList[doc.dbid] && uploadedList[doc.dbid][doc.stakeholder_id]">
+                  <i class="fas fa-file-pdf"></i> {{doc.stakeholder_name |lowercase }}-{{uploadedList[doc.dbid][doc.stakeholder_id]}}
+                  <span (click)="removeDoc( companyId, doc.dbid, doc.stakeholder_id )"  class="remove-file"><i class="fas fa-minus-circle"></i></span>
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+            <div class="container uploaded-container" *ngIf="
+            compayType.key === 'COMPANY_TYPE_PRIVATE' ||
+            compayType.key === 'COMPANY_TYPE_PUBLIC' ||
+            compayType.key === 'COMPANY_TYPE_UNLIMITED' ||
+            compayType.key === 'COMPANY_TYPE_GUARANTEE_32' ||
+            compayType.key === 'COMPANY_TYPE_GUARANTEE_34'">
+              <h3>CONSENT AND CERTIFICATE OF DIRECTOR - FORM 18</h3>
+
+
+
+              <div class="row uploaded-row " *ngFor="let doc of uploadList['director']">
+                <div class="col-9 doc">
+                  {{doc.stakeholder_name}}
+                </div>
+                <div class="col">
+
+
+                  <label  for="a-dir-{{doc.stakeholder_id}}-{{doc.dbid}}" class="upload-wrapper btn btn-primary btn-sm download">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                  </label>
+                  <input style="display:block;position: fixed;top:-100000px" id="a-dir-{{doc.stakeholder_id}}-{{doc.dbid}}" type="file"
+                    (change)="fileChange($event,doc.file_type,doc.stakeholder_id)" placeholder="Upload file" accept=".pdf">
+
+
+                </div>
+
+                <div class="col-12 uploaded-doc" *ngIf="uploadedList[doc.dbid] && uploadedList[doc.dbid][doc.stakeholder_id]">
+                  <i class="fas fa-file-pdf"></i> {{doc.stakeholder_name |lowercase }}-{{uploadedList[doc.dbid][doc.stakeholder_id]}}
+                  <span (click)="removeDoc( companyId, doc.dbid, doc.stakeholder_id )"  class="remove-file"><i class="fas fa-minus-circle"></i></span>
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+            <div class="f1-buttons">
+              <button (click)="changeProgressStatuses(2)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
+                Previous</button>
+              <button [disabled]="!validateUploadeStatusFlag" (click)="changeProgressStatuses(4)" type="button" class="btn btn-next">Next <i class="fas fa-forward"></i></button>
+            </div>
+
+
+          </fieldset>
+          <!--end of fourth step-->
+
+
+          <fieldset class="{{stepOn}}" [hidden]="stepOn != 4">
+
+            <div *ngIf="paymentSuccess" class="payment-success lert alert-success">Payment Successfull.</div>
+            <div *ngIf="resubmitSuccess" class="payment-success lert alert-success">Successfully Resubmitted.</div>
+
+
+
+            <div class="payment-table" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+
+
+
+              <div class="payment-row header">
+                <div class="payment-cell">
+                  Payment Description
+                </div>
+                <div class="payment-cell no-of-copies">
+                  No of Copies
+                </div>
+                <div class="payment-cell">
+                  Amount (LKR)
+                </div>
+
+              </div>
+
+
+              <div class="payment-row" *ngFor="let doc of uploadList['other']">
+                <div class="payment-cell">
+                  {{doc.file_name}}
+                </div>
+                <div class="payment-cell no-of-copies">
+
+                  <input (input)="calculatePayment()" type="number" min="1" value="1" [(ngModel)]="payment[doc.file_type]['copies']"
+                    [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                </div>
+                <div class="payment-cell">
+
+                  <input class="payment-values" [ngModel]="payment[doc.file_type]['val']| currency:'LKR'"
+                    [ngModelOptions]="{standalone: true}" />
+                </div>
+
+              </div>
+
+              <div class="payment-row" *ngFor="let doc of uploadList['director']">
+
+                <div class="payment-cell">
+                  {{doc.file_name}} - {{doc.stakeholder_name}}
+                </div>
+                <div class="payment-cell no-of-copies">
+
+                  <input (input)="calculatePayment()" type="number" min="1" value="1" [(ngModel)]="payment[doc.file_type]['copies']"
+                    [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                </div>
+                <div class="payment-cell">
+
+                  <input class="payment-values" [ngModel]="payment[doc.file_type]['val']| currency:'LKR'"
+                    [ngModelOptions]="{standalone: true}" />
+                </div>
+
+
+              </div>
+
+              <div class="payment-row" *ngFor="let doc of uploadList['sec']">
+
+                <div class="payment-cell">
+                  {{doc.file_name}} - {{doc.stakeholder_name}}
+                </div>
+                <div class="payment-cell no-of-copies">
+
+                  <input (input)="calculatePayment()" type="number" min="1" value="1" [(ngModel)]="payment[doc.file_type]['copies']"
+                    [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                </div>
+                <div class="payment-cell">
+
+                  <input class="payment-values" [ngModel]="payment[doc.file_type]['val']| currency:'LKR'"
+                    [ngModelOptions]="{standalone: true}" />
+                </div>
+
+
+              </div>
+
+
+
+              <!-- <div class="payment-row">
+                <div class="payment-cell">
+                  CONSENT AND CERTIFICATE OF SECRETARY - FORM 19 TE.S
+                </div>
+                <div class="payment-cell no-of-copies">
+                    <input (input)="calculatePayment()" type="number" min="1" value="1"  [(ngModel)]="payment.FORM19.copies" [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                  </div>
+                <div class="payment-cell">
+                    <input class="payment-values" [ngModel]="payment.FORM19.val| currency:'LKR'" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-cell">
+                  REGISTRATION OF A COMPANY - FORM 1
+                </div>
+                <div class="payment-cell no-of-copies">
+                    <input (input)="calculatePayment()" type="number" min="1" value="1"  [(ngModel)]="payment.FORM01.copies" [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                  </div>
+                <div class="payment-cell">
+                    <input class="payment-values" [ngModel]="payment.FORM01.val| currency:'LKR'" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-cell">
+                  CONSENT AND CERTIFICATE OF DIRECTOR - FORM 18 TES.SHUYANTHAN
+                </div>
+                <div class="payment-cell no-of-copies">
+                    <input (input)="calculatePayment()" type="number" min="1" value="1" [(ngModel)]="payment.FORM18.copies" [ngModelOptions]="{standalone: true}" /> <span class="pay-mult">X</span>
+                  </div>
+                <div class="payment-cell">
+                    <input class="payment-values" [ngModel]="payment.FORM18.val | currency:'LKR'" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+              </div> -->
+
+              <div class="payment-row">
+                <div class="payment-cell">
+                  VAT FOR COMPANY REGISTRATION
+                </div>
+                <div class="payment-cell no-of-copies">
+
+                </div>
+                <div class="payment-cell">
+                  <input class="payment-values" [ngModel]="payment.COMP_REG.val | currency:'LKR'" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+              </div>
+
+              <div class="payment-row header" style=" background: #02001b;">
+                <div class="payment-cell">
+                  PRIVATE LIMITED COMPANY REGISTRATION TOTAL FEE :
+                </div>
+                <div class="payment-cell no-of-copies">
+
+                </div>
+                <div class="payment-cell" style="    font-size: 16px;
+                color: #ea6153;">
+                  {{totalPayment| currency:'LKR'}}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="resubmit-wrapper" *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
+
+              <button (click)="resubmit()" type="button" class="btn btn-submit re-submit"><i class="fas fa-check"></i>
+                COMPLETE AND RESUBMIT</button>
+
+            </div>
+
+
+
+
+            <div class="f1-buttons">
+              <button (click)="changeProgressStatuses(3)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
+                Previous</button>
+              <button *ngIf="processStatus !='COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="pay()" type="button" class="btn btn-submit">PAY</button>
+            </div>
+          </fieldset>
+
+        </form>
+
+      </div>
+      <div style="clear:both"></div>
+      <br />
+      <br />
+      <!--end right col main-->
+    </div>
+  </div>
+</section>
+
+
+
+<!--add director modal-->
+<div mdbModal #basicModal="mdbModal" id="director-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Director
+          <br />
+          <span *ngIf="directorValitionMessage" class="stakeholder-validation">{{ directorValitionMessage }}</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="stakeholder-type-tab-wrapper">
+          <div (click)="selectStakeHolderType('director','local')" class="tab local-tab active">Sri Lankan ? </div>
+          <div (click)="selectStakeHolderType('director','foreign')" class="tab local-tab">Non Sri Lankan</div>
+        </div>
+
+
+
+        <div class="form-row">
+          <div class="form-group col-md-6 nic-field-wrapper" [hidden]="director.type != 'local' ">
+
+            <label class="col-form-label col-form-label-sm">NIC No
+              <span class="req">*</span>
+            </label>
+            <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (change)="isDirectorAlreadyExistAction('local')" (input)="validateDirector()"
+              [(ngModel)]="director.nic" class="form-control form-control-sm modal-input-director-nic" placeholder="">
+              
+            <span class="req-message">Valid NIC required</span>
+            <span *ngIf="directorAlreadyExistMessage" class="already-exist-message">{{directorAlreadyExistMessage}}</span>
+            <button class="btn btn-success nic-continue-button">continue</button>
+          </div>
+
+
+          <div class="form-group col-md-6" [hidden]="director.type == 'local' ">
+
+            <label class="col-form-label col-form-label-sm">Passport No.
+              <span class="req">*</span>
+            </label>
+
+            <input (input)="validateDirector()" [(ngModel)]="director.passport" class="form-control form-control-sm modal-input-director-passport"
+              placeholder="">
+            <span *ngIf="directorAlreadyExistMessage" class="already-exist-message">{{directorAlreadyExistMessage}}</span>
+          </div>
+
+        </div>
+
+
+       
+        <div [hidden]="!directorNicLoaded" class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+
+          <div class="form-row">
+
+            <div class="form-group col-md-2">
+
+              <label class="col-form-label col-form-label-sm">Title
+                <span class="req">*</span>
+              </label>
+              <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-title"
+                [(ngModel)]="director.title">
+                <option value="">Choose...</option>
+
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Miss">Miss</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Proff.">Proff.</option>
+                <option value="Rev.">Rev.</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">First Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateDirector()" [(ngModel)]="director.firstname" class="form-control form-control-sm modal-input-director-firstname"
+                placeholder="">
+            </div>
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">Last Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateDirector()" [(ngModel)]="director.lastname" class="form-control form-control-sm modal-input-director-lastname"
+                placeholder="">
+            </div>
+          </div>
+
+
+          <div class="form-row" [hidden]="director.type != 'foreign' ">
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Country
+                <span class="req">*</span>
+              </label>
+              <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
+                [(ngModel)]="director.country">
+                <option value="">Choose...</option>
+                <option *ngFor="let country of countries" value="{{country.name}}">{{country.name}}</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="address-block local-address" *ngIf="director.type == 'local' ">
+
+            <p style="font-size: 15px;font-weight: bold;">Address</p>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Province
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="director.province">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                </select>
+
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">District
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="director.district">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">city
+                  <span class="req">*</span>
+                </label>
+
+
+                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-address2"
+                  [(ngModel)]="director.city">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Address 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+              <div class="form-group col-md-2">
+
+                <label class="col-form-label col-form-label-sm">Postal code
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                  placeholder="">
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="address-block local-address" *ngIf="director.type == 'foreign' ">
+
+            <p style="font-size: 15px;font-weight: bold;">Foreign Address
+
+            </p>
+            <div style="clear:both"></div>
+
+            <div class="form-row">
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address Line 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.localAddress1" class="form-control form-control-sm  modal-input-director-for-address1"
+                  placeholder="">
+              </div>
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address Line 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.localAddress2" class="form-control form-control-sm  modal-input-director-for-address2"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">City
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.city" class="form-control form-control-sm  modal-input-director-for-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">State/Region/Province
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.province" class="form-control form-control-sm  modal-input-director-for-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Postal/ZIP code
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateDirector()" [(ngModel)]="director.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                  placeholder="">
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Residential Phone No.
+                <span class="noreq">*</span>
+              </label>
+
+              <input maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="director.phone" class="form-control form-control-sm modal-input-director-phone"
+                placeholder="">
+              <span class="req-message">Please enter 10 digits phone number</span>
+            </div>
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Mobile
+                <span class="req">*</span>
+              </label>
+
+              <input maxlength="10" pattern="\d{10}" type="tel" (input)="validateDirector()" [(ngModel)]="director.mobile"
+                class="form-control form-control-sm modal-input-director-mobile" placeholder="">
+              <span class="req-message">10 Digits mobile number requried</span>
+            </div>
+
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm modal-input-director-email">Email Address
+                <span class="req">*</span>
+              </label>
+
+              <input type="email" (input)="validateDirector()" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+                [(ngModel)]="director.email" class="with-email-validator form-control form-control-sm" placeholder="">
+              <span class="req-message">Valid email required</span>
+
+            </div>
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Date of Appointment
+                <span class="noreq">*</span>
+              </label>
+
+              <input (change)="validateOppDate('add','director')" [(ngModel)]="director.date" type="date" class="form-control form-control-sm modal-input-director-oppointment"
+                placeholder="">
+            </div>
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Occupation
+                <span class="noreq">*</span>
+              </label>
+
+              <input [(ngModel)]="director.occupation" class="form-control form-control-sm modal-input-director-occupation"
+                placeholder="">
+            </div>
+          </div>
+
+          <br />
+          <hr class="form-sep" />
+
+          <div class="create-other-user-block" *ngIf="director.type != 'foreign' ">
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input type="checkbox" id="directorToSec" class="custom-control-input" [(ngModel)]="director.isSec">
+                <label style="font-size:14px;" class="custom-control-label" for="directorToSec">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                  this director as a secretory</label>
+              </div>
+
+            </div>
+
+            <hr class="form-sep" />
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input (change)="validateDirector()" type="checkbox" id="directorToShareHolder" class="custom-control-input"
+                  [(ngModel)]="director.isShareholder">
+                <label style="font-size:14px;" class="custom-control-label" for="directorToShareHolder">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                  this director as a shareholder</label>
+              </div>
+
+              <div class="form-group col-md-12" *ngIf="director.isShareholder">
+
+                <div class="form-group col-md-5">
+                  <input (change)="validateDirector()" type="radio" id="directorShareType-single" class="custom-control-input"
+                    [(ngModel)]="director.shareType" value="single" name="director_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="director.shareType =='single'">
+
+                    <label class="col-form-label col-form-label-sm">No of Shares
+                      <span class="req">*</span>
+                    </label>
+
+                    <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                      [(ngModel)]="director.noOfSingleShares" min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
+                      placeholder="">
+
+                  </div>
+                </div>
+                <div class="form-group col-md-10">
+                  <input (change)="validateDirector()" type="radio" id="directorShareType-core" class="custom-control-input"
+                    [(ngModel)]="director.shareType" value="core" name="director_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="director.shareType =='core'" style="background: #eee;
+                          padding: 10px;">
+
+                    <p style="font-weight: bold;
+                          border-bottom: 1px solid #999">Please select
+                      your share group</p>
+                    <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-sharegroup"
+                      [(ngModel)]="director.coreGroupSelected">
+                      <option value="">Choose...</option>
+                      <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                    </select>
+
+                    <br />
+                    <p style="font-weight: bold;
+                              border-bottom: 1px solid #999"> Not Found
+                      your core share group ? Add one.</p>
+
+                    <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Group Name</label>
+                        <input (change)="validateDirector()" [(ngModel)]="director.coreShareGroupName" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                        <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                          [(ngModel)]="director.coreShareValue" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="create-other-user-block" *ngIf="director.type == 'foreign' ">
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input (change)="validateDirector()" type="checkbox" id="directorToShareHolder" class="custom-control-input"
+                  [(ngModel)]="director.isShareholder">
+                <label style="font-size:14px;" class="custom-control-label" for="directorToShareHolder">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                  this director as a shareholder</label>
+              </div>
+
+              <div class="form-group col-md-12" *ngIf="director.isShareholder">
+
+                <div class="form-group col-md-5">
+                  <input (change)="validateDirector()" type="radio" id="directorShareType-single" class="custom-control-input"
+                    [(ngModel)]="director.shareType" value="single" name="director_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="director.shareType =='single'">
+
+                    <label class="col-form-label col-form-label-sm">No of Shares
+                      <span class="req">*</span>
+                    </label>
+
+                    <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                      [(ngModel)]="director.noOfSingleShares" min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
+                      placeholder="">
+
+                  </div>
+                </div>
+                <div class="form-group col-md-10">
+                  <input (change)="validateDirector()" type="radio" id="directorShareType-core" class="custom-control-input"
+                    [(ngModel)]="director.shareType" value="core" name="director_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="director.shareType =='core'" style="background: #eee;
+                        padding: 10px;">
+
+                    <p style="font-weight: bold;
+                        border-bottom: 1px solid #999">Please select your
+                      share group</p>
+                    <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-sharegroup"
+                      [(ngModel)]="director.coreGroupSelected">
+                      <option value="">Choose...</option>
+                      <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                    </select>
+
+                    <br />
+                    <p style="font-weight: bold;
+                            border-bottom: 1px solid #999"> Not Found your
+                      core share group ? Add one.</p>
+
+                    <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Group Name</label>
+                        <input (change)="validateDirector()" [(ngModel)]="director.coreShareGroupName" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                        <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                          [(ngModel)]="director.coreShareValue" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+        </div> <!-- END NIC/PASSPORT CHECK CODE-->
+
+
+
+
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end">
+        <!--<button type="button" mdbBtn color="secondary" class="btn btn-sm waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>-->
+
+        <!--<div class="custom-control custom-checkbox my-1 mr-sm-2">
+          <input [checked]="directorToShareHolder" type="checkbox" id="directorToShareHolder" class="custom-control-input" [(ngModel)]="directorToShareHolder">
+          <label style="color: #f35b3f !important;font-size: 14px;" class="custom-control-label" for="directorToShareHolder">Make this director as a shareholder</label>
+        </div>-->
+
+        <button style="background-color: #bbb!important;" (click)="resetDirRecord()" type="button" mdbBtn color="secondary"
+          class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
+
+        <button [disabled]="!validDirector" (click)="saveDirectorRecord()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-director"
+          mdbWavesEffect>ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--add Secretary modal -->
+<div mdbModal #secModal="mdbModal" id="sec-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="secModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Secretary
+          <br />
+          <span *ngIf="secValitionMessage && sec.secType && sec.type !='foreign'" class="stakeholder-validation">{{
+            secValitionMessage }}</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="stakeholder-type-tab-wrapper">
+          <div (click)="selectStakeHolderType('sec','local')" class="tab local-tab active">Sri Lankan </div>
+          <div (click)="selectStakeHolderType('sec','foreign')" class="tab local-tab">Non Sri Lankan</div>
+        </div>
+
+        <div style="margin:20px;text-align: center;" class=" form-row alert alert-danger" *ngIf="sec.type=='foreign'">
+
+          You are not allowed to be a Secretory of a Sri Lankan Company
+
+        </div>
+
+        <div class="sec_type_wrapper form-row" *ngIf="sec.type=='local'">
+          <input type="hidden" name="saved_sec" value="no" [(ngModel)]="sec.savedSec" />
+
+          <div class="sec_type_item form-group col-md-6">
+
+            <input (change)="validateSec()" type="radio" id="sec-type-natural" class="custom-control-input" [(ngModel)]="sec.secType"
+              value="natural" name="sec_sectype">
+            <label style="font-size:14px;" class="custom-control-label" for="sec-type-natural">&nbsp;&nbsp;&nbsp;&nbsp;Natural
+              Person</label>
+
+
+          </div>
+
+          <div class="sec_type_item form-group col-md-6">
+
+            <input (change)="validateSec()" type="radio" id="sec-type-firm" class="custom-control-input" [(ngModel)]="sec.secType"
+              value="firm" name="sec_sectype">
+            <label style="font-size:14px;" class="custom-control-label" for="sec-type-firm">&nbsp;&nbsp;&nbsp;&nbsp;Firm</label>
+
+
+          </div>
+
+
+        </div>
+
+        <div class="sec_type_wrapper form-row" *ngIf="sec.type =='local' && sec.secType =='firm'">
+
+          <div class="sec_type_item form-group col-md-12">
+
+
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+
+
+
+                <label class="col-form-label col-form-label-sm">PV Number
+                  <span *ngIf="compayType.value === 'Private'" class="noreq">*</span>
+                  <span *ngIf="compayType.value === 'Public'" class="req">*</span>
+                </label>
+
+                <input (input)="validateSec()" [(ngModel)]="sec.pvNumber" class="form-control form-control-sm modal-input-sh-nic"
+                  placeholder="">
+
+              </div>
+
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+
+                <label class="col-form-label col-form-label-sm">Company Name
+                  <span class="req">*</span>
+                </label>
+                <input (input)="validateSec()" [(ngModel)]="sec.firm_name" class="form-control form-control-sm modal-input-sh-nic"
+                  placeholder="">
+
+              </div>
+
+            </div>
+
+            <div class="address-block local-address">
+
+              <p style="font-size: 15px;font-weight: bold;">Firm Address</p>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Province<span class="req">*</span></label>
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-director-country"
+                    [(ngModel)]="sec.firm_province">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                  </select>
+
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">District <span class="req">*</span></label>
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-director-country"
+                    [(ngModel)]="sec.firm_district">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                  </select>
+
+                </div>
+
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">city<span class="req">*</span></label>
+
+
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-director-address2"
+                    [(ngModel)]="sec.firm_city">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Address 1<span class="req">*</span></label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.firm_localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Address 2<span class="noreq">*</span></label>
+
+                  <input [(ngModel)]="sec.firm_localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                    placeholder="">
+                </div>
+                <div class="form-group col-md-2">
+
+                  <label class="col-form-label col-form-label-sm">Postal code<span class="req">*</span></label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.firm_postcode" class="form-control form-control-sm modal-input-director-postcode"
+                    placeholder="">
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <p style="font-weight: bold;text-align: center;border-bottom: 1px solid #999;" class="beneficiary-owner-title"
+          *ngIf="sec.type =='local' && sec.secType =='firm'">Beneficiary Owner Details</p>
+
+        <div class="natural-person-field" *ngIf="sec.type =='local' && ( sec.secType =='natural' || sec.secType =='firm' ) ">
+          <!--natural person details-->
+
+          <div class="form-row">
+            <div class="form-group col-md-6 nic-field-wrapper">
+
+              <label class="col-form-label col-form-label-sm">NIC No
+                <span class="req">*</span>
+              </label>
+              <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (change)="isSecAlreadyExistAction()" (input)="validateSec()"
+                [(ngModel)]="sec.nic" class="form-control form-control-sm modal-input-sec-nic" placeholder="">
+                
+              <span class="req-message">Valid NIC required</span>
+              <span *ngIf="secAlreadyExistMessage" class="already-exist-message">{{ secAlreadyExistMessage }}</span>
+              <button class="btn btn-success nic-continue-button">continue</button>
+            </div>
+
+
+          </div>
+
+
+          <div [hidden]="!secNicLoaded" class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+              <div class="form-row">
+
+                <div class="form-group col-md-2">
+
+                  <label class="col-form-label col-form-label-sm">Title
+                    <span class="req">*</span>
+                  </label>
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-sec-title" [(ngModel)]="sec.title">
+                    <option value="">Choose...</option>
+
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Miss">Miss</option>
+                    <option value="Dr.">Dr.</option>
+                    <option value="Proff.">Proff.</option>
+                    <option value="Rev.">Rev.</option>
+
+                  </select>
+
+                </div>
+
+                <div class="form-group col-md-5">
+
+                  <label class="col-form-label col-form-label-sm">First Name
+                    <span class="req">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.firstname" class="form-control form-control-sm modal-input-sec-firstname"
+                    placeholder="">
+                </div>
+                <div class="form-group col-md-5">
+
+                  <label class="col-form-label col-form-label-sm">Last Name
+                    <span class="req">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.lastname" class="form-control form-control-sm modal-input-sec-lastname"
+                    placeholder="">
+                </div>
+              </div>
+
+
+
+              <p style="font-size: 15px;font-weight: bold;">Address</p>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Province
+                    <span class="req">*</span>
+                  </label>
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-sec-province"
+                    [(ngModel)]="sec.province">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                  </select>
+
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">District
+                    <span class="req">*</span>
+                  </label>
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-sec-district"
+                    [(ngModel)]="sec.district">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">city
+                    <span class="req">*</span>
+                  </label>
+
+
+                  <select (change)="validateSec()" class="form-control form-control-sm modal-input-sec-city" [(ngModel)]="sec.city">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Address 1
+                    <span class="req">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.localAddress1" class="form-control form-control-sm modal-input-sec-address1"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Address 2
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input [(ngModel)]="sec.localAddress2" class="form-control form-control-sm modal-input-sec-address2"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-2">
+
+                  <label class="col-form-label col-form-label-sm">Postal code
+                    <span class="req">*</span>
+                  </label>
+
+                  <input maxlength="10" (input)="validateSec()" [(ngModel)]="sec.postcode" class="form-control form-control-sm modal-input-sec-postcode"
+                    placeholder="">
+                </div>
+
+
+              </div>
+
+
+
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Residential Phone No.
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input maxlength="10" type="tel" pattern="\d{10}" [(ngModel)]="sec.phone" class="form-control form-control-sm modal-input-sec-phone"
+                    placeholder="">
+                  <span class="req-message">Please enter 10 digits phone number</span>
+                </div>
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Mobile
+                    <span class="req">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="sec.mobile" class="form-control form-control-sm modal-input-sec-mobile"
+                    placeholder="">
+                  <span class="req-message">10 Digits mobile number requried</span>
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm modal-input-sec-email">Email Address
+                    <span class="req">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" [(ngModel)]="sec.email"
+                    class="form-control form-control-sm" placeholder="">
+                  <span class="req-message">Valid email required</span>
+                </div>
+              </div>
+
+
+
+              <div class="form-row">
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Date of Appointmentt
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input (change)="validateOppDate('add','sec')" [(ngModel)]="sec.date" type="date" class="form-control form-control-sm modal-input-sec-oppointment"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Occupation
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input [(ngModel)]="sec.occupation" class="form-control form-control-sm modal-input-sec-occupation"
+                    placeholder="">
+                </div>
+              </div>
+
+              <div class="form-row">
+
+                <div class="form-group col-md-3">
+
+                  <label class="col-form-label col-form-label-sm">Registered Secretary
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input (ngModelChange)="validateRegCheck($event)" [(ngModel)]="sec.isReg" type="checkbox" class="form-control form-control-sm  modal-input-sec-for-is-reg">
+                </div>
+                <div class="form-group col-md-9">
+
+                  <label class="col-form-label col-form-label-sm">Registration No
+                    <span class="noreq">*</span>
+                  </label>
+
+                  <input (input)="validateSec()" [(ngModel)]="sec.regDate" class="form-control form-control-sm  modal-input-sec-regdate"
+                    placeholder="">
+                  <small style="color:red;font-size: 11px;text-transform: none;font-weight: normal">Please Enter
+                    Registration Number Only If Member Is A Registered Secretary</small>
+
+                </div>
+
+
+              </div>
+              <br />
+
+
+              <div class="create-other-user-block">
+
+
+                <hr class="form-sep" />
+
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <input (change)="validateSec()" type="checkbox" id="secToShareHolder" class="custom-control-input"
+                      [(ngModel)]="sec.isShareholder">
+                    <label style="font-size:14px;" class="custom-control-label" for="secToShareHolder">&nbsp;&nbsp;&nbsp;&nbsp;Make
+                      this secretory as a shareholder</label>
+                  </div>
+
+                  <div class="form-group col-md-12" *ngIf="sec.isShareholder">
+
+                    <div class="form-group col-md-5">
+                      <input (change)="validateSec()" type="radio" id="secShareType-single" class="custom-control-input"
+                        [(ngModel)]="sec.shareType" value="single" name="sec_sharetype">
+                      <label style="font-size:14px;" class="custom-control-label" for="secShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                        Share</label>
+
+                      <div class="form-group col-md-12" *ngIf="sec.shareType =='single'">
+
+                        <label class="col-form-label col-form-label-sm">No of Shares
+                          <span class="req">*</span>
+                        </label>
+
+                        <input (change)="validateSec()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                          [(ngModel)]="sec.noOfSingleShares" min="0" type="number" class="form-control form-control-sm modal-input-sec-oppointment"
+                          placeholder="">
+
+                      </div>
+                    </div>
+                    <div class="form-group col-md-10">
+                      <input (change)="validateSec()" type="radio" id="secShareType-core" class="custom-control-input"
+                        [(ngModel)]="sec.shareType" value="core" name="sec_sharetype">
+                      <label style="font-size:14px;" class="custom-control-label" for="secShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                        Share</label>
+
+                      <div class="form-group col-md-12" *ngIf="sec.shareType =='core'" style="background: #eee;
+                              padding: 10px;">
+
+                        <p style="font-weight: bold;
+                              border-bottom: 1px solid #999">Please select
+                          your share group</p>
+                        <select (change)="validateSec()" class="form-control form-control-sm modal-input-sec-sharegroup"
+                          [(ngModel)]="sec.coreGroupSelected">
+                          <option value="">Choose...</option>
+                          <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                        </select>
+
+                        <br />
+                        <p style="font-weight: bold;
+                                  border-bottom: 1px solid #999"> Not
+                          Found your core share group ? Add one.</p>
+
+                        <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                          <div class="form-group col-md-6">
+
+                            <label class="col-form-label col-form-label-sm">Group Name</label>
+                            <input (change)="validateSec()" [(ngModel)]="sec.coreShareGroupName" class="form-control form-control-sm modal-input-sec-oppointment"
+                              placeholder="">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                            <input (change)="validateSec()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                              [(ngModel)]="sec.coreShareValue" type="number" min="0" class="form-control form-control-sm modal-input-sec-oppointment"
+                              placeholder="">
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+          </div> <!-- END NIC CHECK FOR SEC -->
+
+        </div>
+        <!--natural person fields end-->
+
+        <br />
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button style="background-color: #bbb!important;" (click)="resetSecRecord()" type="button" mdbBtn color="secondary"
+          class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
+
+        <button [disabled]="!validSec" (click)="saveSecRecord()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-sec add-new-stakeholder"
+          mdbWavesEffect>ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--add shareholder modal-->
+<div mdbModal #shareModal="mdbModal" id="share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="shareModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Shareholder
+          <br />
+          <span *ngIf="shValitionMessage" class="stakeholder-validation">{{ shValitionMessage }}</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="stakeholder-type-tab-wrapper">
+          <div (click)="selectStakeHolderType('sh','local')" class="tab local-tab active">For Local Share Holder</div>
+          <div (click)="selectStakeHolderType('sh','foreign')" class="tab local-tab">For Foreign Share Holder</div>
+        </div>
+
+
+        <div class="sec_type_wrapper form-row">
+
+          <!-- share holder a company section hide -->
+
+          <!-- <div class="sec_type_item form-group col-md-12">
+
+              <input (change)="validateShareHolder()" type="checkbox" id="sharaholder-type-firm" class="custom-control-input" [(ngModel)]="sh.shareholderType"  name="shareholder_type">
+              <label style="font-size:14px;" class="custom-control-label" for="sharaholder-type-firm">&nbsp;&nbsp;&nbsp;&nbsp;Is Sharaholder a company ?</label>
+
+
+            </div> -->
+
+
+          <div class="sec_type_item form-group col-md-12" *ngIf="sh.shareholderType == true">
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">PV Number
+                  <span class="noreq">*</span>
+                </label>
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.pvNumber" class="form-control form-control-sm modal-input-sh-nic"
+                  placeholder="">
+
+              </div>
+
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+
+                <label class="col-form-label col-form-label-sm">Company Name
+                  <span class="req">*</span>
+                </label>
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_name" class="form-control form-control-sm modal-input-sh-nic"
+                  placeholder="">
+
+              </div>
+
+            </div>
+
+            <div class="address-block local-address" *ngIf="sh.type == 'local'">
+
+              <p style="font-size: 15px;font-weight: bold;">Firm Address</p>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Province<span class="req">*</span></label>
+                  <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-director-country"
+                    [(ngModel)]="sh.firm_province">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let p of provinces" value="{{p.id}}">{{p.name}}</option>
+                  </select>
+
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">District <span class="req">*</span></label>
+                  <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-director-country"
+                    [(ngModel)]="sh.firm_district">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let d of districts" value="{{d.id}}">{{d.name}}</option>
+                  </select>
+
+                </div>
+
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">city<span class="req">*</span></label>
+
+
+                  <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-director-address2"
+                    [(ngModel)]="sh.firm_city">
+                    <option value="">Choose...</option>
+                    <option *ngFor="let c of cities" value="{{c.id}}">{{c.name}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Address 1<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Address 2<span class="noreq">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                    placeholder="">
+                </div>
+                <div class="form-group col-md-2">
+
+                  <label class="col-form-label col-form-label-sm">Postal code<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_postcode" class="form-control form-control-sm modal-input-director-postcode"
+                    placeholder="">
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="address-block local-address" *ngIf="sh.type =='foriegn' ">
+
+              <p style="font-size: 15px;font-weight: bold;">Firm Address
+
+              </p>
+              <div style="clear:both"></div>
+
+              <div class="form-row">
+
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Address Line 1<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_localAddress1" class="form-control form-control-sm  modal-input-director-for-address1"
+                    placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+
+                  <label class="col-form-label col-form-label-sm">Address Line 2<span class="noreq">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_localAddress2" class="form-control form-control-sm  modal-input-director-for-address2"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">City<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_city" class="form-control form-control-sm  modal-input-director-for-address3"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">State/Region/Province<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_province" class="form-control form-control-sm  modal-input-director-for-address3"
+                    placeholder="">
+                </div>
+
+                <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Postal/ZIP code<span class="req">*</span></label>
+
+                  <input (input)="validateShareHolder()" [(ngModel)]="sh.firm_postcode" class="form-control form-control-sm modal-input-director-postcode"
+                    placeholder="">
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+
+
+
+        </div>
+
+
+        <p style="font-weight: bold;text-align: center;border-bottom: 1px solid #999;" class="beneficiary-owner-title"
+          *ngIf="sh.shareholderType == true">Beneficiary Owner Details</p>
+
+
+        <div class="form-row">
+          <div class="form-group col-md-6 nic-field-wrapper" [hidden]="sh.type != 'local' ">
+
+            <label class="col-form-label col-form-label-sm">NIC No
+              <span class="req">*</span>
+            </label>
+            <input maxlength="10" pattern="[0-9]{9}[x|X|v|V]" (change)="isShAlreadyExistAction('local')" (input)="validateShareHolder()"
+              [(ngModel)]="sh.nic" class="form-control form-control-sm modal-input-sh-nic" placeholder="">
+              
+            <span class="req-message">Valid NIC required</span>
+            <span *ngIf="shAlreadyExistMessage" class="already-exist-message">{{ shAlreadyExistMessage }}</span>
+            <button class="btn btn-success nic-continue-button">continue</button>
+          </div>
+
+
+          
+          <div class="form-group col-md-6" [hidden]="sh.type == 'local' ">
+
+            <label class="col-form-label col-form-label-sm">Passport No.
+              <span class="req">*</span>
+            </label>
+
+            <input  (change)="isShAlreadyExistAction('foreign')"  (input)="validateShareHolder()" [(ngModel)]="sh.passport" class="form-control form-control-sm modal-input-sh-passport"
+              placeholder="">
+              <span *ngIf="shAlreadyExistMessage" class="already-exist-message">{{ shAlreadyExistMessage }}</span>
+          </div>
+
+        </div>
+
+
+
+        <div [hidden]="!shNicLoaded" class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+          <div class="form-row">
+
+            <div class="form-group col-md-2">
+
+              <label class="col-form-label col-form-label-sm">Title
+                <span class="req">*</span>
+              </label>
+              <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-sh-title"
+                [(ngModel)]="sh.title">
+                <option value="">Choose...</option>
+
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Miss">Miss</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Proff.">Proff.</option>
+                <option value="Rev.">Rev.</option>
+
+              </select>
+
+            </div>
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">First Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateShareHolder()" [(ngModel)]="sh.firstname" class="form-control form-control-sm modal-input-share-firstname"
+                placeholder="">
+            </div>
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">Last Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateShareHolder()" [(ngModel)]="sh.lastname" class="form-control form-control-sm modal-input-share-lastname"
+                placeholder="">
+            </div>
+          </div>
+
+
+
+          <div class="form-row" [hidden]="sh.type != 'foreign' ">
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Country
+                <span class="req">*</span>
+              </label>
+              <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-sh-country"
+                [(ngModel)]="sh.country">
+                <option value="">Choose...</option>
+                <option *ngFor="let country of countries" value="{{country.name}}">{{country.name}}</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="address-block local-address" *ngIf="sh.type == 'local' ">
+
+            <p style="font-size: 15px;font-weight: bold;">Address</p>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Province
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-sh-province"
+                  [(ngModel)]="sh.province">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                </select>
+
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">District
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-sh-district"
+                  [(ngModel)]="sh.district">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">city
+                  <span class="req">*</span>
+                </label>
+
+                <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-sh-city"
+                  [(ngModel)]="sh.city">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.localAddress1" class="form-control form-control-sm modal-input-sh-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Address 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.localAddress2" class="form-control form-control-sm modal-input-sh-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-2">
+
+                <label class="col-form-label col-form-label-sm">Postal code
+                  <span class="req">*</span>
+                </label>
+
+                <input maxlength="10" (input)="validateDirector()" [(ngModel)]="sh.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                  placeholder="">
+              </div>
+
+
+            </div>
+
+          </div>
+
+          <div class="address-block local-address" *ngIf="sh.type == 'foreign' ">
+
+            <p style="font-size: 15px;font-weight: bold;">Foreign Address
+
+            </p>
+            <div style="clear:both"></div>
+
+            <div class="form-row">
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address Line 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.localAddress1" class="form-control form-control-sm  modal-input-sh-for-address1"
+                  placeholder="">
+              </div>
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address Line 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.localAddress2" class="form-control form-control-sm  modal-input-sh-for-address2"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">City
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.city" class="form-control form-control-sm  modal-input-sh-for-city"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">State/Region/Province
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.province" class="form-control form-control-sm  modal-input-sh-for-province"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Postal/ZIP code
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateShareHolder()" [(ngModel)]="sh.postcode" class="form-control form-control-sm modal-input-sh-postcode"
+                  placeholder="">
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Residential Phone No.
+                <span class="noreq">*</span>
+              </label>
+
+              <input maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="sh.phone" class="form-control form-control-sm modal-input-share-phone"
+                placeholder="">
+              <span class="req-message">Please enter 10 digits phone number</span>
+            </div>
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Mobile
+                <span class="req">*</span>
+              </label>
+
+              <input maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="sh.mobile" class="form-control form-control-sm modal-input-share-mobile"
+                placeholder="">
+              <span class="req-message">10 Digits mobile number requried</span>
+            </div>
+
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm modal-input-share-email">Email Address
+                <span class="req">*</span>
+              </label>
+
+              <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" [(ngModel)]="sh.email" class="form-control form-control-sm"
+                placeholder="">
+              <span class="req-message">Valid email required</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Date of Appointment
+                <span class="noreq">*</span>
+              </label>
+
+              <input (change)="validateOppDate('add','sh')" [(ngModel)]="sh.date" type="date" class="form-control form-control-sm modal-input-share-oppointment"
+                placeholder="">
+            </div>
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Occupation
+                <span class="noreq">*</span>
+              </label>
+
+              <input [(ngModel)]="sh.occupation" class="form-control form-control-sm modal-input-share-occupation"
+                placeholder="">
+            </div>
+          </div>
+
+          <br />
+
+
+          <div class="create-other-user-block">
+
+
+
+            <div class="form-row">
+
+
+              <div class="form-group col-md-12">
+
+                <div class="form-group col-md-5">
+                  <input (change)="checkSh()" type="radio" id="shShareType-single" class="custom-control-input"
+                    [(ngModel)]="sh.shareType" value="single" name="sh_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="shShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="sh.shareType =='single'">
+
+                    <label class="col-form-label col-form-label-sm">No of Shares
+                      <span class="req">*</span>
+                    </label>
+
+                    <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                      (input)="validateShareHolder()" [(ngModel)]="sh.noOfShares" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                      placeholder="">
+
+                  </div>
+                </div>
+                <div class="form-group col-md-10">
+                  <input (change)="checkSh()" type="radio" id="shShareType-core" class="custom-control-input" [(ngModel)]="sh.shareType"
+                    value="core" name="director_sharetype">
+                  <label style="font-size:14px;" class="custom-control-label" for="shShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
+                    Share</label>
+
+                  <div class="form-group col-md-12" *ngIf="sh.shareType =='core'" style="background: #eee;
+                        padding: 10px;">
+
+                    <p style="font-weight: bold;
+                        border-bottom: 1px solid #999">Please select your
+                      share group</p>
+                    <select (change)="validateShareHolder()" class="form-control form-control-sm modal-input-director-sharegroup"
+                      [(ngModel)]="sh.coreGroupSelected">
+                      <option value="">Choose...</option>
+                      <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
+                    </select>
+
+                    <br />
+                    <p style="font-weight: bold;
+                            border-bottom: 1px solid #999"> Not Found your
+                      core share group ? Add one.</p>
+
+                    <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
+
+                      <div class="form-group col-md-6">
+
+                        <label class="col-form-label col-form-label-sm">Group Name</label>
+                        <input [(ngModel)]="sh.coreShareGroupName" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label col-form-label-sm">Core Share Value</label>
+                        <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                          (input)="validateShareHolder()" [(ngModel)]="sh.noOfShares" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
+                          placeholder="">
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+       
+
+
+
+
+
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end">
+        <!--<div class="custom-control custom-checkbox my-1 mr-sm-2">
+          <input [checked]="shareHolderToDirector" type="checkbox" id="shareHolderToDirector" class="custom-control-input" [(ngModel)]="shareHolderToDirector">
+          <label style="color: #f35b3f !important;font-size: 14px;" class="custom-control-label" for="shareHolderToDirector">Make this shareholder as a director</label>
+        </div>-->
+        <button style="background-color: #bbb!important;" (click)="resetShRecord()" type="button" mdbBtn color="secondary"
+          class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
+        <button [disabled]="!validSh" (click)="saveShareHolderRecord()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-share add-new-stakeholder"
+          mdbWavesEffect>ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="payment-success-wrapper" *ngIf="paymentSuccess">
+
+  <div class="payment-success-body">
+
+      <div class="header">
+
+          <h2>Payment Status</h2>
+       </div>
+ 
+       <div class="body">
+         <p>You have successfully paid</p>
+       </div>
+ 
+       <div class="footer">
+         <button class="btn btn-success" (click)="payAction()">OK</button>
+       </div>
+  </div>
+
+
+      
+</div>

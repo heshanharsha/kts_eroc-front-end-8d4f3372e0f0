@@ -1,0 +1,147 @@
+@import "theme-veriable";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: $background-color $im;
+}
+
+.seperate {
+  flex: 1 1 auto;
+}
+.black-overlay {
+  position: fixed !important;
+}
+
+.navbar {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+html,
+body,
+header,
+.view {
+  height: 100%;
+}
+
+@media (max-width: 740px) {
+
+  html,
+  body,
+  header,
+  .view {
+    height: 1000px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+
+  html,
+  body,
+  header,
+  .view {
+    height: 650px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+  .navbar:not(.top-nav-collapse) {
+    background: #1C2331 !important;
+  }
+}
+
+.force-overflow {
+  min-height: 450px;
+}
+
+*:focus {
+  outline: none;
+}
+
+h2 {
+  color: $secondary;
+}
+
+label {
+  color: $primary;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  border-radius: 20%;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $darkBlue;
+  box-shadow: inset 0 0 6px $darkBlue;
+}
+
+.btn {
+  box-shadow: 0 0px 0px 0;
+}
+
+.btn-mr {
+  margin-right: 26px $im;
+}
+
+.btn-mr0 {
+  margin: 0px $im;
+}
+
+.btn-blur {
+  border: 1px solid $primary $im;
+  color: $secondary $im;
+  font-size: 13px $im;
+  font-weight: 700 $im;
+  // background: $primary $im;
+  border-radius: 2px;
+  padding: 5px 20px;
+
+  &:hover {
+    text-decoration: none;
+    box-shadow: 0 0 0 0;
+  }
+}
+
+.files-container {
+  padding-top: 0rem $im;
+  border: 1px dotted $im;
+
+  .replace-button {
+    top: 20px;
+    left: 8px;
+  }
+
+  .delete-button {
+    left: 10px;
+    bottom: 10px;
+  }
+}
+
+.mat-card {
+  padding: 0px 16px $im;
+  background: transparent $im;
+  button {
+    display: none $im;
+  }
+}
+
+.mat-card:not([class*="mat-elevation-z"]) {
+  box-shadow: none $im;
+}
+
+.mat-raised-button:not([class*="mat-elevation-z"]) {
+  display: none $im;
+}
+
+.btn-primary{
+  background: $secondary $im;
+  color: $white;
+}

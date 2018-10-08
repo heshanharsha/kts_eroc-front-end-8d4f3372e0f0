@@ -1,0 +1,160 @@
+<section>
+  <div class="row mb-5">
+    <div class="col-xl-12">
+      <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+        <div class="dashboard-box">
+          <ul class="dashboard-box-list">
+            <li>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="job-listing">
+                    <div class="job-listing-details">
+                      <a href="#" class="job-listing-company-logo">
+                        <img src="assets/images/icon/company-logo-05.png" alt>
+                      </a>
+                      <div class="job-listing-description">
+                        <h3 class="job-listing-title">
+                          <strong>
+                            <a>
+                              {{ name.name | uppercase }} {{ name.postfix | uppercase }}
+                            </a>
+                          </strong>
+                        </h3>
+                        <div class="job-listing-footer">
+                          <ul>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-business"></i>
+                                {{ name.id }}
+                              </small>
+                            </li>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-access-time"></i>
+                                Date : {{ name.created_at | date:'yyyy-MM-dd' }} Time : {{ name.created_at |
+                                date:'shortTime'
+                                }}
+                              </small>
+                            </li>
+                          </ul>
+                        </div>
+                        <small>
+                          <strong>Address :</strong>
+                          {{ name.address1 }}, {{ name.address2 }}, {{ name.city }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <small for="staticEmail" class="col-sm-2">Company Name </small>
+                    <small for="staticEmail" class="col-sm-1">: </small>
+                    <div class="col-sm-9">
+                      <input type="text" (click)="model.show()" id="orangeForm-company-name" formControlName="companyName"
+                        placeholder="Company Name" value="" class="form-control form-control-sm">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <small for="staticEmail" class="col-sm-2">Sinhala Name</small>
+                    <small for="staticEmail" class="col-sm-1">: </small>
+                    <div class="col-sm-9">
+                      <input type="text" id="orangeForm-sinhala-name" formControlName="sinhalaName" placeholder="Sinhala Name"
+                        class="form-control form-control-sm">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <small for="staticEmail" class="col-sm-2">Tamil Name</small>
+                    <small for="staticEmail" class="col-sm-1">: </small>
+                    <div class="col-sm-9">
+                      <input type="text" id="orangeForm-tamil-name" formControlName="tamilName" placeholder="Tamil Name"
+                        class="form-control form-control-sm">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <small for="staticAbbreviations" class="col-sm-2">abbreviations </small>
+                    <small for="staticEmail" class="col-sm-1">: </small>
+                    <div class="col-sm-9">
+                      <textarea type="text" id="orangeForm-abbreviations" formControlName="abbreviations" placeholder="Abbreviations"
+                        class="form-control form-control-sm"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="dashboard-box">
+          <ul class="dashboard-box-list">
+            <li>
+              <div class="col-md-12">
+                <h3>Attachments</h3>
+              </div>
+              <div class="row">
+                <div class="col-md-10">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width':  '100%' }"></div>
+                </div>
+                <div class="col-md-2">
+                  <span>100</span>
+                </div>
+              </div>
+              <div class="mt-3 mb-5">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th width="35%">Title</th>
+                      <th width="35%">Comment</th>
+                      <th width="20%" style="text-align: center">Actions</th>
+                      <th width="10%" style="text-align: center">File</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let rDoc of this.reqDocument">
+                      <td>
+                        <span>{{ rDoc.name }}</span></td>
+                      <td>
+                        <span>{{ rDoc.comments }}</span>
+                      </td>
+                      <td>
+                        <div class="float-right">
+                          <button type="button" (click)="uploadbtn.click()" class="button mr-2 button-sm"><i class="fas fa-cloud-upload-alt"></i>
+                            Upload</button>
+                          <input type="file" class="upload-btn-wrapper" #uploadbtn name="re_{{ rDoc.id }}" id="{{ rDoc.id }}"
+                            (change)="upload($event.target.files, rDoc.id)">
+                        </div>
+                      </td>
+                      <td>
+                        <a><img src="assets/images/icon/PDF.png" class="ml-3" width="25px" alt="PDF"></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="dashboard-box mb-5">
+          <ul class="dashboard-box-list">
+            <li>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="submit" class="button button-sliding-icon ripple-effect">
+                    save
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<app-name-check-name-with-re-submite #model (getName)="ngBind($event)"></app-name-check-name-with-re-submite>

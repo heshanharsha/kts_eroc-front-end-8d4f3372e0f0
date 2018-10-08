@@ -1,0 +1,56 @@
+<form class="mb-5">
+  <div *ngFor="let doc of docs">
+    <h5>
+      <small>{{ doc.description }}</small>
+    </h5>
+    <hr>
+    <div class="form-group row" *ngFor="let field of doc.fields; let i = index;">
+      <small class="col-sm-3 mt-2">{{ field.name }}</small>
+      <div class="col-sm-2 mt-2">
+        <button class="upload-btn" [disabled]="percentDone[field.id] <= 100" (click)="uploadbtn.click()">Upload</button>
+        <input id="file-{{ i + 1 }}" class="upload-btn-wrapper" #uploadbtn type="file" accept=".pdf"
+          data-min-file-count="1" (change)="upload($event.target.files,field.id)">
+      </div>
+      <div class="col-sm-1 mt-2">
+        <span class="text text-primary" *ngIf="percentDone[field.id] !== undefined">
+          <b>{{ percentDone[field.id] + '%' }}</b>
+        </span>
+      </div>
+      <div class="col-sm-5 mt-2" *ngIf="percentDone[field.id] !== 100">
+        <div class="progress" style="margin-top: 8px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+            aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': percentDone[field.id] + '%' }"></div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-2" *ngIf="percentDone[field.id] === 100">
+        <div class="progress" style="margin-top: 8px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+            aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': percentDone[field.id] + '%' }"></div>
+        </div>
+      </div>
+      <div class="col-sm-3" *ngIf="percentDone[field.id] === 100">
+        <div class="row">
+          <div class="col mt-2">
+            <div class="float-right">
+              <a (click)="ngOnDownload(fileToken[field.id])"><img src="assets/images/icon/PDF.png" alt="PDF" srcset=""
+                  width="30"></a>
+            </div>
+          </div>
+          <div class="col mt-2">
+            <div class="float-right">
+              <a (click)="ngOnDestroy(fileToken[field.id],field.id)" class="btn btn-sm btn-danger" title="Remove Candidate"
+                data-tippy-placement="top">
+                <i class="icon-feather-trash-2"></i> Delete
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="float-right">
+    <button  class="btn btn-blur btn-mr0 nav-link light-orenge-text" type="submit" mdbWavesEffect  (click)="onSubmit()">Next</button>
+  </div>
+</form>
+
