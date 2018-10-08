@@ -6,7 +6,7 @@
         <div class="directory-searcher">
           <form [formGroup]="formGroup">
             <div class="row">
-              <div class="col-3 field" *ngIf="Auth.AuthGuard()">
+              <!-- <div class="col-3 field" *ngIf="Auth.AuthGuard()">
                 <div>
                   <select class="shadow_select form-control custom-select" formControlName="companyType">
                     <option *ngFor="let companyType of companyTypes" (click)="getSubCatogory(companyType.id)" [value]="companyType.id">
@@ -14,7 +14,7 @@
                     </option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="col-5 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
                 <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
                   (keydown.enter)="ckSearch()" placeholder="Search Company Name " aria-label="Search">
@@ -23,7 +23,7 @@
                 <input type="text" name="search" style="text-transform:uppercase" formControlName="search" (keydown)="ckPageZero()"
                   (keydown.enter)="ckSearch()" placeholder="Search Company Name" aria-label="Search">
               </div>
-              <div class="col-2 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
+              <!-- <div class="col-2 field" *ngIf="Auth.AuthGuard() && subCatogorys?.length > 0">
                 <div class="mt-1 mr-1">
                   <select class="shadow_select form-control custom-select" formControlName="postfix">
                     <option *ngFor="let subCatogory of subCatogorys" [value]="subCatogory.postfix">
@@ -31,7 +31,7 @@
                     </option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="col-1 field">
                 <button type="button" class="clear-button" mdbTooltip="Clean" (click)="this.Clean();" mdbWavesEffect>
                   <span>
