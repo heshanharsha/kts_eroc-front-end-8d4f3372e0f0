@@ -34,6 +34,7 @@ import { RegisterSecretaryPvtComponent } from './components/private-layout/dashb
 // society components
 import { SelectSocietyRegistrationTypeComponent } from './components/private-layout/dashboard/main-content/society/select-society-registration-type/select-society-registration-type.component';
 import { SocietyNameReservationComponent } from './components/private-layout/dashboard/main-content/society/society-name-reservation/society-name-reservation.component';
+import { NameWithAgreeReservationComponent } from './components/private-layout/dashboard/main-content/society/name-with-agree-reservation/name-with-agree-reservation.component';
 
 
 
@@ -117,7 +118,8 @@ const routes: Routes = [
         }
       },
 
-      // society dashboard routes
+      
+      /*-------------------society dashboard routes------------------*/
       {
         path: 'selectregistersociety',
         component: SelectSocietyRegistrationTypeComponent,
@@ -129,6 +131,9 @@ const routes: Routes = [
         component: SocietyNameReservationComponent,
         canActivate: [AuthGuard],
       },
+
+      
+      /*-------------------society dashboard routes------------------*/
 
 
       
@@ -176,6 +181,11 @@ const routes: Routes = [
 
     ]
 
+  },
+  {
+    path: 'namewithagreesociety',
+    component: NameWithAgreeReservationComponent,
+    canActivate: [AuthGuard],
   },
 
   /*-------------------reavihansa------------------*/

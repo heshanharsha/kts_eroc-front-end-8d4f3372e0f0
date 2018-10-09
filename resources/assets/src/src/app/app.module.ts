@@ -73,6 +73,7 @@ import { RegisterSecretaryFirmComponent } from './components/private-layout/dash
 import { RegisterSecretaryPvtComponent } from './components/private-layout/dashboard/main-content/secretary/register-secretary-pvt/register-secretary-pvt.component';
 import { SelectSocietyRegistrationTypeComponent } from './components/private-layout/dashboard/main-content/society/select-society-registration-type/select-society-registration-type.component';
 import { SocietyNameReservationComponent } from './components/private-layout/dashboard/main-content/society/society-name-reservation/society-name-reservation.component';
+import { NameWithAgreeReservationComponent } from './components/private-layout/dashboard/main-content/society/name-with-agree-reservation/name-with-agree-reservation.component';
 
 
 
@@ -122,6 +123,7 @@ export function init_app(appLoadService: AppLoadService) {
     RegisterSecretaryPvtComponent,
     SelectSocietyRegistrationTypeComponent,
     SocietyNameReservationComponent,
+    NameWithAgreeReservationComponent,
 
 
   ],

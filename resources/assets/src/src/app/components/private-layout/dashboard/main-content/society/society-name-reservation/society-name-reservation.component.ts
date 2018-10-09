@@ -206,7 +206,7 @@ export class SocietyNameReservationComponent implements OnInit {
       comType: this.comType
     };
 
-    this.router.navigate(['/reservation']);
+    this.router.navigate(['namewithagreesociety']);
   }
 
 }
