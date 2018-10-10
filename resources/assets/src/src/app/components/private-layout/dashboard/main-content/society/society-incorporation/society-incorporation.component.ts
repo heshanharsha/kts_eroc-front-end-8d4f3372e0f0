@@ -5,12 +5,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SecretaryService } from '../../../../../../http/services/secretary.service';
 import { HelperService } from '../../../../../../http/shared/helper.service';
 import { DataService } from '../../../../../../storage/data.service';
-import { ISecretaryData, ISecretaryWorkHistoryData } from '../../../../../../http/models/secretary.model';
+import {  ISecretaryWorkHistoryData } from '../../../../../../http/models/secretary.model';
+import { ISocietyData } from '../../../../../../http/models/society.model';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IncorporationService } from '../../../../../../http/services/incorporation.service';
 import { APIConnection } from '../../../../../../http/services/connections/APIConnection';
+import { SocietyService } from '../../../../../../http/services/society.service';
 
 
 @Component({
@@ -30,12 +32,15 @@ export class SocietyIncorporationComponent implements OnInit {
   nic: string;
   secTitleId: string;
   nicStatus: string;
+  
 
 
   url: APIConnection = new APIConnection();
 
   //secretary details object to register as a natural person...
-  secretaryDetails: ISecretaryData = { registeredUser: false, nic: '', loggedInUser: '', id: 0, title: '', firstname: '', lastname: '', othername: '', residentialLocalAddress1: '', residentialLocalAddress2: '', residentialProvince: '', residentialDistrict: '', residentialCity: '', businessName: '', businessLocalAddress1: '', businessLocalAddress2: '', businessProvince: '', businessDistrict: '', businessCity: '', subClauseQualified: '', pQualification: '', eQualification: '', wExperience: '', isUnsoundMind: '', isInsolventOrBankrupt: '', reason1: '', isCompetentCourt: '', reason2: '', workHis: '', };
+  societyDetails: ISocietyData = { name_of_society: null,id: null,place_of_office: null,whole_of_the_objects: null,funds: null,condition_under_which_any: null,
+    terms_of_admission: null,fines_and_foreitures: null,mode_of_holding_meetings: null,manner_of_rules: null,investment_of_funds: null,
+    keeping_accounts: null,audit_of_the_accounts: null,annual_returns: null,number_of_members: null,inspection_of_the_books: null,disputes_manner: null,case_of_society: null};
   secretaryWorkHistory: ISecretaryWorkHistoryData = { id: 0, companyName: '', position: '', from: '', to: '', };
 
   enableStep1Submission = false;
@@ -125,13 +130,13 @@ export class SocietyIncorporationComponent implements OnInit {
   ];
 
 
+  hideAndShow = false;
 
-
-  constructor(public data: DataService, private helper: HelperService, private secretaryService: SecretaryService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) {
+  constructor(public data: DataService, private helper: HelperService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) {
 
 
     this.nic = route.snapshot.paramMap.get('nic');
-    this.loadSecretaryData(this.nic);
+    //this.loadSecretaryData(this.nic);
 
     this.loggedinUserEmail = localStorage.getItem('currentUser');
     this.loggedinUserEmail = this.loggedinUserEmail.replace(/^"(.*)"$/, '$1');
@@ -147,9 +152,13 @@ export class SocietyIncorporationComponent implements OnInit {
   ngOnInit() {
     document.getElementById('div1').style.display = 'none';
     document.getElementById('div2').style.display = 'none';
+    document.getElementById('div3').style.display = 'none';
 
   }
-
+  
+  ShowAndHide(){
+    this.hideAndShow = !this.hideAndShow;
+  }
 
 
 
@@ -166,6 +175,12 @@ export class SocietyIncorporationComponent implements OnInit {
   }
   show4() {
     document.getElementById('div2').style.display = 'block';
+  }
+  show5() {
+    document.getElementById('div3').style.display = 'block';
+  }
+  show6() {
+    document.getElementById('div3').style.display = 'none';
   }
   /*.....above show () functions for the radio buttons....*/
 
@@ -195,92 +210,74 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
 
-  loadSecretaryData(nic) {
-    const data = {
-      nic: nic,
-    };
-    // load secretary data from the server
-    this.secretaryService.secretaryData(data)
-      .subscribe(
-        req => {
-          this.secretaryDetails.title = req['data']['secretaryTitle'];
-          this.secretaryDetails.firstname = req['data']['secretary']['first_name'];
-          this.secretaryDetails.lastname = req['data']['secretary']['last_name'];
-          this.secretaryDetails.othername = req['data']['secretary']['other_name'];
-          this.secretaryDetails.residentialLocalAddress1 = req['data']['secretaryAddress']['address1'];
-          this.secretaryDetails.residentialLocalAddress2 = req['data']['secretaryAddress']['address2'];
-          this.secretaryDetails.residentialCity = req['data']['secretaryAddress']['city'];
-          this.secretaryDetails.residentialDistrict = req['data']['secretaryAddress']['district'];
-          this.secretaryDetails.residentialProvince = req['data']['secretaryAddress']['province'];
-          this.secretaryDetails.registeredUser = req['user'];
-          this.nicStatus = req['message'];
+  // loadSecretaryData(nic) {
+  //   const data = {
+  //     nic: nic,
+  //   };
+    
+  //   // load secretary data from the server
+  //   this.secretaryService.secretaryData(data)
+  //     .subscribe(
+  //       req => {
+  //         this.societyDetails.name_of_society = req['data']['secretaryTitle'];
+  //         this.societyDetails.place_of_office = req['data']['secretary']['first_name'];
+  //         this.societyDetails.whole_of_the_objects = req['data']['secretary']['last_name'];
+  //         this.societyDetails.funds = req['data']['secretary']['other_name'];
+  //         this.societyDetails.terms_of_admission = req['data']['secretaryAddress']['address1'];
+  //         this.societyDetails.condition_under_which_any = req['data']['secretaryAddress']['address2'];
+  //         this.societyDetails.fines_and_foreitures = req['data']['secretaryAddress']['city'];
+  //         this.societyDetails.mode_of_holding_meetings = req['data']['secretaryAddress']['district'];
+  //         this.societyDetails.manner_of_rules = req['data']['secretaryAddress']['province'];
+  //         this.societyDetails.investment_of_funds = req['user'];
+  //         this.societyDetails.audit_of_the_accounts = req['data']['secretaryAddress']['district'];
+  //         this.societyDetails.annual_returns = req['data']['secretaryAddress']['province'];
+  //         this.societyDetails.number_of_members = req['user'];
+  //         this.societyDetails.inspection_of_the_books = req['data']['secretaryAddress']['district'];
+  //         this.societyDetails.disputes_manner = req['data']['secretaryAddress']['province'];
+  //         this.societyDetails.case_of_society = req['user'];
+          
 
 
-          //console.log(this.nicStatus);
-          console.log(req['data']['secretaryTitle']);
+  //         //console.log(this.nicStatus);
+  //         console.log(req['data']['secretaryTitle']);
 
-          this.secretaryValidationStep1();
-        }
-      );
+  //         this.societyValidationStep1();
+  //       }
+  //     );
 
-  }
+  // }
 
   secretaryDataSubmit() {
 
-    if (this.secretaryDetails['isInsolventOrBankrupt'] === 'no') {
-      this.secretaryDetails['reason1'] = 'no'
-    }
-
-    if (this.secretaryDetails['isCompetentCourt'] === 'no') {
-      this.secretaryDetails['reason2'] = 'no'
-    }
-
-    if (this.secretaryDetails['title'] === 'Rev') {
-      this.secTitleId = '87'
-    } else if (this.secretaryDetails['title'] === 'Mr') {
-      this.secTitleId = '88'
-    } else if (this.secretaryDetails['title'] === 'Mrs') {
-      this.secTitleId = '89'
-    } else if (this.secretaryDetails['title'] === 'Miss') {
-      this.secTitleId = '90'
-    } else if (this.secretaryDetails['title'] === 'Dr') {
-      this.secTitleId = '91'
-    }
+  
+    
 
 
     const data = {
-      nic: this.nic,
-      loggedInUser: this.loggedinUserEmail,
-      registeredUser: this.secretaryDetails['registeredUser'],
-      id: this.secretaryDetails['id'],
-      title: this.secTitleId,
-      firstname: this.secretaryDetails['firstname'],
-      lastname: this.secretaryDetails['lastname'],
-      othername: this.secretaryDetails['othername'],
-      residentialLocalAddress1: this.secretaryDetails['residentialLocalAddress1'],
-      residentialLocalAddress2: this.secretaryDetails['residentialLocalAddress2'],
-      residentialProvince: this.secretaryDetails['residentialProvince'],
-      residentialDistrict: this.secretaryDetails['residentialDistrict'],
-      residentialCity: this.secretaryDetails['residentialCity'],
-      businessName: this.secretaryDetails['businessName'],
-      businessLocalAddress1: this.secretaryDetails['businessLocalAddress1'],
-      businessLocalAddress2: this.secretaryDetails['businessLocalAddress2'],
-      businessProvince: this.secretaryDetails['businessProvince'],
-      businessDistrict: this.secretaryDetails['businessDistrict'],
-      businessCity: this.secretaryDetails['businessCity'],
-      subClauseQualified: this.secretaryDetails['subClauseQualified'],
-      pQualification: this.secretaryDetails['pQualification'],
-      eQualification: this.secretaryDetails['eQualification'],
-      wExperience: this.secretaryDetails['wExperience'],
-      isUnsoundMind: this.secretaryDetails['isUnsoundMind'],
-      isInsolventOrBankrupt: this.secretaryDetails['isInsolventOrBankrupt'],
-      reason1: this.secretaryDetails['reason1'],
-      isCompetentCourt: this.secretaryDetails['isCompetentCourt'],
-      reason2: this.secretaryDetails['reason2'],
-      workHis: this.workHistory,
+      
+      
+      id: this.societyDetails['id'],
+      name_of_society: this.societyDetails['name_of_society'],
+      place_of_office: this.societyDetails['place_of_office'],
+      whole_of_the_objects: this.societyDetails['whole_of_the_objects'],
+      funds: this.societyDetails['funds'],
+      terms_of_admission: this.societyDetails['terms_of_admission'],
+      condition_under_which_any: this.societyDetails['condition_under_which_any'],
+      fines_and_foreitures: this.societyDetails['fines_and_foreitures'],
+      mode_of_holding_meetings: this.societyDetails['mode_of_holding_meetings'],
+      manner_of_rules: this.societyDetails['manner_of_rules'],
+      investment_of_funds: this.societyDetails['investment_of_funds'],
+      keeping_accounts: this.societyDetails['keeping_accounts'],
+      audit_of_the_accounts: this.societyDetails['audit_of_the_accounts'],
+      annual_returns: this.societyDetails['annual_returns'],
+      number_of_members: this.societyDetails['number_of_members'],
+      inspection_of_the_books: this.societyDetails['inspection_of_the_books'],
+      disputes_manner: this.societyDetails['disputes_manner'],
+      case_of_society: this.societyDetails['case_of_society'],
+      
     };
     console.log(data);
-    this.secretaryService.secretaryDataSubmit(data)
+    this.societyService.societyDataSubmit(data)
       .subscribe(
         req => {
           console.log(req['data']);
@@ -446,54 +443,29 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-
-
   /*-------------Validation functions----------------*/
 
-  secretaryValidationStep1() {
+  societyValidationStep1() {
     if (
-      this.secretaryDetails.title &&
-      this.secretaryDetails.firstname &&
-      this.secretaryDetails.lastname &&
-      //this.secretaryDetails.othername &&
-      this.secretaryDetails.residentialLocalAddress1 &&
-      this.secretaryDetails.residentialLocalAddress2 &&
-      this.secretaryDetails.residentialProvince &&
-      this.secretaryDetails.residentialCity &&
-      this.secretaryDetails.residentialDistrict &&
-      this.secretaryDetails.subClauseQualified
+      this.societyDetails.name_of_society &&
+      this.societyDetails.place_of_office &&
+      this.societyDetails.whole_of_the_objects &&
+      this.societyDetails.funds &&
+      this.societyDetails.terms_of_admission &&
+      this.societyDetails.condition_under_which_any &&
+      this.societyDetails.fines_and_foreitures &&
+      this.societyDetails.mode_of_holding_meetings &&
+      this.societyDetails.investment_of_funds &&
+      this.societyDetails.keeping_accounts &&
+      this.societyDetails.audit_of_the_accounts &&
+      this.societyDetails.annual_returns &&
+      this.societyDetails.number_of_members &&
+      this.societyDetails.inspection_of_the_books &&
+      this.societyDetails.disputes_manner 
+      //this.societyDetails.case_of_society 
     ) {
       this.enableStep1Submission = true;
-      if (this.secretaryDetails.businessName) {
-        if (this.secretaryDetails.businessLocalAddress1 &&
-          this.secretaryDetails.businessLocalAddress2 &&
-          this.secretaryDetails.businessProvince &&
-          this.secretaryDetails.businessDistrict &&
-          this.secretaryDetails.businessCity
-        ) {
-          this.enableStep1Submission = true;
-        } else {
-          this.enableStep1Submission = false;
-        }
-      } else {
-        if (this.secretaryDetails.businessLocalAddress1 &&
-          this.secretaryDetails.businessLocalAddress2 &&
-          this.secretaryDetails.businessProvince &&
-          this.secretaryDetails.businessDistrict &&
-          this.secretaryDetails.businessCity
-        ) {
-          this.enableStep1Submission = false;
-        } else {
-          this.enableStep1Submission = true;
-        }
-      }
+      
     } else {
       this.enableStep1Submission = false;
     }
@@ -503,64 +475,65 @@ export class SocietyIncorporationComponent implements OnInit {
 
 
 
-  secretaryValidationStep2() {
-    if (
-      this.secretaryDetails.pQualification &&
-      this.secretaryDetails.eQualification &&
-      this.secretaryDetails.wExperience &&
-      // (this.workHistory != null) &&
-      (typeof this.workHistory != "undefined" && this.workHistory != null && this.workHistory.length != null && this.workHistory.length > 0) &&//for check aray is not null
-      (this.secretaryDetails.isUnsoundMind === 'yes' || this.secretaryDetails.isUnsoundMind === 'no') &&
-      (this.secretaryDetails.isInsolventOrBankrupt === 'yes' || this.secretaryDetails.isInsolventOrBankrupt === 'no') &&
-      (this.secretaryDetails.isCompetentCourt === 'yes' || this.secretaryDetails.isCompetentCourt === 'no')
-    ) {
-      this.enableStep2Submission = true;
 
-      if (this.secretaryDetails.isInsolventOrBankrupt === 'yes') {
-        if (this.secretaryDetails.reason1) {
-          this.enableStep2Submission = true;
-          if (this.secretaryDetails.isCompetentCourt === 'yes') {
-            if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-              this.enableStep2Submission = true;
-            } else {
-              this.enableStep2Submission = false;
-            }
-          } else if (this.secretaryDetails.isCompetentCourt === 'no') {
-            if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-              this.enableStep2Submission = false;
-            } else {
-              this.enableStep2Submission = true;
-            }
-          }
-        } else {
-          this.enableStep2Submission = false;
-        }
+  // secretaryValidationStep2() {
+  //   if (
+  //     this.secretaryDetails.pQualification &&
+  //     this.secretaryDetails.eQualification &&
+  //     this.secretaryDetails.wExperience &&
+  //     // (this.workHistory != null) &&
+  //     (typeof this.workHistory != "undefined" && this.workHistory != null && this.workHistory.length != null && this.workHistory.length > 0) &&//for check aray is not null
+  //     (this.secretaryDetails.isUnsoundMind === 'yes' || this.secretaryDetails.isUnsoundMind === 'no') &&
+  //     (this.secretaryDetails.isInsolventOrBankrupt === 'yes' || this.secretaryDetails.isInsolventOrBankrupt === 'no') &&
+  //     (this.secretaryDetails.isCompetentCourt === 'yes' || this.secretaryDetails.isCompetentCourt === 'no')
+  //   ) {
+  //     this.enableStep2Submission = true;
 
-      } else if (this.secretaryDetails.isInsolventOrBankrupt === 'no') {
-        if (this.secretaryDetails.reason1) {
-          this.enableStep2Submission = false;
-        } else {
-          this.enableStep2Submission = true;
+  //     if (this.secretaryDetails.isInsolventOrBankrupt === 'yes') {
+  //       if (this.secretaryDetails.reason1) {
+  //         this.enableStep2Submission = true;
+  //         if (this.secretaryDetails.isCompetentCourt === 'yes') {
+  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
+  //             this.enableStep2Submission = true;
+  //           } else {
+  //             this.enableStep2Submission = false;
+  //           }
+  //         } else if (this.secretaryDetails.isCompetentCourt === 'no') {
+  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
+  //             this.enableStep2Submission = false;
+  //           } else {
+  //             this.enableStep2Submission = true;
+  //           }
+  //         }
+  //       } else {
+  //         this.enableStep2Submission = false;
+  //       }
 
-          if (this.secretaryDetails.isCompetentCourt === 'yes') {
-            if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-              this.enableStep2Submission = true;
-            } else {
-              this.enableStep2Submission = false;
-            }
-          } else if (this.secretaryDetails.isCompetentCourt === 'no') {
-            if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-              this.enableStep2Submission = false;
-            } else {
-              this.enableStep2Submission = true;
-            }
-          }
-        }
-      }
-    } else {
-      this.enableStep2Submission = false;
-    }
-  }
+  //     } else if (this.secretaryDetails.isInsolventOrBankrupt === 'no') {
+  //       if (this.secretaryDetails.reason1) {
+  //         this.enableStep2Submission = false;
+  //       } else {
+  //         this.enableStep2Submission = true;
+
+  //         if (this.secretaryDetails.isCompetentCourt === 'yes') {
+  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
+  //             this.enableStep2Submission = true;
+  //           } else {
+  //             this.enableStep2Submission = false;
+  //           }
+  //         } else if (this.secretaryDetails.isCompetentCourt === 'no') {
+  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
+  //             this.enableStep2Submission = false;
+  //           } else {
+  //             this.enableStep2Submission = true;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     this.enableStep2Submission = false;
+  //   }
+  // }
 
   //validate add work history modal...  
   secretaryValidationStep3() {
@@ -574,5 +547,6 @@ export class SocietyIncorporationComponent implements OnInit {
       this.enableWorkHistorySubmission = false;
     }
   }
+  
 
 }

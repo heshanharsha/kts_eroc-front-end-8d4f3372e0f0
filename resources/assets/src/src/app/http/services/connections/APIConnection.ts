@@ -55,7 +55,8 @@ export class APIConnection {
   _secretaryNaturalUploadedDelete: string;
   _secretaryGetDownloadUrl: string;
 
-
+/* ---------- thilan 20181010-----------*/
+_societyDataSubmit: string;
 
 
 
@@ -122,8 +123,8 @@ export class APIConnection {
     this._secretaryNaturalUploadedDelete = `${this._apiUrl}/api/v1/secretary-natural-delete-pdf`;
     this._secretaryGetDownloadUrl = `${this._apiUrl}/api/v1/secretary-view-document`;
 
-
-
+    /* ---------- thilan 20181010-----------*/
+    this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
 
 
   }
@@ -294,7 +295,10 @@ export class APIConnection {
     return this._secretaryGetDownloadUrl;
   }
 
-
+  /* ---------- thilan 20181010-----------*/
+  public getSocietyDataSubmit() {
+    return this._societyDataSubmit;
+  }
 
 
 

@@ -1,3 +1,21 @@
+<head>
+  <script type="text/javascript">
+    function showMe(box) {
+        
+        var chboxs = document.getElementsByName("c1");
+        var vis = "none";
+        for(var i=0;i<chboxs.length;i++) { 
+            if(chboxs[i].checked){
+             vis = "block";
+                break;
+            }
+        }
+        document.getElementById(box).style.display = vis;
+    
+    
+    }
+    </script>
+</head>
 <div class="clearfix">
 </div>
 
@@ -14,7 +32,7 @@
 
         <form role="form" method="post" class="f1">
 
-          <h3 style="text-align: center">secretary registration form (individual)</h3>
+          <h3 style="text-align: center">Society Regeistration Form</h3>
           <p style="text-align: center">Fill in all steps for completing registration process.</p>
           <div class="f1-steps">
             <div class="f1-progress">
@@ -36,42 +54,206 @@
 
             <div class="secretary personal details section">
 
-              <div class="form-group row">
-
+              
                 <!-- <div class="form-group col-md-2"><label class="col-form-label col-form-label-sm">Title
                     <span class="req">*</span></label><select class="form-control form-control-sm modal-input-director-title ng-pristine ng-valid ng-touched"
                     name="title" [(ngModel)]="secretaryDetails.title">
                     <option value="">Choose...</option>
                     <option *ngFor="let t of title" value="{{t.name}}">{{t.name}}</option>
                   </select></div> -->
-                <div class="form-group col-md-2"><label class="col-form-label col-form-label-sm">Title
+                <!-- <div class="form-group col-md-2"><label class="col-form-label col-form-label-sm">Title
                     <span class="req">*</span></label><select (change)="secretaryValidationStep1()" class="form-control form-control-sm modal-input-director-title ng-pristine ng-valid ng-touched"
                     name="title" [(ngModel)]="secretaryDetails.title">
                     <option value="">Choose...</option>
                     <option *ngFor="let t of title" value="{{ t.name }}" id="{{ t.id }}">{{ t.name }}</option>
-                  </select></div>
+                  </select></div> -->
 
-                <div class="form-group col-md-5"><label class="col-form-label col-form-label-sm">First Name(s)
+                <!-- <div class="form-group col-md-6"><label class="col-sm-3 col-form-label col-form-label-sm">The name of the society
                     <span class="req">*</span></label>
-                  <input (input)="secretaryValidationStep1()" pattern="[a-zA-Z ]*" class="form-control form-control-sm"
-                    required minlength="4" name="first_name" [(ngModel)]="secretaryDetails.firstname" placeholder="First Name">
-                  <span class="req-message">Valid name required</span>
+                  <input (input)="secretaryValidationStep1()" type="number" pattern="[a-zA-Z ]*" class="form-control form-control-sm"
+                    required minlength="4" name="first_name" [(ngModel)]="secretaryDetails.firstname" placeholder="">
+                  <span class="req-message">Number required</span>
 
 
+                </div> -->
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The name of the society
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="name_of_society" [(ngModel)]="societyDetails.name_of_society" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
                 </div>
 
-                <div class="form-group col-md-5"><label class="col-form-label col-form-label-sm">Sir Name
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The place of office of the society
                     <span class="req">*</span></label>
-                  <input (input)="secretaryValidationStep1()" pattern="[a-zA-Z ]*" class="form-control form-control-sm"
-                    required minlength="4" name="last_name" [(ngModel)]="secretaryDetails.lastname" placeholder="Sir Name">
-                  <span class="req-message">Valid name required</span>
-
-
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="place_of_office" [(ngModel)]="societyDetails.place_of_office" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
                 </div>
 
-              </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The whole of the objects for which the society is established
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="whole_of_the_objects" [(ngModel)]="societyDetails.whole_of_the_objects" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
 
-              <div class="form-group row">
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The purposes for which the funds of the society shall be applicable
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="funds" [(ngModel)]="societyDetails.funds" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The terms of admission of members
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="terms_of_admission" [(ngModel)]="societyDetails.terms_of_admission" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The conditions under which any member may become entitled to any benefit assured thereby
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="condition_under_which_any" [(ngModel)]="societyDetails.condition_under_which_any" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The fines and foreitures to be imposed on any member
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="fines_and_foreitures" [(ngModel)]="societyDetails.fines_and_foreitures" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The mode of holding meetings and fight of voting
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="mode_of_holding_meetings" [(ngModel)]="societyDetails.mode_of_holding_meetings" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The manner of making, altering or rescinding rules
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="manner_of_rules" [(ngModel)]="societyDetails.manner_of_rules" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The appointment and removal of a committee of management (by whatever name called) of a treasurer and other officers and of trustees
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="appointment_and_removal_committee" [(ngModel)]="societyDetails.appointment_and_removal_committee" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The investment of the funds
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="investment_of_funds" [(ngModel)]="societyDetails.investment_of_funds" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The keeping of the accounts
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="keeping_accounts" [(ngModel)]="societyDetails.keeping_accounts" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The audit of the accounts once a year at least
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="audit_of_the_accounts" [(ngModel)]="societyDetails.audit_of_the_accounts" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">Annual returns to the registrar of the receipts, funds, effects and expenditure
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="annual_returns" [(ngModel)]="societyDetails.annual_returns" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The number of members of the society
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="number_of_members" [(ngModel)]="societyDetails.number_of_members" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The inspection of the books of the society by every person having an interest in the funds of the society
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="inspection_of_the_books" [(ngModel)]="societyDetails.inspection_of_the_books" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">The manner in which disputes between the society and any of its members, or any person claiming through a member of under the rules shall be settled
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2">
+                    <input (input)="societyValidationStep1()" type="number" pattern="^[0-9]*$" class="form-control form-control-sm"
+                    required minlength="4" name="disputes_manner" [(ngModel)]="societyDetails.disputes_manner" placeholder="">
+                  <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-8 col-form-label col-form-label-sm">In the case of a society with branches, the composition of control body, and the conditions under which a branch may code from the society
+                    <span class="req">*</span></label>
+                  <div class="col-sm-2" id="div3"  *ngIf="hideAndShow">
+                        <input type="number" pattern="^[0-9]+$" class="form-control form-control-sm"
+                        required minlength="4" name="case_of_society" [(ngModel)]="societyDetails.case_of_society" placeholder="">
+                      <span class="req-message">Number required</span>
+                  </div>
+                </div>
+                <div class="form-group row">           
+                  <label class="col-sm-2 col-form-label col-form-label-sm"><input type="radio"  (change)="societyValidationStep1()" name="c1" (click)="ShowAndHide()">Applicable
+                    </label>
+                    <label class="col-sm-2 col-form-label col-form-label-sm"><input type="radio" checked (change)="societyValidationStep1()" name="c1" (click)="ShowAndHide()">Not applicable
+                    </label>
+                </div>
+
+              
+
+              
+
+              <!-- <div class="form-group row">
                 <label f class="col-sm-3 col-form-label col-form-label-sm">Other Names
                 </label>
                 <div class="col-sm-12">
@@ -82,11 +264,11 @@
               </div>
 
               <br>
-              <hr width="100%" colour="#000000">
+              <hr width="100%" colour="#000000"> -->
 
 
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-12 col-form-label col-form-label-sm">Residential Address
                   <span class="req">*</span>
                 </label>
@@ -103,8 +285,8 @@
 
                 </div>
 
-              </div>
-              <div class="form-group row">
+              </div> -->
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> Province
                   <span class="req">*</span>
                 </label>
@@ -116,9 +298,9 @@
 
                   </select>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> District
                   <span class="req">*</span>
                 </label>
@@ -129,9 +311,9 @@
                     <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
                   </select>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> City
                   <span class="req">*</span>
                 </label>
@@ -143,9 +325,9 @@
                   </select>
 
                 </div>
-              </div>
+              </div> -->
 
-              <br>
+              <!-- <br>
               <hr width="100%" colour="#000000">
 
               <div class="form-group row">
@@ -154,11 +336,11 @@
                 <div class="col-sm-12">
                   <input (input)="secretaryValidationStep1()" pattern="[a-zA-Z ]*" class="form-control form-control-sm"
                     name="business_name" [(ngModel)]="secretaryDetails.businessName" placeholder="Business Name">
-                  <!-- <span class="req-message">Valid name required</span> -->
+                  <span class="req-message">Valid name required</span>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-12 col-form-label col-form-label-sm">Business Address
 
                 </label>
@@ -172,8 +354,8 @@
 
                 </div>
 
-              </div>
-              <div class="form-group row">
+              </div> -->
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> Province
 
                 </label>
@@ -185,9 +367,9 @@
 
                   </select>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> District
 
                 </label>
@@ -198,9 +380,9 @@
                     <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
                   </select>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group row">
+              <!-- <div class="form-group row">
                 <label class="col-sm-3 col-form-label col-form-label-sm"> City
 
                 </label>
@@ -212,9 +394,9 @@
                   </select>
 
                 </div>
-              </div>
+              </div> -->
 
-              <br>
+              <!-- <br>
 
               <div class="form-group row">
                 <label f class="col-sm-12 col-form-label col-form-label-sm">Sub-clause of regulation 2(1)(b) under
@@ -226,7 +408,7 @@
                     required name="qualified" [(ngModel)]="secretaryDetails.subClauseQualified">
                   <span class="req-message">Valid reason required</span>
                 </div>
-              </div>
+              </div> -->
 
 
             </div>
@@ -248,7 +430,7 @@
           <fieldset [hidden]="stepOn != 1">
 
 
-            <div class="secretary other details section">
+            <!-- <div class="secretary other details section">
 
               <div class="form-group row">
                 <label f class="col-sm-3 col-form-label col-form-label-sm">Add Applicant Work History
@@ -294,12 +476,7 @@
                               style="float:right;" class="record-handler record-handler-remove">
                               <i class="fa fa-trash"></i>
                             </span>
-                            <!-- <span title="show details" style="float:right; margin:0 15px" class="record-handler">
-                              <i class="fa fa-pencil-alt"></i>
-                            </span>
-                            <span title="show details" style="float:right; margin:0 15px" class="record-handler">
-                              <i class="fa fa-eye"></i>
-                            </span> -->
+                            
 
                           </div>
                         </div>
@@ -452,7 +629,7 @@
 
 
 
-            </div>
+            </div> -->
 
 
 
