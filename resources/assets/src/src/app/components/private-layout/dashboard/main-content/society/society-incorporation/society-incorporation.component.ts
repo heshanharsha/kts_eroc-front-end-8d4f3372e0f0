@@ -21,6 +21,10 @@ import { SocietyService } from '../../../../../../http/services/society.service'
   styleUrls: ['./society-incorporation.component.scss']
 })
 export class SocietyIncorporationComponent implements OnInit {
+  name: string;
+  sinhalaName: string;
+  tamilname: string;
+  abreviations: string;
 
   @ViewChild('content') content: ElementRef;
 
@@ -33,6 +37,7 @@ export class SocietyIncorporationComponent implements OnInit {
   secTitleId: string;
   nicStatus: string;
   
+  
 
 
   url: APIConnection = new APIConnection();
@@ -40,7 +45,7 @@ export class SocietyIncorporationComponent implements OnInit {
   //secretary details object to register as a natural person...
   societyDetails: ISocietyData = { name_of_society: null,id: null,place_of_office: null,whole_of_the_objects: null,funds: null,condition_under_which_any: null,
     terms_of_admission: null,fines_and_foreitures: null,mode_of_holding_meetings: null,manner_of_rules: null,investment_of_funds: null,
-    keeping_accounts: null,audit_of_the_accounts: null,annual_returns: null,number_of_members: null,inspection_of_the_books: null,disputes_manner: null,case_of_society: null};
+    keeping_accounts: null,audit_of_the_accounts: null,annual_returns: null,number_of_members: null,inspection_of_the_books: null,disputes_manner: null,case_of_society: null,email: null,appointment_and_removal_committee: null};
   secretaryWorkHistory: ISecretaryWorkHistoryData = { id: 0, companyName: '', position: '', from: '', to: '', };
 
   enableStep1Submission = false;
@@ -81,8 +86,8 @@ export class SocietyIncorporationComponent implements OnInit {
   progress = {
 
     stepArr: [
-      { label: 'Personal Details', icon: 'fa fa-list-ol', status: 'active' },
-      { label: 'Qualifications', icon: 'fa fa-users', status: '' },
+      { label: 'Society Details', icon: 'fa fa-list-ol', status: 'active' },
+      { label: 'Members', icon: 'fa fa-users', status: '' },
       { label: 'Download Documents', icon: 'fa fa-download', status: '' },
       { label: 'Upload Documents', icon: 'fa fa-upload', status: '' },
       { label: 'Payments', icon: 'fa fa-money-bill-alt', status: '' },
@@ -153,6 +158,10 @@ export class SocietyIncorporationComponent implements OnInit {
     document.getElementById('div1').style.display = 'none';
     document.getElementById('div2').style.display = 'none';
     document.getElementById('div3').style.display = 'none';
+    this.name = this.data.storage1['name'];
+    this.sinhalaName = this.data.storage1['sinhalaName'];
+    this.tamilname = this.data.storage1['tamilname'];
+    this.abreviations = this.data.storage1['abreviations'];
 
   }
   
@@ -246,13 +255,18 @@ export class SocietyIncorporationComponent implements OnInit {
   //     );
 
   // }
-
-  secretaryDataSubmit() {
+  email ='';
+  
+  getEmail(){
+    
+    this.email = localStorage.getItem('currentUser');
+    this.email = this.email.replace(/^"(.*)"$/, '$1');
+    return this.email;
+  }
+  
+  societyDataSubmit() {
 
   
-    
-
-
     const data = {
       
       
@@ -272,24 +286,30 @@ export class SocietyIncorporationComponent implements OnInit {
       annual_returns: this.societyDetails['annual_returns'],
       number_of_members: this.societyDetails['number_of_members'],
       inspection_of_the_books: this.societyDetails['inspection_of_the_books'],
+      appointment_and_removal_committee: this.societyDetails['appointment_and_removal_committee'],
       disputes_manner: this.societyDetails['disputes_manner'],
       case_of_society: this.societyDetails['case_of_society'],
+      email: this.getEmail(),
+      name: this.data.storage1['name'],
+      sinhalaName: this.data.storage1['sinhalaName'],
+      tamilname: this.data.storage1['tamilname'],
+      abreviations: this.data.storage1['abreviations']
       
     };
+
     console.log(data);
     this.societyService.societyDataSubmit(data)
       .subscribe(
         req => {
-          console.log(req['data']);
-          console.log("sectretary added sucessfuly!!!");
-          this.downloadLink = req['data'];
-          this.secId = req['secId'];
-          this.changeProgressStatuses(2);
+          console.log(req['message']);
+          console.log("society added sucessfuly!!!");
+          this.changeProgressStatuses(1);
         },
         error => {
           console.log(error);
         }
       );
+
   }
 
 

@@ -18,5 +18,7 @@ export interface ISocietyData {
     inspection_of_the_books: number;
     disputes_manner: number;
     case_of_society: number;
+    email: string;
+    appointment_and_removal_committee: number;
     
 }

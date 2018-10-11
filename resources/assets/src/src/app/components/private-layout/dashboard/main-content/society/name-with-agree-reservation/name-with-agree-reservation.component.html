@@ -51,7 +51,7 @@
         </div>
         <hr>
         <div class="float-right">
-          <button class="btn btn-blur btn-mr0 nav-link light-orenge-text" type="submit" [routerLink]="['/dashboard/societyincorporation']" [disabled]="nameResForm.invalid || nameResForm.get('agreeCheck').value != true" mdbWavesEffect>Next</button>
+          <button class="btn btn-blur btn-mr0 nav-link light-orenge-text" type="submit"  (click)="onSubmit()" [disabled]="nameResForm.invalid || nameResForm.get('agreeCheck').value != true" mdbWavesEffect>Next</button>
         </div>
       </form>
       

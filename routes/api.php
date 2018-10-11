@@ -95,7 +95,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
     Route::post('/secretary-view-document', 'Secretary\SecretaryController@getDocumentSecretary')->name('secretary-view-document');
 
 
-
-   
+    /* ---------------------- thilan -------------------------*/       
+    Route::post('/society-data-submit', 'Society\SocietyController@saveSocietyData')->name('society-data-submit');       
     
 });
