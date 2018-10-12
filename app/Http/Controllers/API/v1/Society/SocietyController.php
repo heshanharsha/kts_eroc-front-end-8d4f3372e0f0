@@ -40,6 +40,7 @@ class SocietyController extends Controller
         $society->type_id = 1;
         $society->abbreviation_desc = $request->input('abreviations');
         $society->save();
+        $societyid = $society->id;
 
     //     $secAddressBusiness = new Address();
     //     $bAddress = $request->input('businessName');
@@ -181,7 +182,8 @@ class SocietyController extends Controller
 
         return response()->json([
             'message' => 'Sucess!!!',
-            'status' =>true
+            'status' =>true,
+            'socID' => $societyid,
         ], 200);
 
 

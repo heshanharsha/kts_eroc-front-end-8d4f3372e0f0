@@ -11,6 +11,7 @@ export class DataService {
   public regData: onIReg;
   public storage: any;
   public storage1: any;
+  public storage2: any;
   public file: File;
 
   // tslint:disable-next-line:member-ordering

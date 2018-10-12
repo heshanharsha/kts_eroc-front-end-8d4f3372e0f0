@@ -6,13 +6,14 @@ import { SecretaryService } from '../../../../../../http/services/secretary.serv
 import { HelperService } from '../../../../../../http/shared/helper.service';
 import { DataService } from '../../../../../../storage/data.service';
 import {  ISecretaryWorkHistoryData } from '../../../../../../http/models/secretary.model';
-import { ISocietyData } from '../../../../../../http/models/society.model';
+import { ISocietyData,IPresident,ISecretary,ITreasurer } from '../../../../../../http/models/society.model';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IncorporationService } from '../../../../../../http/services/incorporation.service';
 import { APIConnection } from '../../../../../../http/services/connections/APIConnection';
 import { SocietyService } from '../../../../../../http/services/society.service';
+import { IDirectors, IDirector, ISecretories, ISecretory, IShareHolders, IShareHolder } from '../../../../../../http/models/stakeholder.model';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class SocietyIncorporationComponent implements OnInit {
   sinhalaName: string;
   tamilname: string;
   abreviations: string;
+  
 
   @ViewChild('content') content: ElementRef;
 
@@ -74,8 +76,12 @@ export class SocietyIncorporationComponent implements OnInit {
   //application: object[] = new Array(1);
   //application = new Array(1); 
 
-
-
+  directorList: IDirectors = { directors: [] };
+  // tslint:disable-next-line:max-line-length
+  director: IDirector = { id: 0, showEditPaneForDirector: 0, type: 'local', title: '', firstname: '', lastname: '', province: '', district: '', city: '', localAddress1: '', localAddress2: '', postcode: '', nic: '', passport: '', country: '', share: 0, date: '', occupation: '', phone: '', mobile: '', email: '' };
+  president: IPresident = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  secretary: ISecretary = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };    
+  treasurer: ITreasurer = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
   stepOn = 0;
 
   totalPayment = 0;
@@ -304,6 +310,9 @@ export class SocietyIncorporationComponent implements OnInit {
           console.log(req['message']);
           console.log("society added sucessfuly!!!");
           this.changeProgressStatuses(1);
+          this.data.storage2 = {
+            societyid: req['socID'] 
+          };
         },
         error => {
           console.log(error);

@@ -22,3 +22,52 @@ export interface ISocietyData {
     appointment_and_removal_committee: number;
     
 }
+
+export interface IPresident {
+    id: number;
+    type: number;
+    firstname: string;
+    lastname: string;
+    province: string;
+    district: string;
+    city: string;
+    localAddress1: string;
+    localAddress2: string;
+    postcode: string;
+    nic: string;
+    designation_type: number;
+    contact_number: number;
+  
+  }
+  export interface ISecretary {
+    id: number;
+    type: number;
+    firstname: string;
+    lastname: string;
+    province: string;
+    district: string;
+    city: string;
+    localAddress1: string;
+    localAddress2: string;
+    postcode: string;
+    nic: string;
+    designation_type: number;
+    contact_number: number;
+  
+  }
+  export interface ITreasurer {
+    id: number;
+    type: number;
+    firstname: string;
+    lastname: string;
+    province: string;
+    district: string;
+    city: string;
+    localAddress1: string;
+    localAddress2: string;
+    postcode: string;
+    nic: string;
+    designation_type: number;
+    contact_number: number;
+  
+  }
