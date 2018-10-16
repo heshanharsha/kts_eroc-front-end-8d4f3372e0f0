@@ -2,11 +2,12 @@ import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as $ from 'jquery';
 import { SecretaryService } from '../../../../../../http/services/secretary.service';
 import { HelperService } from '../../../../../../http/shared/helper.service';
 import { DataService } from '../../../../../../storage/data.service';
 import {  ISecretaryWorkHistoryData } from '../../../../../../http/models/secretary.model';
-import { ISocietyData,IPresident,ISecretary,ITreasurer } from '../../../../../../http/models/society.model';
+import { ISocietyData,IPresident,ISecretary,ITreasurer,IPresidents } from '../../../../../../http/models/society.model';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -77,14 +78,34 @@ export class SocietyIncorporationComponent implements OnInit {
   //application = new Array(1); 
 
   directorList: IDirectors = { directors: [] };
+  
   // tslint:disable-next-line:max-line-length
   director: IDirector = { id: 0, showEditPaneForDirector: 0, type: 'local', title: '', firstname: '', lastname: '', province: '', district: '', city: '', localAddress1: '', localAddress2: '', postcode: '', nic: '', passport: '', country: '', share: 0, date: '', occupation: '', phone: '', mobile: '', email: '' };
-  president: IPresident = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
-  secretary: ISecretary = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };    
-  treasurer: ITreasurer = { id: 0, type: null,firstname: null, lastname: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  president: IPresident = { id: 0,showEditPaneForPresident: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  presidents = [];
+  presidentValidationMessage = '';
+  validPresident = false;
+  hideAndshowP = false;
+
+  secretary: ISecretary = { id: 0,showEditPaneForSecretary: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };    
+  secretaries = [];
+  secretaryValidationMessage = '';
+  validSecretary = false;
+  hideAndshowS = false;
+
+
+  treasurer: ITreasurer = { id: 0,showEditPaneForTreasurer: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  treasurers = [];
+  treasurerValidationMessage = '';
+  validTreasurer = false;
+  hideAndshowT = false;
+  
   stepOn = 0;
 
   totalPayment = 0;
+
+  
+
 
 
 
@@ -142,6 +163,7 @@ export class SocietyIncorporationComponent implements OnInit {
 
 
   hideAndShow = false;
+  
 
   constructor(public data: DataService, private helper: HelperService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) {
 
@@ -161,19 +183,52 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById('div1').style.display = 'none';
-    document.getElementById('div2').style.display = 'none';
-    document.getElementById('div3').style.display = 'none';
+    // document.getElementById('div1').style.display = 'none';
+    // document.getElementById('div2').style.display = 'none';
+    // document.getElementById('div3').style.display = 'none';
     this.name = this.data.storage1['name'];
     this.sinhalaName = this.data.storage1['sinhalaName'];
     this.tamilname = this.data.storage1['tamilname'];
     this.abreviations = this.data.storage1['abreviations'];
 
   }
+
+  ngAfterViewInit() {
+
+    $(document).on('click', '.record-handler-remove', function () {
+      // tslint:disable-next-line:prefer-const
+      let self = $(this);
+      self.parent().parent().remove();
+    });
+
+    $('button.add-director').on('click', function () {
+      $('#director-modal .close-modal-item').trigger('click');
+    });
+
+    $('button.add-sec').on('click', function () {
+      $('#sec-modal .close-modal-item').trigger('click');
+    });
+
+    $('button.add-tre').on('click', function () {
+      $('#tre-modal .close-modal-item').trigger('click');
+    });
+
+    $('.stakeholder-type-tab-wrapper .tab').on('click', function () {
+      // tslint:disable-next-line:prefer-const
+      let self = $(this);
+      $('.stakeholder-type-tab-wrapper .tab').removeClass('active');
+      $(this).addClass('active');
+
+    });
+
+
+  }
   
   ShowAndHide(){
     this.hideAndShow = !this.hideAndShow;
   }
+
+  
 
 
 
@@ -575,6 +630,235 @@ export class SocietyIncorporationComponent implements OnInit {
     } else {
       this.enableWorkHistorySubmission = false;
     }
+  }
+
+  validatePresident() {
+
+      if (!
+        (
+        this.president.nic && this.validateNIC(this.president.nic) &&
+        this.president.firstname &&
+        this.president.lastname &&
+        this.president.designation_soc &&
+        this.president.province &&
+        this.president.district &&
+        this.president.city &&
+        this.president.contact_number && this.phonenumber(this.president.contact_number) &&
+        this.president.localAddress1 &&
+        this.president.localAddress2 &&
+        this.president.postcode
+
+        
+
+      )
+
+
+      ) {
+
+
+        this.presidentValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+        this.validPresident = false;
+
+        return false;
+      } else {
+
+        this.presidentValidationMessage = '';
+        this.validPresident = true;
+        return true;
+
+      }
+
+
+  }
+  addPresidentDataToArray() {
+    const data = {
+      id: 0,
+      showEditPaneForPresident: 0,
+      firstname: this.president['firstname'],
+      lastname: this.president['lastname'],
+      designation_soc: this.president['designation_soc'],
+      province: this.president['province'],
+      district: this.president['district'],
+      city: this.president['city'],
+      localAddress1: this.president['localAddress1'],
+      localAddress2: this.president['localAddress2'],
+      postcode: this.president['postcode'],
+      nic: this.president['nic'],
+      contact_number: this.president['contact_number'],
+      designation_type: 1
+    };
+    this.presidents.push(data);
+    console.log(this.presidents);
+  }
+
+  validateSecretary() {
+
+    if (!
+      (
+      this.secretary.nic && this.validateNIC(this.secretary.nic) &&
+      this.secretary.firstname &&
+      this.secretary.lastname &&
+      this.secretary.designation_soc &&
+      this.secretary.province &&
+      this.secretary.district &&
+      this.secretary.city &&
+      this.secretary.contact_number && this.phonenumber(this.secretary.contact_number) &&
+      this.secretary.localAddress1 &&
+      this.secretary.localAddress2 &&
+      this.secretary.postcode
+
+      
+
+    )
+
+
+    ) {
+
+
+      this.secretaryValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+      this.validSecretary = false;
+
+      return false;
+    } else {
+
+      this.secretaryValidationMessage = '';
+      this.validSecretary = true;
+      return true;
+
+    }
+
+
+}
+
+addSecretaryDataToArray() {
+  const data = {
+    id: 0,
+    showEditPaneForSecretary: 0,
+    firstname: this.secretary['firstname'],
+    lastname: this.secretary['lastname'],
+    designation_soc: this.secretary['designation_soc'],
+    province: this.secretary['province'],
+    district: this.secretary['district'],
+    city: this.secretary['city'],
+    localAddress1: this.secretary['localAddress1'],
+    localAddress2: this.secretary['localAddress2'],
+    postcode: this.secretary['postcode'],
+    nic: this.secretary['nic'],
+    contact_number: this.secretary['contact_number'],
+    designation_type: 2
+  };
+  this.secretaries.push(data);
+  console.log(this.secretaries);
+}
+
+
+
+validateTreasurer() {
+
+  if (!
+    (
+    this.treasurer.nic && this.validateNIC(this.treasurer.nic) &&
+    this.treasurer.firstname &&
+    this.treasurer.lastname &&
+    this.treasurer.designation_soc &&
+    this.treasurer.province &&
+    this.treasurer.district &&
+    this.treasurer.city &&
+    this.treasurer.contact_number && this.phonenumber(this.treasurer.contact_number) &&
+    this.treasurer.localAddress1 &&
+    this.treasurer.localAddress2 &&
+    this.treasurer.postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    this.treasurerValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+    this.validTreasurer = false;
+
+    return false;
+  } else {
+
+    this.treasurerValidationMessage = '';
+    this.validTreasurer = true;
+    return true;
+
+  }
+
+
+}
+addTreasurerDataToArray() {
+const data = {
+  id: 0,
+  showEditPaneForTreasurer: 0,
+  firstname: this.president['firstname'],
+  lastname: this.president['lastname'],
+  designation_soc: this.president['designation_soc'],
+  province: this.president['province'],
+  district: this.president['district'],
+  city: this.president['city'],
+  localAddress1: this.president['localAddress1'],
+  localAddress2: this.president['localAddress2'],
+  postcode: this.president['postcode'],
+  nic: this.president['nic'],
+  contact_number: this.president['contact_number'],
+  designation_type: 1
+};
+this.treasurers.push(data);
+console.log(this.treasurers);
+}
+  private validateNIC(nic) {
+    if (!nic) {
+      return true;
+    }
+    // tslint:disable-next-line:prefer-const
+    let regx = /^[0-9]{9}[x|X|v|V]$/;
+    return nic.match(regx);
+  }
+
+  private phonenumber(inputtxt) {
+    if (!inputtxt) { return true; }
+    // tslint:disable-next-line:prefer-const
+    let phoneno = /^\d{10}$/;
+    return inputtxt.match(phoneno);
+  }
+  
+
+  
+
+  
+  showToggle(userType, index= 0 ) {
+
+    if (userType === 'president') {
+
+      // tslint:disable-next-line:prefer-const
+      this.presidents[index]['showEditPaneForPresident'] = index;
+      this.hideAndshowP = !this.hideAndshowP;
+      return true;
+        
+      
+    }
+
+    if (userType === 'sec') {
+
+      // tslint:disable-next-line:prefer-const
+      this.secretaries[index]['showEditPaneForSecretary'] = index;
+      this.hideAndshowS = !this.hideAndshowS;
+      return true;
+    }
+
+    if (userType === 'tre') {
+
+      // tslint:disable-next-line:prefer-const
+      this.treasurers[index]['showEditPaneForTreasurer'] = index;
+      this.hideAndshowT = !this.hideAndshowT;
+      return true;
+    }
+
   }
   
 

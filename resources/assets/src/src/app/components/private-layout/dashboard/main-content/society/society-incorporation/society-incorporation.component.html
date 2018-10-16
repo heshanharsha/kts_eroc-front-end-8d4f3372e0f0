@@ -249,11 +249,11 @@
               <div class="add-new-wrapper director-add-new-wrapper">
 
                 <h2>
-                  <span class="add-new-wrapper-label">Directors</span>
+                  <span class="add-new-wrapper-label">President</span>
                   <div class="line"></div>
 
-                  <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" type="button" mdbBtn class="relative waves-light add-new-stakholder"
-                    (click)="basicModal.show()" mdbWavesEffect>
+                  <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [disabled]="validPresident" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                    (click)="basicModal.show()()" mdbWavesEffect>
                     <i class="fa fa-plus"></i> Add New</button>
 
                 </h2>
@@ -265,10 +265,10 @@
 
                 <!-- list-->
 
-                <div *ngFor="let director of directorList.directors; let i = index" class="director-record stakeholder-record"
+                <div *ngFor="let president of presidents; let i = index" class="director-record stakeholder-record"
                   style=" margin: 30px 0;border-radius: 20px;background: #fff;border: 1px solid rgb(243, 91, 63);">
 
-                  <div (click)="showToggle('director', director.id)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                  <div (click)="showToggle('president', i)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
                       color: #fff;
                       padding: 5px 10px;
                       font-weight: lighter;
@@ -280,7 +280,7 @@
                       width: 100%;
                       border-radius: 20px;">
 
-                    <!-- {{director.firstname}} {{director.lastname}}- Director -->
+                    {{president.firstname}} {{president.lastname}}- President
 
                     <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)=" removeDirectorRecord(i,director.id)"
                       title="remove record" style="float:right;" class="record-handler record-handler-remove">
@@ -297,139 +297,25 @@
 
                   </div>
 
-                  <div [hidden]="director.showEditPaneForDirector != director.id" [class]="'stakeholder-record-inner'"
+                  <div *ngIf="hideAndshowP && president.showEditPaneForPresident == i" [class]="'stakeholder-record-inner'"
                     class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
 
-                    <div class="create-other-user-block" *ngIf="director.type != 'foreign' && processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'">
-
-                      <div class="form-row" *ngIf="director.directors_as_sec == 1">
-                        <div class="form-group col-md-12">
-                          <button (click)="removeDirSec(director.id)" class="btn btn-danger"><i class="fas fa-unlink"></i>
-                            Remove Secretory position</button>
-                        </div>
-
-                      </div>
-
-                      <div class="form-row" *ngIf="director.directors_as_sec != 1">
-                        <div class="form-group col-md-12">
-                          <input type="checkbox" checked="checked" id="directorToSecedit" class="custom-control-input"
-                            [(ngModel)]="director.isSecEdit" [ngModelOptions]="{standalone: true}">
-                          <label style="font-size:14px;" class="custom-control-label" for="directorToSecedit">&nbsp;&nbsp;&nbsp;&nbsp;Make
-                            this director as a secretory</label>
-                        </div>
-
-                      </div>
-
-
-                      <div class="form-row" *ngIf="director.directors_as_sh == 1">
-                        <div class="form-group col-md-12">
-                          <button (click)="removeDirSh(director.id)" class="btn btn-danger"><i class="fas fa-unlink"></i>
-                            Remove Shareholder position</button>
-                        </div>
-
-                      </div>
-
-                      <div class="form-row" *ngIf="director.directors_as_sh !=1">
-                        <div class="form-group col-md-12">
-                          <input (change)="validateDirectorEdit(i)" type="checkbox" checked="checked" id="directorToShedit"
-                            class="custom-control-input" [(ngModel)]="director.isShareholderEdit" [ngModelOptions]="{standalone: true}">
-                          <label style="font-size:14px;" class="custom-control-label" for="directorToShedit">&nbsp;&nbsp;&nbsp;&nbsp;Make
-                            this director as a shareholder</label>
-                        </div>
-
-                        <div class="form-group col-md-12" *ngIf="director.isShareholderEdit">
-
-                          <div class="form-group col-md-5">
-                            <input (change)="validateDirectorEdit(i)" type="radio" id="directorShareTypeEdit-single"
-                              class="custom-control-input" [(ngModel)]="director.shareTypeEdit" value="single" name="directoredit_sharetype">
-                            <label style="font-size:14px;" class="custom-control-label" for="directorShareTypeEdit-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
-                              Share</label>
-
-                            <div class="form-group col-md-12" *ngIf="director.shareTypeEdit =='single'">
-
-                              <label class="col-form-label col-form-label-sm">No of Shares
-                                <span class="req">*</span>
-                              </label>
-
-                              <input (change)="validateDirectorEdit(i)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                [(ngModel)]="director.noOfSingleSharesEdit" name="directoredit_noOfSingleSharesEdit"
-                                min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
-                                placeholder="">
-
-                            </div>
-                          </div>
-                          <div class="form-group col-md-10">
-                            <input (change)="validateDirectorEdit(i)" type="radio" id="directorShareTypeEdit-core"
-                              class="custom-control-input" [(ngModel)]="director.shareTypeEdit" value="core" name="directoredit_sharetype">
-                            <label style="font-size:14px;" class="custom-control-label" for="directorShareTypeEdit-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
-                              Share</label>
-
-                            <div class="form-group col-md-12" *ngIf="director.shareTypeEdit =='core'" style="background: #eee;
-                                                  padding: 10px;">
-
-                              <p style="font-weight: bold;
-                                                  border-bottom: 1px solid #999">Please
-                                select your share group</p>
-                              <select (change)="validateDirectorEdit(i)" class="form-control form-control-sm modal-input-director-sharegroup"
-                                [(ngModel)]="director.coreGroupSelectedEdit" name="directoredit_coreGroupSelectedEdit">
-                                <option value="">Choose...</option>
-                                <!-- <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option> -->
-                              </select>
-
-                              <br />
-                              <p style="font-weight: bold;
-                                                      border-bottom: 1px solid #999">
-                                Not Found your core share group ? Add one.</p>
-
-                              <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
-
-                                <div class="form-group col-md-6">
-
-                                  <label class="col-form-label col-form-label-sm">Group Name</label>
-                                  <input (input)="validateDirectorEdit(i)" [(ngModel)]="director.coreShareGroupNameEdit"
-                                    name="directoredit_coreShareGroupNameEdit" class="form-control form-control-sm modal-input-director-oppointment"
-                                    placeholder="">
-                                </div>
-                                <div class="form-group col-md-6">
-                                  <label class="col-form-label col-form-label-sm">Core Share Value</label>
-                                  <input (input)="validateDirectorEdit(i)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                                    [(ngModel)]="director.coreShareValueEdit" name="directoredit_coreShareValueEdit"
-                                    type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
-                                    placeholder="">
-                                </div>
-                              </div>
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                    </div>
+                    
 
                     <div class="form-row">
 
-                      <div class="form-group col-md-6" [hidden]="director.type != 'local'">
+                      <div class="form-group col-md-6" >
 
                         <label class="col-form-label col-form-label-sm">Nic</label>
 
                         <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[0-9]{9}[x|X|v|V]"
-                          maxlength="10" [(ngModel)]="directorList.directors[i].nic" [ngModelOptions]="{standalone: true}"
-                          class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{director.nic}}"
+                          maxlength="10" [(ngModel)]="presidents[i].nic" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{president.nic}}"
                           (input)="validateDirectorEdit(i)">
                         <span class="req-message">Valid NIC required</span>
                       </div>
 
-                      <div class="form-group col-md-6" [hidden]="director.type != 'foreign'">
-
-                        <label class="col-form-label col-form-label-sm">Passport No.</label>
-
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].passport"
-                          [ngModelOptions]="{standalone: true}" (input)="validateDirectorEdit(i)" class="form-control form-control-sm modal-input-director-passport"
-                          placeholder="" value="{{director.passport}}">
-                      </div>
+  
 
                     </div>
 
@@ -441,8 +327,8 @@
                         </label>
 
                         <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
-                          [(ngModel)]="directorList.directors[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
-                          placeholder="" value="{{director.firstname}}">
+                          [(ngModel)]="presidents[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
+                          placeholder="" value="{{president.firstname}}">
                       </div>
                       <div class="form-group col-md-6">
 
@@ -451,14 +337,14 @@
                         </label>
 
                         <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
-                          [(ngModel)]="directorList.directors[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
-                          placeholder="" value="{{director.lastname}}">
+                          [(ngModel)]="presidents[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
+                          placeholder="" value="{{president.lastname}}">
                       </div>
                     </div>
 
 
 
-                    <div class="address-block local-address" *ngIf="director.type == 'local' ">
+                    <div class="address-block local-address">
 
 
                       <div class="form-row">
@@ -469,10 +355,10 @@
                             <span class="req">*</span>
                           </label>
                           <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            class="form-control form-control-sm modal-input-director-province" [(ngModel)]="directorList.directors[i].province"
+                            class="form-control form-control-sm modal-input-director-province" [(ngModel)]="presidents[i].province"
                             [ngModelOptions]="{standalone: true}">
                             <option value="">Choose..</option>
-                            <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="director.province ==p.name">{{p.name}}</option>
+                            <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="president.province ==p.name">{{p.name}}</option>
 
                           </select>
 
@@ -484,10 +370,10 @@
                             <span class="req">*</span>
                           </label>
                           <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            class="form-control form-control-sm modal-input-director-district" [(ngModel)]="directorList.directors[i].district"
+                            class="form-control form-control-sm modal-input-director-district" [(ngModel)]="presidents[i].district"
                             [ngModelOptions]="{standalone: true}">
                             <option value="">Choose..</option>
-                            <option *ngFor="let d of districts" value="{{d.name}}" [selected]="director.district ==d.name">{{d.name}}</option>
+                            <option *ngFor="let d of districts" value="{{d.name}}" [selected]="president.district ==d.name">{{d.name}}</option>
                           </select>
 
 
@@ -501,23 +387,23 @@
                             <span class="req">*</span>
                           </label>
                           <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="directorList.directors[i].city"
+                            class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="presidents[i].city"
                             [ngModelOptions]="{standalone: true}">
                             <option value="">Choose..</option>
-                            <option *ngFor="let c of cities" value="{{c.name}}" [selected]="director.city ==c.name">{{c.name}}</option>
+                            <option *ngFor="let c of cities" value="{{c.name}}" [selected]="president.city ==c.name">{{c.name}}</option>
                           </select>
                         </div>
 
                         <div class="form-group col-md-6">
 
-                          <label class="col-form-label col-form-label-sm">Address1
+                          <label class="col-form-label col-form-label-sm">Address 1
                             <span class="req">*</span>
                           </label>
 
                           <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
-                            [(ngModel)]="directorList.directors[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="presidents[i].localAddress1" [ngModelOptions]="{standalone: true}"
                             class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
-                            value="{{ director.localAddress1}}">
+                            value="{{ president.localAddress1}}">
                         </div>
 
 
@@ -526,19 +412,19 @@
                           <label class="col-form-label col-form-label-sm">Address 2</label>
 
                           <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            (input)="validateDirector()" [(ngModel)]="directorList.directors[i].localAddress2"
+                            (input)="validateDirector()" [(ngModel)]="presidents[i].localAddress2"
                             [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
-                            placeholder="" value="{{ director.localAddress2}}">
+                            placeholder="" value="{{ president.localAddress2}}">
                         </div>
 
                         <div class="form-group col-md-4">
 
-                          <label class="col-form-label col-form-label-sm">Post Code <span class="req">*</span></label>
+                          <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
 
                           <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            (input)="validateDirector()" [(ngModel)]="directorList.directors[i].postcode"
+                            (input)="validateDirector()" [(ngModel)]="presidents[i].postcode"
                             [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
-                            placeholder="" value="{{ director.postcode}}">
+                            placeholder="" value="{{ president.postcode}}">
                         </div>
 
 
@@ -546,115 +432,25 @@
 
                     </div>
 
-                    <div class="address-block foriegn-address" *ngIf="director.type == 'foreign' ">
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-
-                          <label class="col-form-label col-form-label-sm">Address Line 1</label>
-
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            [(ngModel)]="directorList.directors[i].localAddress1" [ngModelOptions]="{standalone: true}"
-                            class="form-control form-control-sm modal-input-director-address1" placeholder="" value="{{director.localAddress1}}">
-                        </div>
-                        <div class="form-group col-md-6">
-
-                          <label class="col-form-label col-form-label-sm">Address Line 2</label>
-
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].localAddress2"
-                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address2"
-                            placeholder="" value="{{director.localAddress2}}">
-                        </div>
-
-                        <div class="form-group col-md-4">
-
-                          <label class="col-form-label col-form-label-sm">City</label>
-
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                            [(ngModel)]="directorList.directors[i].city" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-city"
-                            placeholder="" value="{{director.city}}">
-                        </div>
-
-                        <div class="form-group col-md-4">
-
-                          <label class="col-form-label col-form-label-sm">State/Region/Province</label>
-
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].province"
-                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-province"
-                            placeholder="" value="{{director.province}}">
-                        </div>
-
-                        <div class="form-group col-md-4">
-
-                          <label class="col-form-label col-form-label-sm">Postal/ZIP code <span class="req">*</span></label>
-
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
-                            [(ngModel)]="directorList.directors[i].postcode" [ngModelOptions]="{standalone: true}"
-                            class="form-control form-control-sm modal-input-director-postcode" placeholder="" value="{{director.postcode}}">
-                        </div>
-                      </div>
-
-                    </div>
-
-                    <div class="form-row" [hidden]="director.type == 'local' ">
-
-                      <div class="form-group col-md-4">
-
-                        <label class="col-form-label col-form-label-sm">Country
-                          <span class="req">*</span>
-                        </label>
-                        <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
-                          class="form-control form-control-sm modal-input-director-country" [(ngModel)]="directorList.directors[i].country"
-                          [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let country of countries" value="{{country.name}}" [selected]="director.country ==country.name">{{country.name}}</option>
-                        </select>
-
-
-                      </div>
-                    </div>
+                    
 
                     <div class="form-row">
                       <div class="form-group col-md-4">
-                        <label class="col-form-label col-form-label-sm">Residential Phone No.</label>
+                        <label class="col-form-label col-form-label-sm">Contact No.</label>
                         <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="\d{10}"
-                          maxlength="10" [(ngModel)]="directorList.directors[i].phone" [ngModelOptions]="{standalone: true}"
-                          class="form-control form-control-sm modal-input-director-phone" placeholder="" value="{{director.phone}}">
-                        <span class="req-message">10 Digits mobile number requried</span>
+                          maxlength="10" [(ngModel)]="presidents[i].contact_number" [ngModelOptions]="{standalone: true}"
+                          class="form-control form-control-sm modal-input-director-phone" placeholder="" value="{{president.contact_number}}">
+                        <span class="req-message">10 Digits contact number requried</span>
                       </div>
                       <div class="form-group col-md-4">
-                        <label class="col-form-label col-form-label-sm">Mobile</label>
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
-                          pattern="\d{10}" (input)="validateDirectorEdit(i)" [(ngModel)]="directorList.directors[i].mobile"
-                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-mobile"
-                          placeholder="" value="{{director.mobile}}">
-                        <span class="req-message">Valid email required</span>
-                      </div>
-
-                      <div class="form-group col-md-4">
-                        <label class="col-form-label col-form-label-sm modal-input-director-email">Email Address</label>
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
-                          (change)="validateDirectorEdit(i)" [(ngModel)]="directorList.directors[i].email"
-                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" placeholder=""
-                          value="{{director.email}}">
-                        <span class="req-message">Valid email required</span>
-                      </div>
+                          <label class="col-form-label col-form-label-sm">Designation in the society</label>
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="presidents[i].designation_soc"
+                            [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
+                            placeholder="" value="{{president.designation_soc}}">
+                        </div>
+                      
                     </div>
 
-                    <div class="form-row">
-
-                      <div class="form-group col-md-6">
-                        <label class="col-form-label col-form-label-sm">Date of Appointment</label>
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateOppDate('edit','director',i)"
-                          [(ngModel)]="directorList.directors[i].date" [ngModelOptions]="{standalone: true}" type="date"
-                          class="form-control form-control-sm modal-input-director-oppointment" placeholder="" value="{{director.date}}">
-                      </div>
-
-                      <div class="form-group col-md-6">
-                        <label class="col-form-label col-form-label-sm">Occupation</label>
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="directorList.directors[i].occupation"
-                          [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
-                          placeholder="" value="{{director.occupation}}">
-                      </div>
-                    </div>
 
                     <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
                       [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
@@ -668,9 +464,456 @@
 
                 <!-- end list -->
 
-                <p [hidden]="directorList.directors.length" class="no-stakeholder no-director">No Directors added</p>
+                <p [hidden]="presidents.length" class="no-stakeholder no-director">No Presidents added</p>
 
               </div>
+
+              <!-- secretary        wrapper     list  start-->
+
+              <div class="add-new-wrapper director-add-new-wrapper">
+
+                  <h2>
+                    <span class="add-new-wrapper-label">Secretary</span>
+                    <div class="line"></div>
+  
+                    <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [disabled]="validSecretary" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                      (click)="secModal.show()" mdbWavesEffect>
+                      <i class="fa fa-plus"></i> Add New</button>
+  
+                  </h2>
+  
+                </div>
+  
+  
+                <div class="director-list stakeholder-list-wrapper">
+  
+                  <!-- list-->
+  
+                  <div *ngFor="let secretary of secretaries; let i = index" class="director-record stakeholder-record"
+                    style=" margin: 30px 0;border-radius: 20px;background: #fff;border: 1px solid rgb(243, 91, 63);">
+  
+                    <div (click)="showToggle('sec', i)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                        color: #fff;
+                        padding: 5px 10px;
+                        font-weight: lighter;
+                        font-size: 14px;
+                        border-top-left-radius: 18px;
+                        box-shadow: 1px 1px 2px #b3aea9;
+                        border-top-right-radius: 18px;
+                        cursor: pointer;
+                        width: 100%;
+                        border-radius: 20px;">
+  
+                      {{secretary.firstname}} {{secretary.lastname}}- Secretary
+  
+                      <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)=" removeDirectorRecord(i,director.id)"
+                        title="remove record" style="float:right;" class="record-handler record-handler-remove">
+                        <i class="fa fa-trash"></i>
+                      </span>
+                      <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                        class="record-handler">
+                        <i class="fa fa-pencil-alt"></i>
+                      </span>
+                      <span *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                        class="record-handler">
+                        <i class="fa fa-eye"></i>
+                      </span>
+  
+                    </div>
+  
+                    <div *ngIf="hideAndshowS && secretary.showEditPaneForSecretary == i" [class]="'stakeholder-record-inner'"
+                      class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
+  
+                      
+  
+                      <div class="form-row">
+  
+                        <div class="form-group col-md-6" >
+  
+                          <label class="col-form-label col-form-label-sm">Nic</label>
+  
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[0-9]{9}[x|X|v|V]"
+                            maxlength="10" [(ngModel)]="secretaries[i].nic" [ngModelOptions]="{standalone: true}"
+                            class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{secretary.nic}}"
+                            (input)="validateDirectorEdit(i)">
+                          <span class="req-message">Valid NIC required</span>
+                        </div>
+  
+    
+  
+                      </div>
+  
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+  
+                          <label class="col-form-label col-form-label-sm">First Name
+                            <span class="req">*</span>
+                          </label>
+  
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                            [(ngModel)]="secretaries[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
+                            placeholder="" value="{{secretary.firstname}}">
+                        </div>
+                        <div class="form-group col-md-6">
+  
+                          <label class="col-form-label col-form-label-sm">Last Name
+                            <span class="req">*</span>
+                          </label>
+  
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                            [(ngModel)]="secretaries[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
+                            placeholder="" value="{{secretary.lastname}}">
+                        </div>
+                      </div>
+  
+  
+  
+                      <div class="address-block local-address">
+  
+  
+                        <div class="form-row">
+  
+                          <div class="form-group col-md-4">
+  
+                            <label class="col-form-label col-form-label-sm">Province
+                              <span class="req">*</span>
+                            </label>
+                            <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                              class="form-control form-control-sm modal-input-director-province" [(ngModel)]="secretaries[i].province"
+                              [ngModelOptions]="{standalone: true}">
+                              <option value="">Choose..</option>
+                              <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="secretary.province ==p.name">{{p.name}}</option>
+  
+                            </select>
+  
+                          </div>
+  
+                          <div class="form-group col-md-4">
+  
+                            <label class="col-form-label col-form-label-sm">District
+                              <span class="req">*</span>
+                            </label>
+                            <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                              class="form-control form-control-sm modal-input-director-district" [(ngModel)]="secretaries[i].district"
+                              [ngModelOptions]="{standalone: true}">
+                              <option value="">Choose..</option>
+                              <option *ngFor="let d of districts" value="{{d.name}}" [selected]="secretary.district ==d.name">{{d.name}}</option>
+                            </select>
+  
+  
+  
+  
+                          </div>
+  
+                          <div class="form-group col-md-4">
+  
+                            <label class="col-form-label col-form-label-sm">City
+                              <span class="req">*</span>
+                            </label>
+                            <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                              class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="secretaries[i].city"
+                              [ngModelOptions]="{standalone: true}">
+                              <option value="">Choose..</option>
+                              <option *ngFor="let c of cities" value="{{c.name}}" [selected]="secretary.city ==c.name">{{c.name}}</option>
+                            </select>
+                          </div>
+  
+                          <div class="form-group col-md-6">
+  
+                            <label class="col-form-label col-form-label-sm">Address 1
+                              <span class="req">*</span>
+                            </label>
+  
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                              [(ngModel)]="secretaries[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                              class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
+                              value="{{ secretary.localAddress1}}">
+                          </div>
+  
+  
+                          <div class="form-group col-md-6">
+  
+                            <label class="col-form-label col-form-label-sm">Address 2</label>
+  
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                              (input)="validateDirector()" [(ngModel)]="secretaries[i].localAddress2"
+                              [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                              placeholder="" value="{{ secretary.localAddress2}}">
+                          </div>
+  
+                          <div class="form-group col-md-4">
+  
+                            <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
+  
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                              (input)="validateDirector()" [(ngModel)]="secretaries[i].postcode"
+                              [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                              placeholder="" value="{{ secretary.postcode}}">
+                          </div>
+  
+  
+                        </div>
+  
+                      </div>
+  
+                      
+  
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label class="col-form-label col-form-label-sm">Contact No.</label>
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="\d{10}"
+                            maxlength="10" [(ngModel)]="secretaries[i].contact_number" [ngModelOptions]="{standalone: true}"
+                            class="form-control form-control-sm modal-input-director-phone" placeholder="" value="{{secretary.contact_number}}">
+                          <span class="req-message">10 Digits contact number requried</span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="col-form-label col-form-label-sm">Designation in the society</label>
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="secretaries[i].designation_soc"
+                              [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
+                              placeholder="" value="{{secretary.designation_soc}}">
+                          </div>
+                        
+                      </div>
+  
+  
+                      <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
+                        [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
+                        Edit</button>
+                      <div style="clear:both"></div>
+  
+                    </div>
+                    <!-- end rerord inner -->
+  
+                  </div>
+  
+                  <!-- end list -->
+  
+                  <p [hidden]="secretaries.length" class="no-stakeholder no-director">No Secretaries added</p>
+  
+                </div>
+
+
+                <div class="add-new-wrapper director-add-new-wrapper">
+
+                    <h2>
+                      <span class="add-new-wrapper-label">Treasurer</span>
+                      <div class="line"></div>
+    
+                      <button *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [disabled]="validPresident" type="button" mdbBtn class="relative waves-light add-new-stakholder"
+                        (click)="treModal.show()()" mdbWavesEffect>
+                        <i class="fa fa-plus"></i> Add New</button>
+    
+                    </h2>
+    
+                  </div>
+    
+    
+                  <div class="director-list stakeholder-list-wrapper">
+    
+                    <!-- list-->
+    
+                    <div *ngFor="let treasurer of treasurers; let i = index" class="director-record stakeholder-record"
+                      style=" margin: 30px 0;border-radius: 20px;background: #fff;border: 1px solid rgb(243, 91, 63);">
+    
+                      <div (click)="showToggle('tre', i)" class="stakeholder-record-summeru" style="background-color: #f35b3f;
+                          color: #fff;
+                          padding: 5px 10px;
+                          font-weight: lighter;
+                          font-size: 14px;
+                          border-top-left-radius: 18px;
+                          box-shadow: 1px 1px 2px #b3aea9;
+                          border-top-right-radius: 18px;
+                          cursor: pointer;
+                          width: 100%;
+                          border-radius: 20px;">
+    
+                        {{treasurer.firstname}} {{treasurer.lastname}}- Treasurer
+    
+                        <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)=" removeDirectorRecord(i,director.id)"
+                          title="remove record" style="float:right;" class="record-handler record-handler-remove">
+                          <i class="fa fa-trash"></i>
+                        </span>
+                        <span *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                          class="record-handler">
+                          <i class="fa fa-pencil-alt"></i>
+                        </span>
+                        <span *ngIf="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" title="show details" style="float:right; margin:0 15px"
+                          class="record-handler">
+                          <i class="fa fa-eye"></i>
+                        </span>
+    
+                      </div>
+    
+                      <div *ngIf="hideAndshowP && president.showEditPaneForPresident == i" [class]="'stakeholder-record-inner'"
+                        class="stakeholder-record-inner" style="padding: 25px 10px 10px;">
+    
+                        
+    
+                        <div class="form-row">
+    
+                          <div class="form-group col-md-6" >
+    
+                            <label class="col-form-label col-form-label-sm">Nic</label>
+    
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="[0-9]{9}[x|X|v|V]"
+                              maxlength="10" [(ngModel)]="presidents[i].nic" [ngModelOptions]="{standalone: true}"
+                              class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{president.nic}}"
+                              (input)="validateDirectorEdit(i)">
+                            <span class="req-message">Valid NIC required</span>
+                          </div>
+    
+      
+    
+                        </div>
+    
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+    
+                            <label class="col-form-label col-form-label-sm">First Name
+                              <span class="req">*</span>
+                            </label>
+    
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                              [(ngModel)]="presidents[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
+                              placeholder="" value="{{president.firstname}}">
+                          </div>
+                          <div class="form-group col-md-6">
+    
+                            <label class="col-form-label col-form-label-sm">Last Name
+                              <span class="req">*</span>
+                            </label>
+    
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                              [(ngModel)]="presidents[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
+                              placeholder="" value="{{president.lastname}}">
+                          </div>
+                        </div>
+    
+    
+    
+                        <div class="address-block local-address">
+    
+    
+                          <div class="form-row">
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">Province
+                                <span class="req">*</span>
+                              </label>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                                class="form-control form-control-sm modal-input-director-province" [(ngModel)]="presidents[i].province"
+                                [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let p of provinces" value="{{p.name}}" [selected]="president.province ==p.name">{{p.name}}</option>
+    
+                              </select>
+    
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">District
+                                <span class="req">*</span>
+                              </label>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                                class="form-control form-control-sm modal-input-director-district" [(ngModel)]="presidents[i].district"
+                                [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let d of districts" value="{{d.name}}" [selected]="president.district ==d.name">{{d.name}}</option>
+                              </select>
+    
+    
+    
+    
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">City
+                                <span class="req">*</span>
+                              </label>
+                              <select [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                                class="form-control form-control-sm modal-input-directory-city" [(ngModel)]="presidents[i].city"
+                                [ngModelOptions]="{standalone: true}">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let c of cities" value="{{c.name}}" [selected]="president.city ==c.name">{{c.name}}</option>
+                              </select>
+                            </div>
+    
+                            <div class="form-group col-md-6">
+    
+                              <label class="col-form-label col-form-label-sm">Address 1
+                                <span class="req">*</span>
+                              </label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateDirectorEdit(i)"
+                                [(ngModel)]="presidents[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                                class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
+                                value="{{ president.localAddress1}}">
+                            </div>
+    
+    
+                            <div class="form-group col-md-6">
+    
+                              <label class="col-form-label col-form-label-sm">Address 2</label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                                (input)="validateDirector()" [(ngModel)]="presidents[i].localAddress2"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
+                                placeholder="" value="{{ president.localAddress2}}">
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (change)="validateDirectorEdit(i)"
+                                (input)="validateDirector()" [(ngModel)]="presidents[i].postcode"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
+                                placeholder="" value="{{ president.postcode}}">
+                            </div>
+    
+    
+                          </div>
+    
+                        </div>
+    
+                        
+    
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label class="col-form-label col-form-label-sm">Contact No.</label>
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" pattern="\d{10}"
+                              maxlength="10" [(ngModel)]="presidents[i].contact_number" [ngModelOptions]="{standalone: true}"
+                              class="form-control form-control-sm modal-input-director-phone" placeholder="" value="{{president.contact_number}}">
+                            <span class="req-message">10 Digits contact number requried</span>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label class="col-form-label col-form-label-sm">Designation in the society</label>
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="presidents[i].designation_soc"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
+                                placeholder="" value="{{president.designation_soc}}">
+                            </div>
+                          
+                        </div>
+    
+    
+                        <button style="float: right" *ngIf="processStatus != 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (click)="submitStakeholers('remove')"
+                          [disabled]="!enableStep2SubmissionEdit" type="button" class="btn btn-next"><i class="fa fa-edit"></i>
+                          Edit</button>
+                        <div style="clear:both"></div>
+    
+                      </div>
+                      <!-- end rerord inner -->
+    
+                    </div>
+    
+                    <!-- end list -->
+    
+                    <p [hidden]="presidents.length" class="no-stakeholder no-director">No Presidents added</p>
+    
+                  </div>
 
             </div>
             <!-- end add director block
@@ -1007,72 +1250,29 @@
         <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="basicModal.hide()">
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Director
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New President
           <br />
-          <span *ngIf="directorValitionMessage" class="stakeholder-validation">{{ directorValitionMessage }}</span>
+          <span *ngIf="presidentValidationMessage" class="stakeholder-validation">{{ presidentValidationMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
 
-        <div class="stakeholder-type-tab-wrapper">
-          <div (click)="selectStakeHolderType('director','local')" class="tab local-tab active">Sri Lankan ? </div>
-          <div (click)="selectStakeHolderType('director','foreign')" class="tab local-tab">Non Sri Lankan</div>
-        </div>
-
-
-
-        <div class="form-row">
-          <div class="form-group col-md-6 nic-field-wrapper" [hidden]="director.type != 'local' ">
-
-            <label class="col-form-label col-form-label-sm">NIC No
-              <span class="req">*</span>
-            </label>
-            <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (change)="isDirectorAlreadyExistAction('local')" (input)="validateDirector()"
-              [(ngModel)]="director.nic" class="form-control form-control-sm modal-input-director-nic" placeholder="">
-              
-            <span class="req-message">Valid NIC required</span>
-            <span *ngIf="directorAlreadyExistMessage" class="already-exist-message">{{directorAlreadyExistMessage}}</span>
-            <button class="btn btn-success nic-continue-button">continue</button>
-          </div>
-
-
-          <div class="form-group col-md-6" [hidden]="director.type == 'local' ">
-
-            <label class="col-form-label col-form-label-sm">Passport No.
-              <span class="req">*</span>
-            </label>
-
-            <input (input)="validateDirector()" [(ngModel)]="director.passport" class="form-control form-control-sm modal-input-director-passport"
-              placeholder="">
-            <span *ngIf="directorAlreadyExistMessage" class="already-exist-message">{{directorAlreadyExistMessage}}</span>
-          </div>
-
-        </div>
-
-
        
-        <div [hidden]="!directorNicLoaded" class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+        <div class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
 
           <div class="form-row">
 
             <div class="form-group col-md-2">
 
-              <label class="col-form-label col-form-label-sm">Title
+              <label class="col-form-label col-form-label-sm">NIC No
                 <span class="req">*</span>
               </label>
-              <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-title"
-                [(ngModel)]="director.title">
-                <option value="">Choose...</option>
-
-                <option value="Mr.">Mr.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Miss">Miss</option>
-                <option value="Dr.">Dr.</option>
-                <option value="Proff.">Proff.</option>
-                <option value="Rev.">Rev.</option>
-
-              </select>
-
+              <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (input)="validatePresident()"
+                [(ngModel)]="president.nic" class="form-control form-control-sm modal-input-director-nic" placeholder="">
+                
+              <span class="req-message">Valid NIC required</span>
+              
+              
             </div>
 
             <div class="form-group col-md-5">
@@ -1081,7 +1281,7 @@
                 <span class="req">*</span>
               </label>
 
-              <input (input)="validateDirector()" [(ngModel)]="director.firstname" class="form-control form-control-sm modal-input-director-firstname"
+              <input (input)="validatePresident()" [(ngModel)]="president.firstname" class="form-control form-control-sm modal-input-director-firstname"
                 placeholder="">
             </div>
             <div class="form-group col-md-5">
@@ -1090,29 +1290,13 @@
                 <span class="req">*</span>
               </label>
 
-              <input (input)="validateDirector()" [(ngModel)]="director.lastname" class="form-control form-control-sm modal-input-director-lastname"
+              <input (input)="validatePresident()" [(ngModel)]="president.lastname" class="form-control form-control-sm modal-input-director-lastname"
                 placeholder="">
             </div>
           </div>
 
 
-          <div class="form-row" [hidden]="director.type != 'foreign' ">
-
-            <div class="form-group col-md-6">
-
-              <label class="col-form-label col-form-label-sm">Country
-                <span class="req">*</span>
-              </label>
-              <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
-                [(ngModel)]="director.country">
-                <option value="">Choose...</option>
-                <option *ngFor="let country of countries" value="{{country.name}}">{{country.name}}</option>
-              </select>
-            </div>
-
-          </div>
-
-          <div class="address-block local-address" *ngIf="director.type == 'local' ">
+          <div class="address-block local-address" >
 
             <p style="font-size: 15px;font-weight: bold;">Address</p>
 
@@ -1122,8 +1306,8 @@
                 <label class="col-form-label col-form-label-sm">Province
                   <span class="req">*</span>
                 </label>
-                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
-                  [(ngModel)]="director.province">
+                <select (change)="validatePresident()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="president.province">
                   <option value="">Choose...</option>
                   <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
                 </select>
@@ -1135,8 +1319,8 @@
                 <label class="col-form-label col-form-label-sm">District
                   <span class="req">*</span>
                 </label>
-                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-country"
-                  [(ngModel)]="director.district">
+                <select (change)="validatePresident()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="president.district">
                   <option value="">Choose...</option>
                   <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
                 </select>
@@ -1151,8 +1335,8 @@
                 </label>
 
 
-                <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-address2"
-                  [(ngModel)]="director.city">
+                <select (change)="validatePresident()" class="form-control form-control-sm modal-input-director-address2"
+                  [(ngModel)]="president.city">
                   <option value="">Choose...</option>
                   <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
                 </select>
@@ -1164,7 +1348,7 @@
                   <span class="req">*</span>
                 </label>
 
-                <input (input)="validateDirector()" [(ngModel)]="director.localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                <input (input)="validatePresident()" [(ngModel)]="president.localAddress1" class="form-control form-control-sm modal-input-director-address3"
                   placeholder="">
               </div>
 
@@ -1174,7 +1358,7 @@
                   <span class="noreq">*</span>
                 </label>
 
-                <input (input)="validateDirector()" [(ngModel)]="director.localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                <input (input)="validatePresident()" [(ngModel)]="president.localAddress2" class="form-control form-control-sm modal-input-director-address3"
                   placeholder="">
               </div>
               <div class="form-group col-md-2">
@@ -1183,7 +1367,7 @@
                   <span class="req">*</span>
                 </label>
 
-                <input (input)="validateDirector()" [(ngModel)]="director.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                <input (input)="validatePresident()" [(ngModel)]="president.postcode" class="form-control form-control-sm modal-input-director-postcode"
                   placeholder="">
               </div>
 
@@ -1191,294 +1375,40 @@
 
           </div>
 
-          <div class="address-block local-address" *ngIf="director.type == 'foreign' ">
-
-            <p style="font-size: 15px;font-weight: bold;">Foreign Address
-
-            </p>
-            <div style="clear:both"></div>
-
-            <div class="form-row">
-
-              <div class="form-group col-md-6">
-
-                <label class="col-form-label col-form-label-sm">Address Line 1
-                  <span class="req">*</span>
-                </label>
-
-                <input (input)="validateDirector()" [(ngModel)]="director.localAddress1" class="form-control form-control-sm  modal-input-director-for-address1"
-                  placeholder="">
-              </div>
-              <div class="form-group col-md-6">
-
-                <label class="col-form-label col-form-label-sm">Address Line 2
-                  <span class="noreq">*</span>
-                </label>
-
-                <input (input)="validateDirector()" [(ngModel)]="director.localAddress2" class="form-control form-control-sm  modal-input-director-for-address2"
-                  placeholder="">
-              </div>
-
-              <div class="form-group col-md-4">
-
-                <label class="col-form-label col-form-label-sm">City
-                  <span class="req">*</span>
-                </label>
-
-                <input (input)="validateDirector()" [(ngModel)]="director.city" class="form-control form-control-sm  modal-input-director-for-address3"
-                  placeholder="">
-              </div>
-
-              <div class="form-group col-md-4">
-
-                <label class="col-form-label col-form-label-sm">State/Region/Province
-                  <span class="req">*</span>
-                </label>
-
-                <input (input)="validateDirector()" [(ngModel)]="director.province" class="form-control form-control-sm  modal-input-director-for-address3"
-                  placeholder="">
-              </div>
-
-              <div class="form-group col-md-4">
-
-                <label class="col-form-label col-form-label-sm">Postal/ZIP code
-                  <span class="req">*</span>
-                </label>
-
-                <input (input)="validateDirector()" [(ngModel)]="director.postcode" class="form-control form-control-sm modal-input-director-postcode"
-                  placeholder="">
-              </div>
-
-            </div>
-          </div>
+          
 
           <div class="form-row">
+              <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Designation in the society
+                      <span class="req">*</span>
+                    </label>
+        
+                    <input (input)="validatePresident()" [(ngModel)]="president.designation_soc" class="form-control form-control-sm modal-input-director-firstname"
+                      placeholder="">
+                </div>
             <div class="form-group col-md-4">
 
-              <label class="col-form-label col-form-label-sm">Residential Phone No.
+              <label class="col-form-label col-form-label-sm">Contact No.
                 <span class="noreq">*</span>
               </label>
 
-              <input maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="director.phone" class="form-control form-control-sm modal-input-director-phone"
+              <input (input)="validatePresident()" maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="president.contact_number" class="form-control form-control-sm modal-input-director-phone"
                 placeholder="">
-              <span class="req-message">Please enter 10 digits phone number</span>
+              <span class="req-message">Please enter 10 digits contact number</span>
             </div>
-            <div class="form-group col-md-4">
-
-              <label class="col-form-label col-form-label-sm">Mobile
-                <span class="req">*</span>
-              </label>
-
-              <input maxlength="10" pattern="\d{10}" type="tel" (input)="validateDirector()" [(ngModel)]="director.mobile"
-                class="form-control form-control-sm modal-input-director-mobile" placeholder="">
-              <span class="req-message">10 Digits mobile number requried</span>
-            </div>
-
-            <div class="form-group col-md-4">
-
-              <label class="col-form-label col-form-label-sm modal-input-director-email">Email Address
-                <span class="req">*</span>
-              </label>
-
-              <input type="email" (input)="validateDirector()" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
-                [(ngModel)]="director.email" class="with-email-validator form-control form-control-sm" placeholder="">
-              <span class="req-message">Valid email required</span>
-
-            </div>
+            
+            
           </div>
 
-          <div class="form-row">
-
-            <div class="form-group col-md-6">
-
-              <label class="col-form-label col-form-label-sm">Date of Appointment
-                <span class="noreq">*</span>
-              </label>
-
-              <input (change)="validateOppDate('add','director')" [(ngModel)]="director.date" type="date" class="form-control form-control-sm modal-input-director-oppointment"
-                placeholder="">
-            </div>
-
-            <div class="form-group col-md-6">
-
-              <label class="col-form-label col-form-label-sm">Occupation
-                <span class="noreq">*</span>
-              </label>
-
-              <input [(ngModel)]="director.occupation" class="form-control form-control-sm modal-input-director-occupation"
-                placeholder="">
-            </div>
-          </div>
+          
 
           <br />
           <hr class="form-sep" />
 
-          <div class="create-other-user-block" *ngIf="director.type != 'foreign' ">
+          
 
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                <input type="checkbox" id="directorToSec" class="custom-control-input" [(ngModel)]="director.isSec">
-                <label style="font-size:14px;" class="custom-control-label" for="directorToSec">&nbsp;&nbsp;&nbsp;&nbsp;Make
-                  this director as a secretory</label>
-              </div>
-
-            </div>
-
-            <hr class="form-sep" />
-
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                <input (change)="validateDirector()" type="checkbox" id="directorToShareHolder" class="custom-control-input"
-                  [(ngModel)]="director.isShareholder">
-                <label style="font-size:14px;" class="custom-control-label" for="directorToShareHolder">&nbsp;&nbsp;&nbsp;&nbsp;Make
-                  this director as a shareholder</label>
-              </div>
-
-              <div class="form-group col-md-12" *ngIf="director.isShareholder">
-
-                <div class="form-group col-md-5">
-                  <input (change)="validateDirector()" type="radio" id="directorShareType-single" class="custom-control-input"
-                    [(ngModel)]="director.shareType" value="single" name="director_sharetype">
-                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
-                    Share</label>
-
-                  <div class="form-group col-md-12" *ngIf="director.shareType =='single'">
-
-                    <label class="col-form-label col-form-label-sm">No of Shares
-                      <span class="req">*</span>
-                    </label>
-
-                    <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                      [(ngModel)]="director.noOfSingleShares" min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
-                      placeholder="">
-
-                  </div>
-                </div>
-                <div class="form-group col-md-10">
-                  <input (change)="validateDirector()" type="radio" id="directorShareType-core" class="custom-control-input"
-                    [(ngModel)]="director.shareType" value="core" name="director_sharetype">
-                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
-                    Share</label>
-
-                  <div class="form-group col-md-12" *ngIf="director.shareType =='core'" style="background: #eee;
-                          padding: 10px;">
-
-                    <p style="font-weight: bold;
-                          border-bottom: 1px solid #999">Please select
-                      your share group</p>
-                    <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-sharegroup"
-                      [(ngModel)]="director.coreGroupSelected">
-                      <option value="">Choose...</option>
-                      <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
-                    </select>
-
-                    <br />
-                    <p style="font-weight: bold;
-                              border-bottom: 1px solid #999"> Not Found
-                      your core share group ? Add one.</p>
-
-                    <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
-
-                      <div class="form-group col-md-6">
-
-                        <label class="col-form-label col-form-label-sm">Group Name</label>
-                        <input (change)="validateDirector()" [(ngModel)]="director.coreShareGroupName" class="form-control form-control-sm modal-input-director-oppointment"
-                          placeholder="">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label class="col-form-label col-form-label-sm">Core Share Value</label>
-                        <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                          [(ngModel)]="director.coreShareValue" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
-                          placeholder="">
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          <div class="create-other-user-block" *ngIf="director.type == 'foreign' ">
-
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                <input (change)="validateDirector()" type="checkbox" id="directorToShareHolder" class="custom-control-input"
-                  [(ngModel)]="director.isShareholder">
-                <label style="font-size:14px;" class="custom-control-label" for="directorToShareHolder">&nbsp;&nbsp;&nbsp;&nbsp;Make
-                  this director as a shareholder</label>
-              </div>
-
-              <div class="form-group col-md-12" *ngIf="director.isShareholder">
-
-                <div class="form-group col-md-5">
-                  <input (change)="validateDirector()" type="radio" id="directorShareType-single" class="custom-control-input"
-                    [(ngModel)]="director.shareType" value="single" name="director_sharetype">
-                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-single">&nbsp;&nbsp;&nbsp;&nbsp;Single
-                    Share</label>
-
-                  <div class="form-group col-md-12" *ngIf="director.shareType =='single'">
-
-                    <label class="col-form-label col-form-label-sm">No of Shares
-                      <span class="req">*</span>
-                    </label>
-
-                    <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                      [(ngModel)]="director.noOfSingleShares" min="0" type="number" class="form-control form-control-sm modal-input-director-oppointment"
-                      placeholder="">
-
-                  </div>
-                </div>
-                <div class="form-group col-md-10">
-                  <input (change)="validateDirector()" type="radio" id="directorShareType-core" class="custom-control-input"
-                    [(ngModel)]="director.shareType" value="core" name="director_sharetype">
-                  <label style="font-size:14px;" class="custom-control-label" for="directorShareType-core">&nbsp;&nbsp;&nbsp;&nbsp;Core
-                    Share</label>
-
-                  <div class="form-group col-md-12" *ngIf="director.shareType =='core'" style="background: #eee;
-                        padding: 10px;">
-
-                    <p style="font-weight: bold;
-                        border-bottom: 1px solid #999">Please select your
-                      share group</p>
-                    <select (change)="validateDirector()" class="form-control form-control-sm modal-input-director-sharegroup"
-                      [(ngModel)]="director.coreGroupSelected">
-                      <option value="">Choose...</option>
-                      <option *ngFor="let g of coreShareGroups" value="{{g.group_id}}">{{g.group_name}}</option>
-                    </select>
-
-                    <br />
-                    <p style="font-weight: bold;
-                            border-bottom: 1px solid #999"> Not Found your
-                      core share group ? Add one.</p>
-
-                    <div class="add-new-share-group" style="display: flex;flex-flow: row wrap">
-
-                      <div class="form-group col-md-6">
-
-                        <label class="col-form-label col-form-label-sm">Group Name</label>
-                        <input (change)="validateDirector()" [(ngModel)]="director.coreShareGroupName" class="form-control form-control-sm modal-input-director-oppointment"
-                          placeholder="">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label class="col-form-label col-form-label-sm">Core Share Value</label>
-                        <input (change)="validateDirector()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
-                          [(ngModel)]="director.coreShareValue" type="number" min="0" class="form-control form-control-sm modal-input-director-oppointment"
-                          placeholder="">
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-          </div>
+          
 
 
         </div> <!-- END NIC/PASSPORT CHECK CODE-->
@@ -1490,20 +1420,401 @@
       <div class="modal-footer" style="justify-content: flex-end">
         <!--<button type="button" mdbBtn color="secondary" class="btn btn-sm waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>-->
 
-        <!--<div class="custom-control custom-checkbox my-1 mr-sm-2">
-          <input [checked]="directorToShareHolder" type="checkbox" id="directorToShareHolder" class="custom-control-input" [(ngModel)]="directorToShareHolder">
-          <label style="color: #f35b3f !important;font-size: 14px;" class="custom-control-label" for="directorToShareHolder">Make this director as a shareholder</label>
-        </div>-->
+        
 
         <button style="background-color: #bbb!important;" (click)="resetDirRecord()" type="button" mdbBtn color="secondary"
           class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
 
-        <button [disabled]="!validDirector" (click)="saveDirectorRecord()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-director"
+        <button [disabled]="!validPresident" (click)="addPresidentDataToArray()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-director"
           mdbWavesEffect>ADD</button>
       </div>
     </div>
   </div>
 </div>
+
+<!--add secretary modal-->
+<div mdbModal #secModal="mdbModal" id="sec-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="secModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Secretary
+          <br />
+          <span *ngIf="secretaryValidationMessage" class="stakeholder-validation">{{ secretaryValidationMessage }}</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+
+       
+        <div class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+
+          <div class="form-row">
+
+            <div class="form-group col-md-2">
+
+              <label class="col-form-label col-form-label-sm">NIC No
+                <span class="req">*</span>
+              </label>
+              <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (input)="validateSecretary()"
+                [(ngModel)]="secretary.nic" class="form-control form-control-sm modal-input-director-nic" placeholder="">
+                
+              <span class="req-message">Valid NIC required</span>
+              
+              
+            </div>
+
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">First Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateSecretary()" [(ngModel)]="secretary.firstname" class="form-control form-control-sm modal-input-director-firstname"
+                placeholder="">
+            </div>
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">Last Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateSecretary()" [(ngModel)]="secretary.lastname" class="form-control form-control-sm modal-input-director-lastname"
+                placeholder="">
+            </div>
+          </div>
+
+
+          <div class="address-block local-address" >
+
+            <p style="font-size: 15px;font-weight: bold;">Address</p>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Province
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateSecretary()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="secretary.province">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                </select>
+
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">District
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateSecretary()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="secretary.district">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">city
+                  <span class="req">*</span>
+                </label>
+
+
+                <select (change)="validateSecretary()" class="form-control form-control-sm modal-input-director-address2"
+                  [(ngModel)]="secretary.city">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateSecretary()" [(ngModel)]="secretary.localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Address 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateSecretary()" [(ngModel)]="secretary.localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+              <div class="form-group col-md-2">
+
+                <label class="col-form-label col-form-label-sm">Postal code
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateSecretary()" [(ngModel)]="secretary.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                  placeholder="">
+              </div>
+
+            </div>
+
+          </div>
+
+          
+
+          <div class="form-row">
+              <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Designation in the society
+                      <span class="req">*</span>
+                    </label>
+        
+                    <input (input)="validateSecretary()" [(ngModel)]="secretary.designation_soc" class="form-control form-control-sm modal-input-director-firstname"
+                      placeholder="">
+                </div>
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Contact No.
+                <span class="noreq">*</span>
+              </label>
+
+              <input (input)="validateSecretary()" maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="secretary.contact_number" class="form-control form-control-sm modal-input-director-phone"
+                placeholder="">
+              <span class="req-message">Please enter 10 digits contact number</span>
+            </div>
+            
+            
+          </div>
+
+          
+
+          <br />
+          <hr class="form-sep" />
+
+          
+
+          
+
+
+        </div> <!-- END NIC/PASSPORT CHECK CODE-->
+
+
+
+
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end">
+        <!--<button type="button" mdbBtn color="secondary" class="btn btn-sm waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>-->
+
+        
+
+        <button style="background-color: #bbb!important;" (click)="resetDirRecord()" type="button" mdbBtn color="secondary"
+          class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
+
+        <button [disabled]="!validSecretary" (click)="addSecretaryDataToArray()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-sec"
+          mdbWavesEffect>ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--add treasurer modal-->
+<div mdbModal #treModal="mdbModal" id="tre-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right close-modal-item" aria-label="Close" (click)="treModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Secretary
+          <br />
+          <span *ngIf="secretaryValidationMessage" class="stakeholder-validation">{{ secretaryValidationMessage }}</span>
+        </h4>
+      </div>
+      <div class="modal-body">
+
+       
+        <div class="nic-check-block"> <!--START NIC/PASSPORT CHECK CODE-->
+
+          <div class="form-row">
+
+            <div class="form-group col-md-2">
+
+              <label class="col-form-label col-form-label-sm">NIC No
+                <span class="req">*</span>
+              </label>
+              <input pattern="[0-9]{9}[x|X|v|V]" maxlength="10" (input)="validateTreasurer()"
+                [(ngModel)]="treasurer.nic" class="form-control form-control-sm modal-input-director-nic" placeholder="">
+                
+              <span class="req-message">Valid NIC required</span>
+              
+              
+            </div>
+
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">First Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateTreasurer()" [(ngModel)]="treasurer.firstname" class="form-control form-control-sm modal-input-director-firstname"
+                placeholder="">
+            </div>
+            <div class="form-group col-md-5">
+
+              <label class="col-form-label col-form-label-sm">Last Name
+                <span class="req">*</span>
+              </label>
+
+              <input (input)="validateTreasurer()" [(ngModel)]="treasurer.lastname" class="form-control form-control-sm modal-input-director-lastname"
+                placeholder="">
+            </div>
+          </div>
+
+
+          <div class="address-block local-address" >
+
+            <p style="font-size: 15px;font-weight: bold;">Address</p>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Province
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateTreasurer()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="treasurer.province">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let p of provinces" value="{{p.name}}">{{p.name}}</option>
+                </select>
+
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">District
+                  <span class="req">*</span>
+                </label>
+                <select (change)="validateTreasurer()" class="form-control form-control-sm modal-input-director-country"
+                  [(ngModel)]="treasurer.district">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let d of districts" value="{{d.name}}">{{d.name}}</option>
+                </select>
+
+              </div>
+
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">city
+                  <span class="req">*</span>
+                </label>
+
+
+                <select (change)="validateTreasurer()" class="form-control form-control-sm modal-input-director-address2"
+                  [(ngModel)]="treasurer.city">
+                  <option value="">Choose...</option>
+                  <option *ngFor="let c of cities" value="{{c.name}}">{{c.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+
+                <label class="col-form-label col-form-label-sm">Address 1
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateTreasurer()" [(ngModel)]="treasurer.localAddress1" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+
+              <div class="form-group col-md-4">
+
+                <label class="col-form-label col-form-label-sm">Address 2
+                  <span class="noreq">*</span>
+                </label>
+
+                <input (input)="validateTreasurer()" [(ngModel)]="treasurer.localAddress2" class="form-control form-control-sm modal-input-director-address3"
+                  placeholder="">
+              </div>
+              <div class="form-group col-md-2">
+
+                <label class="col-form-label col-form-label-sm">Postal code
+                  <span class="req">*</span>
+                </label>
+
+                <input (input)="validateTreasurer()" [(ngModel)]="treasurer.postcode" class="form-control form-control-sm modal-input-director-postcode"
+                  placeholder="">
+              </div>
+
+            </div>
+
+          </div>
+
+          
+
+          <div class="form-row">
+              <div class="form-group col-md-4">
+
+                  <label class="col-form-label col-form-label-sm">Designation in the society
+                      <span class="req">*</span>
+                    </label>
+        
+                    <input (input)="validateTreasurer()" [(ngModel)]="treasurer.designation_soc" class="form-control form-control-sm modal-input-director-firstname"
+                      placeholder="">
+                </div>
+            <div class="form-group col-md-4">
+
+              <label class="col-form-label col-form-label-sm">Contact No.
+                <span class="noreq">*</span>
+              </label>
+
+              <input (input)="validateTreasurer()" maxlength="10" pattern="\d{10}" type="tel" [(ngModel)]="treasurer.contact_number" class="form-control form-control-sm modal-input-director-phone"
+                placeholder="">
+              <span class="req-message">Please enter 10 digits contact number</span>
+            </div>
+            
+            
+          </div>
+
+          
+
+          <br />
+          <hr class="form-sep" />
+
+          
+
+          
+
+
+        </div> <!-- END NIC/PASSPORT CHECK CODE-->
+
+
+
+
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end">
+        <!--<button type="button" mdbBtn color="secondary" class="btn btn-sm waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>-->
+
+        
+
+        <button style="background-color: #bbb!important;" (click)="resetDirRecord()" type="button" mdbBtn color="secondary"
+          class="btn btn-previous" mdbWavesEffect>RESET</button>&nbsp;
+
+        <button [disabled]="!validTreasurer" (click)="addTreasurerDataToArray()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-tre"
+          mdbWavesEffect>ADD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

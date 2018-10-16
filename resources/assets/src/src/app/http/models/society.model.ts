@@ -28,6 +28,7 @@ export interface IPresident {
     type: number;
     firstname: string;
     lastname: string;
+    designation_soc: string;
     province: string;
     district: string;
     city: string;
@@ -37,8 +38,14 @@ export interface IPresident {
     nic: string;
     designation_type: number;
     contact_number: number;
+    showEditPaneForPresident: number;
   
   }
+
+  export interface IPresidents {
+    presidents: Array<IPresident>;
+  }
+
   export interface ISecretary {
     id: number;
     type: number;
@@ -46,6 +53,7 @@ export interface IPresident {
     lastname: string;
     province: string;
     district: string;
+    designation_soc: string;
     city: string;
     localAddress1: string;
     localAddress2: string;
@@ -53,7 +61,8 @@ export interface IPresident {
     nic: string;
     designation_type: number;
     contact_number: number;
-  
+    showEditPaneForSecretary: number;
+
   }
   export interface ITreasurer {
     id: number;
@@ -62,6 +71,7 @@ export interface IPresident {
     lastname: string;
     province: string;
     district: string;
+    designation_soc: string;
     city: string;
     localAddress1: string;
     localAddress2: string;
@@ -69,5 +79,6 @@ export interface IPresident {
     nic: string;
     designation_type: number;
     contact_number: number;
+    showEditPaneForTreasurer: number;
   
   }
