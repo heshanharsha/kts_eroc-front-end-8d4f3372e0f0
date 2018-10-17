@@ -51,4 +51,10 @@ export class NameResarvationService {
   isCheckPostfix(data: string): Observable<any> {
     return this.http.get<any>(this.url.getCheckFixDataAPI() + '?hasfix=' + data);
   }
+
+  //----------------sahani--------------
+  getSearchResultSociety(data: ISearch, i: number): Observable<ISearch> {
+    return this.http.post<ISearch>(this.url.getResultSocietyAPI() + (++i), data);
+  }
+
 }

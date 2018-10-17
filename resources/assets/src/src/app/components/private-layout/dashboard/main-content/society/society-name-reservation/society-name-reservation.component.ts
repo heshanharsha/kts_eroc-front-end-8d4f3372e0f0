@@ -114,7 +114,7 @@ export class SocietyNameReservationComponent implements OnInit {
       token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjBiZjNjZWNjNjQ4MWY3ZWYwZWFlNGZmYzJhMjZjMDMwMWFhYTJjY2U2NWVlMmRiZjdkMjg1NjBjYjZlMTM1ODIyYTQ5MGZiMTdjNDhkYmZiIn0'
     };
 
-    this.Resarvation.getSearchResult(searchData, this.current_page)
+    this.Resarvation.getSearchResultSociety(searchData, this.current_page)
       .subscribe(
         req => {
           this.availableData = req['availableData'];

@@ -58,14 +58,15 @@ export class APIConnection {
 /* ---------- thilan 20181010-----------*/
 _societyDataSubmit: string;
 
-
+//------------sahani------------
+_getSocietySEUrlPages: string;
 
 
 
   constructor() {
     //this._apiUrl = `http://220.247.219.173/frontend/API/eRoc/public/`;
     //this._apiUrl = `http://localhost:8000`;
-    this._apiUrl = `http://localhost/kts_eroc-front-end-8d4f3372e0f0/public/`;
+    this._apiUrl = `http://localhost/society/kts_eroc-front-end-8d4f3372e0f0/public/`;
     this._getauthLogin = `${this._apiUrl}/api/v1/eroc/login`;
     this._getauthRegister = `${this._apiUrl}/api/v1/eroc/register`;
     this._getauthlogout = `${this._apiUrl}/api/v1/eroc/logout`;
@@ -125,6 +126,10 @@ _societyDataSubmit: string;
 
     /* ---------- thilan 20181010-----------*/
     this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
+
+    /* ---------- sahani -----------*/
+  
+    this._getSocietySEUrlPages = `${this._apiUrl}/api/v1/eroc/name/search/society?page=`;
 
 
   }
@@ -217,6 +222,7 @@ _societyDataSubmit: string;
     return this._getResubmitDataUrl;
   }
 
+ 
   /* ---------- Udara Madushan -----------*/
   public getIncorporationData() {
     return this._incorporationData;
@@ -300,9 +306,10 @@ _societyDataSubmit: string;
     return this._societyDataSubmit;
   }
 
-
-
-
+  /* ---------- sahani -----------*/
+  public getResultSocietyAPI(): string {
+    return this._getSocietySEUrlPages;
+  }
 
 
 

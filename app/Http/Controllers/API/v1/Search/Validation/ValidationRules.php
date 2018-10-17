@@ -35,6 +35,29 @@ trait ValidationRules
 		$data[] = $this->_checkPrivateImmediateBracket($name,$type); //19
 		return array_values(array_filter($data));
 	}
+    //--sahani-----
+	function checkRulesSociety($name="",$company_id=""){
+		$data = array();
+		$name = trim(strtoupper(preg_replace('/\s+/', ' ',$name)));
+
+		$data[] = $this->_checkSocietyRule($name);
+		$data[] = $this->_checkNameSuitabilityRule($name); //2
+		$data[] = $this->_checkSpecialPermissionNeededWords($name); //3
+		$data[] = $this->_checkPhoneticallySameName($name); //4
+		$data[] = $this->_checkPronouncedWords($name); //7
+		$data[] = $this->_checkCombinationWords($name,$company_id); //8
+		$data[] = $this->_checkUnpronounceableWords($name); //9
+		$data[] = $this->_checkDigitsTogetherWithWords($name); //10
+	//	$data[] = $this->_checkChamberOfCommerce($name,$type); //11
+	//	$data[] = $this->_checkRestrictedWords($name); //12
+		$data[] = $this->_checkGovernmentWords($name); //14
+		$data[] = $this->_checkNameWithoutOmitWords($name); //15
+		$data[] = $this->_checkCompaniesFromGroup($name); //16
+		//$data[] = $this->_checkNameIsPartOfAnExistingCompanyName($name,$company_id); //18
+		//$data[] = $this->_checkPrivateImmediateBracket($name,$type); //19
+		return array_values(array_filter($data));
+	}
+	 //-- end -  sahani-----
 
 	//2.Name Suitability Rules
 	function _checkNameSuitabilityRule($name){
@@ -581,5 +604,16 @@ function _wordcombos ($words) {
 		return $color;
 	}
 
+	//-----sahani-------------
+	function _checkSocietyRule($name){
+		$data = array('status' => 'success', 'message' => 'Name Suitability Rules.');
+		$sWords = "SOCIETY LIMITED";	
+			$pos = strpos($name, $sWords);
+				if ($pos == false) {
+						$data = array('status' => 'fail', 'message' => $sWords.' has to be used.');
+				}
+			
+		return $data;
+	}
 
 }

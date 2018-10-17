@@ -9,4 +9,6 @@ class Society extends Model
     protected $table = 'societies';
 
     protected $primaryKey = "id";
+
+    
 }

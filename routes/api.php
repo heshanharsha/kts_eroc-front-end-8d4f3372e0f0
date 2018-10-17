@@ -25,6 +25,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
     Route::get('eroc/set/Company', 'General\GeneralController@setCompany');
 
     Route::post('eroc/name/search', 'Search\SEOController@showName')->name('search');
+   
+    Route::post('eroc/name/search/society', 'Search\SEOController@showNameSociety')->name('search'); //sahani / society
+
 
         // Name onResavation
     Route::post('eroc/name/receive', 'Search\ReservationController@setName');
