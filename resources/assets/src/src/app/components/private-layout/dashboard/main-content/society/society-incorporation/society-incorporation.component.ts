@@ -7,7 +7,7 @@ import { SecretaryService } from '../../../../../../http/services/secretary.serv
 import { HelperService } from '../../../../../../http/shared/helper.service';
 import { DataService } from '../../../../../../storage/data.service';
 import {  ISecretaryWorkHistoryData } from '../../../../../../http/models/secretary.model';
-import { ISocietyData,IPresident,ISecretary,ITreasurer,IPresidents } from '../../../../../../http/models/society.model';
+import { ISocietyData,IPresident,ISecretary,ITreasurer,IAddit,IMemb } from '../../../../../../http/models/society.model';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -48,7 +48,7 @@ export class SocietyIncorporationComponent implements OnInit {
   //secretary details object to register as a natural person...
   societyDetails: ISocietyData = { name_of_society: null,id: null,place_of_office: null,whole_of_the_objects: null,funds: null,condition_under_which_any: null,
     terms_of_admission: null,fines_and_foreitures: null,mode_of_holding_meetings: null,manner_of_rules: null,investment_of_funds: null,
-    keeping_accounts: null,audit_of_the_accounts: null,annual_returns: null,number_of_members: null,inspection_of_the_books: null,disputes_manner: null,case_of_society: null,email: null,appointment_and_removal_committee: null};
+    keeping_accounts: null,audit_of_the_accounts: null,annual_returns: null,number_of_members: null,inspection_of_the_books: null,disputes_manner: null,case_of_society: null,email: null,appointment_and_removal_committee: null,applicability: ''};
   secretaryWorkHistory: ISecretaryWorkHistoryData = { id: 0, companyName: '', position: '', from: '', to: '', };
 
   enableStep1Submission = false;
@@ -99,6 +99,19 @@ export class SocietyIncorporationComponent implements OnInit {
   treasurerValidationMessage = '';
   validTreasurer = false;
   hideAndshowT = false;
+
+
+  addit: IAddit = { id: 0,showEditPaneForAddit: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  addits = [];
+  additValidationMessage = '';
+  validAddit = false;
+  hideAndshowA = false;
+
+  memb: IMemb = { id: 0,showEditPaneForMemb: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  membs = [];
+  membValidationMessage = '';
+  validMemb = false;
+  hideAndshowM = false;
   
   stepOn = 0;
 
@@ -186,6 +199,7 @@ export class SocietyIncorporationComponent implements OnInit {
     // document.getElementById('div1').style.display = 'none';
     // document.getElementById('div2').style.display = 'none';
     // document.getElementById('div3').style.display = 'none';
+    document.getElementById('div3').style.display = 'none';
     this.name = this.data.storage1['name'];
     this.sinhalaName = this.data.storage1['sinhalaName'];
     this.tamilname = this.data.storage1['tamilname'];
@@ -211,6 +225,14 @@ export class SocietyIncorporationComponent implements OnInit {
 
     $('button.add-tre').on('click', function () {
       $('#tre-modal .close-modal-item').trigger('click');
+    });
+
+    $('button.add-addit').on('click', function () {
+      $('#addit-modal .close-modal-item').trigger('click');
+    });
+
+    $('button.add-memb').on('click', function () {
+      $('#memb-modal .close-modal-item').trigger('click');
     });
 
     $('.stakeholder-type-tab-wrapper .tab').on('click', function () {
@@ -251,6 +273,7 @@ export class SocietyIncorporationComponent implements OnInit {
   }
   show6() {
     document.getElementById('div3').style.display = 'none';
+    this.societyDetails['case_of_society'] =null;
   }
   /*.....above show () functions for the radio buttons....*/
 
@@ -350,6 +373,7 @@ export class SocietyIncorporationComponent implements OnInit {
       appointment_and_removal_committee: this.societyDetails['appointment_and_removal_committee'],
       disputes_manner: this.societyDetails['disputes_manner'],
       case_of_society: this.societyDetails['case_of_society'],
+      applicability: this.societyDetails['applicability'],
       email: this.getEmail(),
       name: this.data.storage1['name'],
       sinhalaName: this.data.storage1['sinhalaName'],
@@ -548,9 +572,19 @@ export class SocietyIncorporationComponent implements OnInit {
       this.societyDetails.disputes_manner 
       //this.societyDetails.case_of_society 
     ) {
+      if(this.societyDetails.applicability === 'true' && this.societyDetails.case_of_society){
       this.enableStep1Submission = true;
+    }
+    else if(this.societyDetails.applicability === 'false'){
+      this.enableStep1Submission = true;
+    }
+    else{
+      this.enableStep1Submission = false;
+    }
       
-    } else {
+      
+    }
+     else {
       this.enableStep1Submission = false;
     }
   }
@@ -795,22 +829,153 @@ addTreasurerDataToArray() {
 const data = {
   id: 0,
   showEditPaneForTreasurer: 0,
-  firstname: this.president['firstname'],
-  lastname: this.president['lastname'],
-  designation_soc: this.president['designation_soc'],
-  province: this.president['province'],
-  district: this.president['district'],
-  city: this.president['city'],
-  localAddress1: this.president['localAddress1'],
-  localAddress2: this.president['localAddress2'],
-  postcode: this.president['postcode'],
-  nic: this.president['nic'],
-  contact_number: this.president['contact_number'],
-  designation_type: 1
+  firstname: this.treasurer['firstname'],
+  lastname: this.treasurer['lastname'],
+  designation_soc: this.treasurer['designation_soc'],
+  province: this.treasurer['province'],
+  district: this.treasurer['district'],
+  city: this.treasurer['city'],
+  localAddress1: this.treasurer['localAddress1'],
+  localAddress2: this.treasurer['localAddress2'],
+  postcode: this.treasurer['postcode'],
+  nic: this.treasurer['nic'],
+  contact_number: this.treasurer['contact_number'],
+  designation_type: 3
 };
 this.treasurers.push(data);
 console.log(this.treasurers);
 }
+
+
+
+validateAddit() {
+
+  if (!
+    (
+    this.addit.nic && this.validateNIC(this.addit.nic) &&
+    this.addit.firstname &&
+    this.addit.lastname &&
+    this.addit.designation_soc &&
+    this.addit.province &&
+    this.addit.district &&
+    this.addit.city &&
+    this.addit.contact_number && this.phonenumber(this.addit.contact_number) &&
+    this.addit.localAddress1 &&
+    this.addit.localAddress2 &&
+    this.addit.postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    this.additValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+    this.validAddit = false;
+
+    return false;
+  } else {
+
+    this.additValidationMessage = '';
+    this.validAddit = true;
+    return true;
+
+  }
+
+
+}
+addAdditDataToArray() {
+const data = {
+  id: 0,
+  showEditPaneForAddit: false,
+  firstname: this.addit['firstname'],
+  lastname: this.addit['lastname'],
+  designation_soc: this.addit['designation_soc'],
+  province: this.addit['province'],
+  district: this.addit['district'],
+  city: this.addit['city'],
+  localAddress1: this.addit['localAddress1'],
+  localAddress2: this.addit['localAddress2'],
+  postcode: this.addit['postcode'],
+  nic: this.addit['nic'],
+  contact_number: this.addit['contact_number'],
+  designation_type: 4
+};
+this.addits.push(data);
+console.log(this.addits);
+console.log(this.addits.length);
+this.addit = { id: 0,showEditPaneForAddit: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+}
+
+
+
+
+validateMemb() {
+
+  if (!
+    (
+    this.memb.nic && this.validateNIC(this.memb.nic) &&
+    this.memb.firstname &&
+    this.memb.lastname &&
+    this.memb.designation_soc &&
+    this.memb.province &&
+    this.memb.district &&
+    this.memb.city &&
+    this.memb.contact_number && this.phonenumber(this.memb.contact_number) &&
+    this.memb.localAddress1 &&
+    this.memb.localAddress2 &&
+    this.memb.postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    this.membValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+    this.validMemb = false;
+
+    return false;
+  } else {
+
+    this.membValidationMessage = '';
+    this.validMemb = true;
+    return true;
+
+  }
+
+
+}
+addMembDataToArray() {
+const data = {
+  id: 0,
+  showEditPaneForMemb: false,
+  firstname: this.memb['firstname'],
+  lastname: this.memb['lastname'],
+  designation_soc: this.memb['designation_soc'],
+  province: this.memb['province'],
+  district: this.memb['district'],
+  city: this.memb['city'],
+  localAddress1: this.memb['localAddress1'],
+  localAddress2: this.memb['localAddress2'],
+  postcode: this.memb['postcode'],
+  nic: this.memb['nic'],
+  contact_number: this.memb['contact_number'],
+  designation_type: 5
+};
+this.membs.push(data);
+console.log(this.membs);
+console.log(this.membs.length);
+this.memb = { id: 0,showEditPaneForMemb: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+}
+
+
+
+
   private validateNIC(nic) {
     if (!nic) {
       return true;
@@ -856,6 +1021,22 @@ console.log(this.treasurers);
       // tslint:disable-next-line:prefer-const
       this.treasurers[index]['showEditPaneForTreasurer'] = index;
       this.hideAndshowT = !this.hideAndshowT;
+      return true;
+    }
+
+    if (userType === 'addit') {
+
+      // tslint:disable-next-line:prefer-const
+      this.addits[index]['showEditPaneForAddit'] = !this.addits[index]['showEditPaneForAddit'];
+      this.hideAndshowA = !this.hideAndshowA;
+      return true;
+    }
+
+    if (userType === 'memb') {
+
+      // tslint:disable-next-line:prefer-const
+      this.membs[index]['showEditPaneForMemb'] = !this.membs[index]['showEditPaneForMemb'];
+      this.hideAndshowM = !this.hideAndshowM;
       return true;
     }
 

@@ -80,7 +80,7 @@ export class NameWithAgreeReservationComponent implements OnInit {
   onSubmit() {
 
     this.data.storage1 = {
-      name: this.name,
+      name: this.name.toUpperCase(),
       sinhalaName: this.getControler.sinhalaName.value,
       tamilname: this.getControler.tamilname.value,
       abreviations: this.getControler.abreviations.value

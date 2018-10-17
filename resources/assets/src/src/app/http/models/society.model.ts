@@ -20,7 +20,8 @@ export interface ISocietyData {
     case_of_society: number;
     email: string;
     appointment_and_removal_committee: number;
-    
+    applicability: string;
+
 }
 
 export interface IPresident {
@@ -80,5 +81,43 @@ export interface IPresident {
     designation_type: number;
     contact_number: number;
     showEditPaneForTreasurer: number;
+  
+  }
+
+  export interface IAddit {
+    id: number;
+    type: number;
+    firstname: string;
+    lastname: string;
+    province: string;
+    district: string;
+    designation_soc: string;
+    city: string;
+    localAddress1: string;
+    localAddress2: string;
+    postcode: string;
+    nic: string;
+    designation_type: number;
+    contact_number: number;
+    showEditPaneForAddit: boolean;
+  
+  }
+
+  export interface IMemb {
+    id: number;
+    type: number;
+    firstname: string;
+    lastname: string;
+    province: string;
+    district: string;
+    designation_soc: string;
+    city: string;
+    localAddress1: string;
+    localAddress2: string;
+    postcode: string;
+    nic: string;
+    designation_type: number;
+    contact_number: number;
+    showEditPaneForMemb: boolean;
   
   }
