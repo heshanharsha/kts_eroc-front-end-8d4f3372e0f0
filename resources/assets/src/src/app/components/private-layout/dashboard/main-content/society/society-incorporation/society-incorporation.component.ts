@@ -15,6 +15,7 @@ import { IncorporationService } from '../../../../../../http/services/incorporat
 import { APIConnection } from '../../../../../../http/services/connections/APIConnection';
 import { SocietyService } from '../../../../../../http/services/society.service';
 import { IDirectors, IDirector, ISecretories, ISecretory, IShareHolders, IShareHolder } from '../../../../../../http/models/stakeholder.model';
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class SocietyIncorporationComponent implements OnInit {
 
   enableStep1Submission = false;
   enableStep2Submission = false;
+  enableStep2SubmissionEdit = false;
   enableWorkHistorySubmission = false;
 
 
@@ -107,7 +109,7 @@ export class SocietyIncorporationComponent implements OnInit {
   validAddit = false;
   hideAndshowA = false;
 
-  memb: IMemb = { id: 0,showEditPaneForMemb: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  memb: IMemb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
   membs = [];
   membValidationMessage = '';
   validMemb = false;
@@ -250,7 +252,15 @@ export class SocietyIncorporationComponent implements OnInit {
     this.hideAndShow = !this.hideAndShow;
   }
 
-  
+  selectStakeHolderType(typ= 0){
+    if(typ==1){
+      this.memb.type = 1;
+    }
+    else if(typ==2){
+      this.memb.type = 2;
+    }
+
+  }
 
 
 
@@ -654,16 +664,59 @@ export class SocietyIncorporationComponent implements OnInit {
   // }
 
   //validate add work history modal...  
-  secretaryValidationStep3() {
-    if (this.secretaryWorkHistory.companyName &&
-      this.secretaryWorkHistory.position &&
-      this.secretaryWorkHistory.from &&
-      this.secretaryWorkHistory.to
-    ) {
-      this.enableWorkHistorySubmission = true;
-    } else {
-      this.enableWorkHistorySubmission = false;
+  resetPresidentRecord() {
+    // tslint:disable-next-line:prefer-const
+    let conf = confirm('Are you sure you want to reset ?');
+
+    if (!conf) {
+      return true;
     }
+    // tslint:disable-next-line:max-line-length
+    this.president = { id: 0,showEditPaneForPresident: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  }
+
+  resetSecretaryRecord() {
+    // tslint:disable-next-line:prefer-const
+    let conf = confirm('Are you sure you want to reset ?');
+
+    if (!conf) {
+      return true;
+    }
+    // tslint:disable-next-line:max-line-length
+    this.secretary= { id: 0,showEditPaneForSecretary: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  }
+
+  resetTreasurerRecord() {
+    // tslint:disable-next-line:prefer-const
+    let conf = confirm('Are you sure you want to reset ?');
+
+    if (!conf) {
+      return true;
+    }
+    // tslint:disable-next-line:max-line-length
+    this.treasurer = { id: 0,showEditPaneForTreasurer: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  }
+
+  resetAdditRecord() {
+    // tslint:disable-next-line:prefer-const
+    let conf = confirm('Are you sure you want to reset ?');
+
+    if (!conf) {
+      return true;
+    }
+    // tslint:disable-next-line:max-line-length
+    this.addit = { id: 0,showEditPaneForAddit: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  }
+
+  resetMembRecord() {
+    // tslint:disable-next-line:prefer-const
+    let conf = confirm('Are you sure you want to reset ?');
+
+    if (!conf) {
+      return true;
+    }
+    // tslint:disable-next-line:max-line-length
+    this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
   }
 
   validatePresident() {
@@ -698,12 +751,15 @@ export class SocietyIncorporationComponent implements OnInit {
 
         this.presidentValidationMessage = '';
         this.validPresident = true;
+        this.enableStep2SubmissionEdit = true;
         return true;
 
       }
 
 
   }
+
+
   addPresidentDataToArray() {
     const data = {
       id: 0,
@@ -722,27 +778,70 @@ export class SocietyIncorporationComponent implements OnInit {
       designation_type: 1
     };
     this.presidents.push(data);
+    this.president = { id: 0,showEditPaneForPresident: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
     console.log(this.presidents);
   }
+
+
+  validatePresidentEdit(i=0) {
+
+    if (!
+      (
+      this.presidents[i].nic && this.validateNIC(this.presidents[i].nic) &&
+      this.presidents[i].firstname &&
+      this.presidents[i].lastname &&
+      this.presidents[i].designation_soc &&
+      this.presidents[i].province &&
+      this.presidents[i].district &&
+      this.presidents[i].city &&
+      this.presidents[i].contact_number && this.phonenumber(this.presidents[i].contact_number) &&
+      this.presidents[i].localAddress1 &&
+      this.presidents[i].localAddress2 &&
+      this.presidents[i].postcode
+
+      
+
+    )
+
+
+    ) {
+
+
+      
+      this.enableStep2SubmissionEdit = false;
+      return false;
+    } else {
+
+      
+      this.enableStep2SubmissionEdit = true;
+      return true;
+
+    }
+
+
+}
   
-  editPresidentDataArray() {
+  editPresidentDataArray(i= 0) {
     const data = {
       id: 0,
       showEditPaneForPresident: 0,
-      firstname: this.president['firstname'],
-      lastname: this.president['lastname'],
-      designation_soc: this.president['designation_soc'],
-      province: this.president['province'],
-      district: this.president['district'],
-      city: this.president['city'],
-      localAddress1: this.president['localAddress1'],
-      localAddress2: this.president['localAddress2'],
-      postcode: this.president['postcode'],
-      nic: this.president['nic'],
-      contact_number: this.president['contact_number'],
+      firstname: this.presidents[i]['firstname'],
+      lastname: this.presidents[i]['lastname'],
+      designation_soc: this.presidents[i]['designation_soc'],
+      province: this.presidents[i]['province'],
+      district: this.presidents[i]['district'],
+      city: this.presidents[i]['city'],
+      localAddress1: this.presidents[i]['localAddress1'],
+      localAddress2: this.presidents[i]['localAddress2'],
+      postcode: this.presidents[i]['postcode'],
+      nic: this.presidents[i]['nic'],
+      contact_number: this.presidents[i]['contact_number'],
       designation_type: 1
     };
-    this.presidents.push(data);
+    
+    this.presidents.splice(i,1,data);
+    this.enableStep2SubmissionEdit = true;
+    this.hideAndshowP = false;
     console.log(this.presidents);
   }
 
@@ -803,6 +902,70 @@ addSecretaryDataToArray() {
     designation_type: 2
   };
   this.secretaries.push(data);
+  this.secretary= { id: 0,showEditPaneForSecretary: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  console.log(this.secretaries);
+}
+
+
+validateSecretaryEdit(i=0) {
+
+  if (!
+    (
+    this.secretaries[i].nic && this.validateNIC(this.secretaries[i].nic) &&
+    this.secretaries[i].firstname &&
+    this.secretaries[i].lastname &&
+    this.secretaries[i].designation_soc &&
+    this.secretaries[i].province &&
+    this.secretaries[i].district &&
+    this.secretaries[i].city &&
+    this.secretaries[i].contact_number && this.phonenumber(this.secretaries[i].contact_number) &&
+    this.secretaries[i].localAddress1 &&
+    this.secretaries[i].localAddress2 &&
+    this.secretaries[i].postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    
+    this.enableStep2SubmissionEdit = false;
+    return false;
+  } else {
+
+    
+    this.enableStep2SubmissionEdit = true;
+    return true;
+
+  }
+
+
+}
+
+editSecretaryDataArray(i= 0) {
+  const data = {
+    id: 0,
+    showEditPaneForSecretary: 0,
+    firstname: this.secretaries[i]['firstname'],
+    lastname: this.secretaries[i]['lastname'],
+    designation_soc: this.secretaries[i]['designation_soc'],
+    province: this.secretaries[i]['province'],
+    district: this.secretaries[i]['district'],
+    city: this.secretaries[i]['city'],
+    localAddress1: this.secretaries[i]['localAddress1'],
+    localAddress2: this.secretaries[i]['localAddress2'],
+    postcode: this.secretaries[i]['postcode'],
+    nic: this.secretaries[i]['nic'],
+    contact_number: this.secretaries[i]['contact_number'],
+    designation_type: 2
+  };
+  
+  this.secretaries.splice(i,1,data);
+  this.enableStep2SubmissionEdit = true;
+  this.hideAndshowS = false;
   console.log(this.secretaries);
 }
 
@@ -864,8 +1027,72 @@ const data = {
   designation_type: 3
 };
 this.treasurers.push(data);
+this.treasurer = { id: 0,showEditPaneForTreasurer: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
 console.log(this.treasurers);
 }
+
+validateTreasurerEdit(i=0) {
+
+  if (!
+    (
+    this.treasurers[i].nic && this.validateNIC(this.treasurers[i].nic) &&
+    this.treasurers[i].firstname &&
+    this.treasurers[i].lastname &&
+    this.treasurers[i].designation_soc &&
+    this.treasurers[i].province &&
+    this.treasurers[i].district &&
+    this.treasurers[i].city &&
+    this.treasurers[i].contact_number && this.phonenumber(this.treasurers[i].contact_number) &&
+    this.treasurers[i].localAddress1 &&
+    this.treasurers[i].localAddress2 &&
+    this.treasurers[i].postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    
+    this.enableStep2SubmissionEdit = false;
+    return false;
+  } else {
+
+    
+    this.enableStep2SubmissionEdit = true;
+    return true;
+
+  }
+
+
+}
+
+editTreasurerDataArray(i= 0) {
+  const data = {
+    id: 0,
+    showEditPaneForTreasurer: 0,
+    firstname: this.treasurers[i]['firstname'],
+    lastname: this.treasurers[i]['lastname'],
+    designation_soc: this.treasurers[i]['designation_soc'],
+    province: this.treasurers[i]['province'],
+    district: this.treasurers[i]['district'],
+    city: this.treasurers[i]['city'],
+    localAddress1: this.treasurers[i]['localAddress1'],
+    localAddress2: this.treasurers[i]['localAddress2'],
+    postcode: this.treasurers[i]['postcode'],
+    nic: this.treasurers[i]['nic'],
+    contact_number: this.treasurers[i]['contact_number'],
+    designation_type: 3
+  };
+  
+  this.treasurers.splice(i,1,data);
+  this.enableStep2SubmissionEdit = true;
+  this.hideAndshowT = false;
+  console.log(this.treasurers);
+}
+
 
 
 
@@ -931,23 +1158,21 @@ this.addit = { id: 0,showEditPaneForAddit: false, type: null,firstname: null, la
 }
 
 
-
-
-validateMemb() {
+validateAdditEdit(i=0) {
 
   if (!
     (
-    this.memb.nic && this.validateNIC(this.memb.nic) &&
-    this.memb.firstname &&
-    this.memb.lastname &&
-    this.memb.designation_soc &&
-    this.memb.province &&
-    this.memb.district &&
-    this.memb.city &&
-    this.memb.contact_number && this.phonenumber(this.memb.contact_number) &&
-    this.memb.localAddress1 &&
-    this.memb.localAddress2 &&
-    this.memb.postcode
+    this.addits[i].nic && this.validateNIC(this.addits[i].nic) &&
+    this.addits[i].firstname &&
+    this.addits[i].lastname &&
+    this.addits[i].designation_soc &&
+    this.addits[i].province &&
+    this.addits[i].district &&
+    this.addits[i].city &&
+    this.addits[i].contact_number && this.phonenumber(this.addits[i].contact_number) &&
+    this.addits[i].localAddress1 &&
+    this.addits[i].localAddress2 &&
+    this.addits[i].postcode
 
     
 
@@ -957,16 +1182,118 @@ validateMemb() {
   ) {
 
 
-    this.membValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
-    this.validMemb = false;
-
+    
+    this.enableStep2SubmissionEdit = false;
     return false;
   } else {
 
-    this.membValidationMessage = '';
-    this.validMemb = true;
+    
+    this.enableStep2SubmissionEdit = true;
     return true;
 
+  }
+
+
+}
+
+editAdditDataArray(i= 0) {
+  const data = {
+    id: 0,
+    showEditPaneForAddit: 0,
+    firstname: this.addits[i]['firstname'],
+    lastname: this.addits[i]['lastname'],
+    designation_soc: this.addits[i]['designation_soc'],
+    province: this.addits[i]['province'],
+    district: this.addits[i]['district'],
+    city: this.addits[i]['city'],
+    localAddress1: this.addits[i]['localAddress1'],
+    localAddress2: this.addits[i]['localAddress2'],
+    postcode: this.addits[i]['postcode'],
+    nic: this.addits[i]['nic'],
+    contact_number: this.addits[i]['contact_number'],
+    designation_type: 4
+  };
+  
+  this.addits.splice(i,1,data);
+  this.enableStep2SubmissionEdit = true;
+  this.hideAndshowA = false;
+  console.log(this.addits);
+}
+
+
+
+
+validateMemb() {
+
+  if(this.memb.type == 1){
+    if (!
+      (
+      this.memb.nic && this.validateNIC(this.memb.nic) && this.validateNICrep(this.memb.nic,'m') &&
+      this.memb.firstname &&
+      this.memb.lastname &&
+      this.memb.designation_soc &&
+      this.memb.province &&
+      this.memb.district &&
+      this.memb.city &&
+      this.memb.contact_number && this.phonenumber(this.memb.contact_number) &&
+      this.memb.localAddress1 &&
+      this.memb.localAddress2 &&
+      this.memb.postcode
+  
+      
+  
+    )
+  
+  
+    ) {
+  
+  
+      this.membValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+      this.validMemb = false;
+  
+      return false;
+    } else {
+  
+      this.membValidationMessage = '';
+      this.validMemb = true;
+      return true;
+  
+    }
+  }
+  if(this.memb.type == 2){
+    if (!
+      (
+      this.memb.passport && 
+      this.memb.firstname &&
+      this.memb.lastname &&
+      this.memb.designation_soc &&
+      this.memb.province &&
+      this.memb.district &&
+      this.memb.city &&
+      this.memb.contact_number && this.phonenumber(this.memb.contact_number) &&
+      this.memb.localAddress1 &&
+      this.memb.localAddress2 &&
+      this.memb.postcode
+  
+      
+  
+    )
+  
+  
+    ) {
+  
+  
+      this.membValidationMessage = 'Please fill all  required fields denoted by asterik(*)';
+      this.validMemb = false;
+  
+      return false;
+    } else {
+  
+      this.membValidationMessage = '';
+      this.validMemb = true;
+      return true;
+  
+    }
   }
 
 
@@ -986,12 +1313,77 @@ const data = {
   postcode: this.memb['postcode'],
   nic: this.memb['nic'],
   contact_number: this.memb['contact_number'],
+  type: this.memb.type,
+  passport: this.memb['passport'],
   designation_type: 5
 };
 this.membs.push(data);
 console.log(this.membs);
 console.log(this.membs.length);
-this.memb = { id: 0,showEditPaneForMemb: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+}
+
+
+validateMembEdit(i=0) {
+
+  if (!
+    (
+    this.membs[i].nic && this.validateNIC(this.membs[i].nic) &&
+    this.membs[i].firstname &&
+    this.membs[i].lastname &&
+    this.membs[i].designation_soc &&
+    this.membs[i].province &&
+    this.membs[i].district &&
+    this.membs[i].city &&
+    this.membs[i].contact_number && this.phonenumber(this.membs[i].contact_number) &&
+    this.membs[i].localAddress1 &&
+    this.membs[i].localAddress2 &&
+    this.membs[i].postcode
+
+    
+
+  )
+
+
+  ) {
+
+
+    
+    this.enableStep2SubmissionEdit = false;
+    return false;
+  } else {
+
+    
+    this.enableStep2SubmissionEdit = true;
+    return true;
+
+  }
+
+
+}
+
+editMembDataArray(i= 0) {
+  const data = {
+    id: 0,
+    showEditPaneForPresident: 0,
+    firstname: this.membs[i]['firstname'],
+    lastname: this.membs[i]['lastname'],
+    designation_soc: this.membs[i]['designation_soc'],
+    province: this.membs[i]['province'],
+    district: this.membs[i]['district'],
+    city: this.membs[i]['city'],
+    localAddress1: this.membs[i]['localAddress1'],
+    localAddress2: this.membs[i]['localAddress2'],
+    postcode: this.membs[i]['postcode'],
+    nic: this.membs[i]['nic'],
+    contact_number: this.membs[i]['contact_number'],
+    designation_type: 5
+  };
+  
+  this.membs.splice(i,1,data);
+  this.enableStep2SubmissionEdit = true;
+  this.hideAndshowM = false;
+  console.log(this.membs);
 }
 
 
@@ -1011,6 +1403,112 @@ this.memb = { id: 0,showEditPaneForMemb: false, type: null,firstname: null, last
     // tslint:disable-next-line:prefer-const
     let phoneno = /^\d{10}$/;
     return inputtxt.match(phoneno);
+  }
+
+  private validateNICrep(ni,ty='') {
+    if (!ni) {
+      return true;
+    }
+    if(ty==='m'){
+      this.membs.forEach( (element) => {
+        if(element.nic = ni){
+          return false;
+        }
+        else{
+          return true;
+        }
+        
+    });
+
+    }
+    if(ty==='p'){
+      this.presidents.forEach( (element) => {
+        if(element.nic = ni){
+          return false;
+        }
+        else{
+          return true;
+        }
+        
+    });
+
+    }
+    if(ty==='s'){
+      this.secretaries.forEach( (element) => {
+        if(element.nic = ni){
+          return false;
+        }
+        else{
+          return true;
+        }
+        
+    });
+
+    }
+    if(ty==='t'){
+      this.treasurers.forEach( (element) => {
+        if(element.nic = ni){
+          return false;
+        }
+        else{
+          return true;
+        }
+        
+    });
+
+    }
+    if(ty==='a'){
+      this.addits.forEach( (element) => {
+        if(element.nic = ni){
+          return false;
+        }
+        else{
+          return true;
+        }
+        
+    });
+
+    }
+    
+  }
+
+
+  deleteRecord(userType, i= 0 ) {
+
+    if (userType === 'p') {
+
+      
+      this.presidents.splice(i,1,);      
+      return true;
+        
+      
+    }
+
+    if (userType === 's') {
+
+      this.secretaries.splice(i,1,);      
+      return true;
+    }
+
+    if (userType === 't') {
+
+      
+      this.treasurers.splice(i,1,);      
+      return true;
+    }
+
+    if (userType === 'a') {
+
+      this.addits.splice(i,1,);      
+      return true;
+    }
+
+    if (userType === 'm') {
+
+      this.membs.splice(i,1,);      
+      return true;
+    }
+
   }
   
 

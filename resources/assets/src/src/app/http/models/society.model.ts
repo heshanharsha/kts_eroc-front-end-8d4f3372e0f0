@@ -104,6 +104,7 @@ export interface IPresident {
   }
 
   export interface IMemb {
+    
     id: number;
     type: number;
     firstname: string;
@@ -119,5 +120,5 @@ export interface IPresident {
     designation_type: number;
     contact_number: number;
     showEditPaneForMemb: boolean;
-  
+    passport:string;
   }
