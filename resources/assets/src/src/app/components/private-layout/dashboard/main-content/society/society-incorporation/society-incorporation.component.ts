@@ -724,6 +724,27 @@ export class SocietyIncorporationComponent implements OnInit {
     this.presidents.push(data);
     console.log(this.presidents);
   }
+  
+  editPresidentDataArray() {
+    const data = {
+      id: 0,
+      showEditPaneForPresident: 0,
+      firstname: this.president['firstname'],
+      lastname: this.president['lastname'],
+      designation_soc: this.president['designation_soc'],
+      province: this.president['province'],
+      district: this.president['district'],
+      city: this.president['city'],
+      localAddress1: this.president['localAddress1'],
+      localAddress2: this.president['localAddress2'],
+      postcode: this.president['postcode'],
+      nic: this.president['nic'],
+      contact_number: this.president['contact_number'],
+      designation_type: 1
+    };
+    this.presidents.push(data);
+    console.log(this.presidents);
+  }
 
   validateSecretary() {
 

@@ -1390,7 +1390,7 @@
             <div class="f1-buttons">
               <button (click)="changeProgressStatuses(0)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
                 Previous</button>
-              <button (click)="submitStakeholers()" [disabled]="!(addits.length == 5 && treasurers.length && secretaries.length && presidents.length)" type="button"
+              <button (click)="changeProgressStatuses(2)" [disabled]="!(addits.length == 5 && treasurers.length && secretaries.length && presidents.length)" type="button"
                 class="btn btn-next">Next <i class="fas fa-forward"></i></button>
             </div>
           </fieldset>
