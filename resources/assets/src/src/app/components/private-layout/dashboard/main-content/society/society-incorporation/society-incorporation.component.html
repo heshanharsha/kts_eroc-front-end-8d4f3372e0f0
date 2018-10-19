@@ -335,7 +335,7 @@
                           <span class="req">*</span>
                         </label>
 
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)"
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validatePresidentEdit(i)"
                           [(ngModel)]="presidents[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
                           placeholder="" value="{{president.firstname}}">
                       </div>
@@ -345,7 +345,7 @@
                           <span class="req">*</span>
                         </label>
 
-                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)"
+                        <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validatePresidentEdit(i)"
                           [(ngModel)]="presidents[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
                           placeholder="" value="{{president.lastname}}">
                       </div>
@@ -409,7 +409,7 @@
                             <span class="req">*</span>
                           </label>
 
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" (input)="validatePresidentEdit(i)"
                             [(ngModel)]="presidents[i].localAddress1" [ngModelOptions]="{standalone: true}"
                             class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
                             value="{{ president.localAddress1}}">
@@ -420,7 +420,7 @@
 
                           <label class="col-form-label col-form-label-sm">Address 2</label>
 
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" (input)="validatePresidentEdit(i)"
                             (input)="validateDirector()" [(ngModel)]="presidents[i].localAddress2"
                             [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
                             placeholder="" value="{{ president.localAddress2}}">
@@ -430,7 +430,7 @@
 
                           <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
 
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10" (input)="validatePresidentEdit(i)"
                             (input)="validateDirector()" [(ngModel)]="presidents[i].postcode"
                             [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
                             placeholder="" value="{{ president.postcode}}">
@@ -453,7 +453,7 @@
                       </div>
                       <div class="form-group col-md-4">
                           <label class="col-form-label col-form-label-sm">Designation in the society</label>
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validatePresidentEdit(i)" [(ngModel)]="presidents[i].designation_soc"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="90" (input)="validatePresidentEdit(i)" [(ngModel)]="presidents[i].designation_soc"
                             [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
                             placeholder="" value="{{president.designation_soc}}">
                         </div>
@@ -559,7 +559,7 @@
                             <span class="req">*</span>
                           </label>
   
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecretaryEdit(i)"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validateSecretaryEdit(i)"
                             [(ngModel)]="secretaries[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
                             placeholder="" value="{{secretary.firstname}}">
                         </div>
@@ -569,7 +569,7 @@
                             <span class="req">*</span>
                           </label>
   
-                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecretaryEdit(i)"
+                          <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validateSecretaryEdit(i)"
                             [(ngModel)]="secretaries[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
                             placeholder="" value="{{secretary.lastname}}">
                         </div>
@@ -633,7 +633,7 @@
                               <span class="req">*</span>
                             </label>
   
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecretaryEdit(i)"
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" (input)="validateSecretaryEdit(i)"
                               [(ngModel)]="secretaries[i].localAddress1" [ngModelOptions]="{standalone: true}"
                               class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
                               value="{{ secretary.localAddress1}}">
@@ -644,7 +644,7 @@
   
                             <label class="col-form-label col-form-label-sm">Address 2</label>
   
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" 
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" 
                               (input)="validateSecretaryEdit(i)" [(ngModel)]="secretaries[i].localAddress2"
                               [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
                               placeholder="" value="{{ secretary.localAddress2}}">
@@ -654,7 +654,7 @@
   
                             <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
   
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" 
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10"
                               (input)="validateSecretaryEdit(i)" [(ngModel)]="secretaries[i].postcode"
                               [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
                               placeholder="" value="{{ secretary.postcode}}">
@@ -677,7 +677,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class="col-form-label col-form-label-sm">Designation in the society</label>
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateSecretaryEdit(i)" [(ngModel)]="secretaries[i].designation_soc"
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="90" (input)="validateSecretaryEdit(i)" [(ngModel)]="secretaries[i].designation_soc"
                               [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
                               placeholder="" value="{{secretary.designation_soc}}">
                           </div>
@@ -782,7 +782,7 @@
                               <span class="req">*</span>
                             </label>
     
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateTreasurerEdit(i)"
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validateTreasurerEdit(i)"
                               [(ngModel)]="treasurers[i].firstname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-firstname"
                               placeholder="" value="{{treasurer.firstname}}">
                           </div>
@@ -792,7 +792,7 @@
                               <span class="req">*</span>
                             </label>
     
-                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateTreasurerEdit(i)"
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="80" (input)="validateTreasurerEdit(i)"
                               [(ngModel)]="treasurers[i].lastname" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-lastname"
                               placeholder="" value="{{treasurer.lastname}}">
                           </div>
@@ -856,7 +856,7 @@
                                 <span class="req">*</span>
                               </label>
     
-                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateTreasurerEdit(i)"
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" (input)="validateTreasurerEdit(i)"
                                 [(ngModel)]="treasurers[i].localAddress1" [ngModelOptions]="{standalone: true}"
                                 class="form-control form-control-sm modal-input-director-localaddress1" placeholder=""
                                 value="{{ treasurer.localAddress1}}">
@@ -867,7 +867,7 @@
     
                               <label class="col-form-label col-form-label-sm">Address 2</label>
     
-                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" 
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="200" 
                                 (input)="validateTreasurerEdit(i)" [(ngModel)]="treasurers[i].localAddress2"
                                 [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address3"
                                 placeholder="" value="{{ treasurer.localAddress2}}">
@@ -877,7 +877,7 @@
     
                               <label class="col-form-label col-form-label-sm">Postal Code <span class="req">*</span></label>
     
-                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" 
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="10" 
                                 (input)="validateTreasurerEdit(i)" [(ngModel)]="treasurers[i].postcode"
                                 [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-postcode"
                                 placeholder="" value="{{ treasurer.postcode}}">
@@ -900,7 +900,7 @@
                           </div>
                           <div class="form-group col-md-4">
                               <label class="col-form-label col-form-label-sm">Designation in the society</label>
-                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateTreasurerEdit(i)" [(ngModel)]="treasurers[i].designation_soc"
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" maxlength="90" (input)="validateTreasurerEdit(i)" [(ngModel)]="treasurers[i].designation_soc"
                                 [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-occupation"
                                 placeholder="" value="{{treasurer.designation_soc}}">
                             </div>
@@ -1218,7 +1218,7 @@
     
                         <div class="form-row">
     
-                          <div class="form-group col-md-6" >
+                          <div class="form-group col-md-6" *ngIf="memb.type == 1 ">
     
                             <label class="col-form-label col-form-label-sm">Nic</label>
     
@@ -1227,6 +1227,15 @@
                               class="form-control form-control-sm modal-input-director-nic" placeholder="" value="{{memb.nic}}"
                               (input)="validateMembEdit(i)">
                             <span class="req-message">Valid NIC required</span>
+                          </div>
+
+                          <div class="form-group col-md-6" *ngIf="memb.type == 2 ">
+
+                            <label class="col-form-label col-form-label-sm">Passport No.</label>
+    
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" [(ngModel)]="membs[i].passport"
+                              [ngModelOptions]="{standalone: true}" (input)="validateMembEdit(i)" class="form-control form-control-sm modal-input-director-passport"
+                              placeholder="" value="{{memb.passport}}">
                           </div>
     
       
@@ -1258,7 +1267,7 @@
     
     
     
-                        <div class="address-block local-address">
+                        <div class="address-block local-address" *ngIf="memb.type == 1 ">
     
     
                           <div class="form-row">
@@ -1344,6 +1353,71 @@
     
                           </div>
     
+                        </div>
+
+                        <div class="address-block foriegn-address" *ngIf="memb.type == 2 ">
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+    
+                              <label class="col-form-label col-form-label-sm">Address Line 1</label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)"
+                                [(ngModel)]="membs[i].localAddress1" [ngModelOptions]="{standalone: true}"
+                                class="form-control form-control-sm modal-input-director-address1" placeholder="" value="{{memb.localAddress1}}">
+                            </div>
+                            <div class="form-group col-md-6">
+    
+                              <label class="col-form-label col-form-label-sm">Address Line 2</label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)" [(ngModel)]="membs[i].localAddress2"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-address2"
+                                placeholder="" value="{{memb.localAddress2}}">
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">City</label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)"
+                                [(ngModel)]="membs[i].city" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-city"
+                                placeholder="" value="{{memb.city}}">
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">State/Region/Province</label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)" [(ngModel)]="membs[i].province"
+                                [ngModelOptions]="{standalone: true}" class="form-control form-control-sm modal-input-director-province"
+                                placeholder="" value="{{memb.province}}">
+                            </div>
+    
+                            <div class="form-group col-md-4">
+    
+                              <label class="col-form-label col-form-label-sm">Postal/ZIP code <span class="req">*</span></label>
+    
+                              <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)"
+                                [(ngModel)]="membs[i].postcode" [ngModelOptions]="{standalone: true}"
+                                class="form-control form-control-sm modal-input-director-postcode" placeholder="" value="{{memb.postcode}}">
+                            </div>
+                          </div>
+    
+                        </div>
+
+                        <div class="form-row" *ngIf="memb.type == 2 ">
+
+                          <div class="form-group col-md-4">
+    
+                            <label class="col-form-label col-form-label-sm">Country
+                              <span class="req">*</span>
+                            </label>
+                            <input [disabled]="processStatus == 'COMPANY_STATUS_REQUEST_TO_RESUBMIT'" (input)="validateMembEdit(i)"
+                                [(ngModel)]="membs[i].country" [ngModelOptions]="{standalone: true}"
+                                class="form-control form-control-sm modal-input-director-postcode" placeholder="" value="{{memb.country}}">
+                            
+    
+    
+                          </div>
                         </div>
     
                         
@@ -1729,6 +1803,7 @@
         <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New President
           <br />
           <span *ngIf="presidentValidationMessage" class="stakeholder-validation">{{ presidentValidationMessage }}</span>
+          <span *ngIf="nicRepMessage" class="stakeholder-validation">{{ nicRepMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
@@ -1920,6 +1995,7 @@
         <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Secretary
           <br />
           <span *ngIf="secretaryValidationMessage" class="stakeholder-validation">{{ secretaryValidationMessage }}</span>
+          <span *ngIf="nicRepMessage" class="stakeholder-validation">{{ nicRepMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
@@ -2112,6 +2188,7 @@
         <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Treasurer
           <br />
           <span *ngIf="treasurerValidationMessage" class="stakeholder-validation">{{ treasurerValidationMessage }}</span>
+          <span *ngIf="nicRepMessage" class="stakeholder-validation">{{ nicRepMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
@@ -2306,6 +2383,7 @@
         <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Office Bearer
           <br />
           <span *ngIf="additValidationMessage" class="stakeholder-validation">{{ additValidationMessage }}</span>
+          <span *ngIf="nicRepMessage" class="stakeholder-validation">{{ nicRepMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
@@ -2499,13 +2577,14 @@
         <h4 class="modal-title w-100" id="myModalLabel" style="text-align:center;color:#f35b3f">Add New Member
           <br />
           <span *ngIf="membValidationMessage" class="stakeholder-validation">{{ membValidationMessage }}</span>
+          <span *ngIf="nicRepMessage" class="stakeholder-validation">{{ nicRepMessage }}</span>
         </h4>
       </div>
       <div class="modal-body">
 
           <div class="stakeholder-type-tab-wrapper">
-              <div (click)="selectStakeHolderType(1)" class="tab local-tab active">Sri Lankan ? </div>
-              <div (click)="selectStakeHolderType(2)" class="tab local-tab">Non Sri Lankan</div>
+              <div (click)="selectMembType(1)" class="tab local-tab active">Sri Lankan ? </div>
+              <div (click)="selectMembType(2)" class="tab local-tab">Non Sri Lankan</div>
             </div>
 
        
@@ -2524,16 +2603,17 @@
               <span class="req-message">Valid NIC required</span>
               
               
+              
             </div>
             <div class="form-group col-md-2" *ngIf="memb.type == 2 ">
 
                 <label class="col-form-label col-form-label-sm">Passport No
                   <span class="req">*</span>
                 </label>
-                <input type="text" maxlength="15" (input)="validateMemb()"
+                <input maxlength="15" (input)="validateMemb()"
                   [(ngModel)]="memb.passport" class="form-control form-control-sm modal-input-director-nic" placeholder="">
                   
-                
+                  <span class="req-message">Passport No required</span>
                 
                 
               </div>
@@ -2556,6 +2636,19 @@
               <input (input)="validateMemb()" maxlength="90" pattern="[a-zA-Z ]*" [(ngModel)]="memb.lastname" class="form-control form-control-sm modal-input-director-lastname"
                 placeholder="">
             </div>
+          </div>
+
+          <div class="form-row" *ngIf="memb.type == 2 ">
+
+            <div class="form-group col-md-6">
+
+              <label class="col-form-label col-form-label-sm">Country
+                <span class="req">*</span>
+              </label>
+              <input (input)="validateMemb()" maxlength="90" [(ngModel)]="memb.country" class="form-control form-control-sm modal-input-director-lastname"
+                placeholder="">
+            </div>
+
           </div>
 
 
@@ -2591,7 +2684,7 @@
               </div>
 
 
-              <div class="form-group col-md-4">
+              <div class="form-group col-md-4" >
 
                 <label class="col-form-label col-form-label-sm">city
                   <span class="req">*</span>

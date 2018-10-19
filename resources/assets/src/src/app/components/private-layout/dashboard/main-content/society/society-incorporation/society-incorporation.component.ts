@@ -84,6 +84,7 @@ export class SocietyIncorporationComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   director: IDirector = { id: 0, showEditPaneForDirector: 0, type: 'local', title: '', firstname: '', lastname: '', province: '', district: '', city: '', localAddress1: '', localAddress2: '', postcode: '', nic: '', passport: '', country: '', share: 0, date: '', occupation: '', phone: '', mobile: '', email: '' };
   president: IPresident = { id: 0,showEditPaneForPresident: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+  
   presidents = [];
   presidentValidationMessage = '';
   validPresident = false;
@@ -109,7 +110,7 @@ export class SocietyIncorporationComponent implements OnInit {
   validAddit = false;
   hideAndshowA = false;
 
-  memb: IMemb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
+  memb: IMemb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,country:null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null }; 
   membs = [];
   membValidationMessage = '';
   validMemb = false;
@@ -252,13 +253,12 @@ export class SocietyIncorporationComponent implements OnInit {
     this.hideAndShow = !this.hideAndShow;
   }
 
-  selectStakeHolderType(typ= 0){
-    if(typ==1){
-      this.memb.type = 1;
-    }
-    else if(typ==2){
-      this.memb.type = 2;
-    }
+  selectMembType(typ= 0){
+    
+    this.memb.type = typ;
+    this.validateMemb();
+    console.log(this.memb.type);
+    
 
   }
 
@@ -673,6 +673,9 @@ export class SocietyIncorporationComponent implements OnInit {
     }
     // tslint:disable-next-line:max-line-length
     this.president = { id: 0,showEditPaneForPresident: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.validatePresident();
+    this.presidentValidationMessage = '';
+    this.nicRepMessage = '';
   }
 
   resetSecretaryRecord() {
@@ -684,6 +687,9 @@ export class SocietyIncorporationComponent implements OnInit {
     }
     // tslint:disable-next-line:max-line-length
     this.secretary= { id: 0,showEditPaneForSecretary: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.validateSecretary();
+    this.secretaryValidationMessage = '';
+    this.nicRepMessage = '';
   }
 
   resetTreasurerRecord() {
@@ -695,6 +701,9 @@ export class SocietyIncorporationComponent implements OnInit {
     }
     // tslint:disable-next-line:max-line-length
     this.treasurer = { id: 0,showEditPaneForTreasurer: 0, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.validateTreasurer();
+    this.treasurerValidationMessage = '';
+    this.nicRepMessage = '';
   }
 
   resetAdditRecord() {
@@ -706,6 +715,9 @@ export class SocietyIncorporationComponent implements OnInit {
     }
     // tslint:disable-next-line:max-line-length
     this.addit = { id: 0,showEditPaneForAddit: false, type: null,firstname: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.validateAddit();
+    this.additValidationMessage = '';
+    this.nicRepMessage = '';
   }
 
   resetMembRecord() {
@@ -716,14 +728,17 @@ export class SocietyIncorporationComponent implements OnInit {
       return true;
     }
     // tslint:disable-next-line:max-line-length
-    this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,country:null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+    this.validateMemb();
+    this.membValidationMessage = '';
+    this.nicRepMessage = '';
   }
 
   validatePresident() {
 
       if (!
         (
-        this.president.nic && this.validateNIC(this.president.nic) &&
+        this.president.nic && this.validateNIC(this.president.nic) && this.validateNICrep(this.president.nic) &&
         this.president.firstname &&
         this.president.lastname &&
         this.president.designation_soc &&
@@ -838,18 +853,26 @@ export class SocietyIncorporationComponent implements OnInit {
       contact_number: this.presidents[i]['contact_number'],
       designation_type: 1
     };
+    if(this.validateNICrepEdit(data.nic,i,'p')){
+      this.presidents.splice(i,1,data);
+      this.enableStep2SubmissionEdit = true;
+      this.hideAndshowP = false;
+      console.log(this.presidents);
+    }
+    else{
+      alert('NIC Already Exist');
+          return false;
+    }
     
-    this.presidents.splice(i,1,data);
-    this.enableStep2SubmissionEdit = true;
-    this.hideAndshowP = false;
-    console.log(this.presidents);
+  
+    
   }
 
   validateSecretary() {
 
     if (!
       (
-      this.secretary.nic && this.validateNIC(this.secretary.nic) &&
+      this.secretary.nic && this.validateNIC(this.secretary.nic) && this.validateNICrep(this.secretary.nic) &&
       this.secretary.firstname &&
       this.secretary.lastname &&
       this.secretary.designation_soc &&
@@ -911,7 +934,7 @@ validateSecretaryEdit(i=0) {
 
   if (!
     (
-    this.secretaries[i].nic && this.validateNIC(this.secretaries[i].nic) &&
+    this.secretaries[i].nic && this.validateNIC(this.secretaries[i].nic) && 
     this.secretaries[i].firstname &&
     this.secretaries[i].lastname &&
     this.secretaries[i].designation_soc &&
@@ -962,11 +985,19 @@ editSecretaryDataArray(i= 0) {
     contact_number: this.secretaries[i]['contact_number'],
     designation_type: 2
   };
-  
-  this.secretaries.splice(i,1,data);
+
+  if(this.validateNICrepEdit(data.nic,i,'s')){
+    this.secretaries.splice(i,1,data);
   this.enableStep2SubmissionEdit = true;
   this.hideAndshowS = false;
   console.log(this.secretaries);
+  }
+  else{
+    alert('NIC Already Exist');
+          return false;
+  }
+  
+  
 }
 
 
@@ -975,7 +1006,7 @@ validateTreasurer() {
 
   if (!
     (
-    this.treasurer.nic && this.validateNIC(this.treasurer.nic) &&
+    this.treasurer.nic && this.validateNIC(this.treasurer.nic) && this.validateNICrep(this.treasurer.nic) &&
     this.treasurer.firstname &&
     this.treasurer.lastname &&
     this.treasurer.designation_soc &&
@@ -1035,7 +1066,7 @@ validateTreasurerEdit(i=0) {
 
   if (!
     (
-    this.treasurers[i].nic && this.validateNIC(this.treasurers[i].nic) &&
+    this.treasurers[i].nic && this.validateNIC(this.treasurers[i].nic) && 
     this.treasurers[i].firstname &&
     this.treasurers[i].lastname &&
     this.treasurers[i].designation_soc &&
@@ -1086,11 +1117,19 @@ editTreasurerDataArray(i= 0) {
     contact_number: this.treasurers[i]['contact_number'],
     designation_type: 3
   };
-  
-  this.treasurers.splice(i,1,data);
+
+  if(this.validateNICrepEdit(data.nic,i,'t')){
+    this.treasurers.splice(i,1,data);
   this.enableStep2SubmissionEdit = true;
   this.hideAndshowT = false;
   console.log(this.treasurers);
+  }
+  else{
+    alert('NIC Already Exist');
+          return false;
+  }
+  
+  
 }
 
 
@@ -1100,7 +1139,7 @@ validateAddit() {
 
   if (!
     (
-    this.addit.nic && this.validateNIC(this.addit.nic) &&
+    this.addit.nic && this.validateNIC(this.addit.nic) && this.validateNICrep(this.addit.nic) &&
     this.addit.firstname &&
     this.addit.lastname &&
     this.addit.designation_soc &&
@@ -1162,7 +1201,7 @@ validateAdditEdit(i=0) {
 
   if (!
     (
-    this.addits[i].nic && this.validateNIC(this.addits[i].nic) &&
+    this.addits[i].nic && this.validateNIC(this.addits[i].nic) && 
     this.addits[i].firstname &&
     this.addits[i].lastname &&
     this.addits[i].designation_soc &&
@@ -1214,10 +1253,18 @@ editAdditDataArray(i= 0) {
     designation_type: 4
   };
   
-  this.addits.splice(i,1,data);
+  if(this.validateNICrepEdit(data.nic,i,'a')){
+    this.addits.splice(i,1,data);
   this.enableStep2SubmissionEdit = true;
   this.hideAndshowA = false;
   console.log(this.addits);
+  }
+  else{
+    alert('NIC Already Exist');
+          return false;
+  }
+  
+  
 }
 
 
@@ -1228,7 +1275,7 @@ validateMemb() {
   if(this.memb.type == 1){
     if (!
       (
-      this.memb.nic && this.validateNIC(this.memb.nic) && this.validateNICrep(this.memb.nic,'m') &&
+      this.memb.nic && this.validateNIC(this.memb.nic) && this.validateNICrep(this.memb.nic) &&
       this.memb.firstname &&
       this.memb.lastname &&
       this.memb.designation_soc &&
@@ -1268,8 +1315,8 @@ validateMemb() {
       this.memb.lastname &&
       this.memb.designation_soc &&
       this.memb.province &&
-      this.memb.district &&
       this.memb.city &&
+      this.memb.country &&
       this.memb.contact_number && this.phonenumber(this.memb.contact_number) &&
       this.memb.localAddress1 &&
       this.memb.localAddress2 &&
@@ -1307,6 +1354,7 @@ const data = {
   designation_soc: this.memb['designation_soc'],
   province: this.memb['province'],
   district: this.memb['district'],
+  country: this.memb['country'],
   city: this.memb['city'],
   localAddress1: this.memb['localAddress1'],
   localAddress2: this.memb['localAddress2'],
@@ -1320,44 +1368,78 @@ const data = {
 this.membs.push(data);
 console.log(this.membs);
 console.log(this.membs.length);
-this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
+this.memb = { id: 0,showEditPaneForMemb: false, type: 1,firstname: null,country: null,passport: null, lastname: null,designation_soc: null, province: null, district: null, city: null, localAddress1: null, localAddress2: null, postcode: null, nic: null, designation_type: null, contact_number: null };
 }
 
 
 validateMembEdit(i=0) {
 
-  if (!
-    (
-    this.membs[i].nic && this.validateNIC(this.membs[i].nic) &&
-    this.membs[i].firstname &&
-    this.membs[i].lastname &&
-    this.membs[i].designation_soc &&
-    this.membs[i].province &&
-    this.membs[i].district &&
-    this.membs[i].city &&
-    this.membs[i].contact_number && this.phonenumber(this.membs[i].contact_number) &&
-    this.membs[i].localAddress1 &&
-    this.membs[i].localAddress2 &&
-    this.membs[i].postcode
-
-    
-
-  )
-
-
-  ) {
-
-
-    
-    this.enableStep2SubmissionEdit = false;
+  if(this.membs[i].type == 1){
+    if (!
+      (
+      this.membs[i].nic && this.validateNIC(this.membs[i].nic) && 
+      this.membs[i].firstname &&
+      this.membs[i].lastname &&
+      this.membs[i].designation_soc &&
+      this.membs[i].province &&
+      this.membs[i].district &&
+      this.membs[i].city &&
+      this.membs[i].contact_number && this.phonenumber(this.membs[i].contact_number) &&
+      this.membs[i].localAddress1 &&
+      this.membs[i].localAddress2 &&
+      this.membs[i].postcode
+  
+      
+  
+    )
+  
+  
+    ) {
+  
+  
+      this.enableStep2SubmissionEdit = false;
     return false;
-  } else {
-
-    
-    this.enableStep2SubmissionEdit = true;
+    } else {
+  
+      this.enableStep2SubmissionEdit = true;
     return true;
-
+  
+    }
   }
+  if(this.membs[i].type == 2){
+    if (!
+      (
+      this.membs[i].passport && 
+      this.membs[i].firstname &&
+      this.membs[i].lastname &&
+      this.membs[i].designation_soc &&
+      this.membs[i].province &&
+      this.membs[i].city &&
+      this.membs[i].country &&
+      this.membs[i].contact_number && this.phonenumber(this.membs[i].contact_number) &&
+      this.membs[i].localAddress1 &&
+      this.membs[i].localAddress2 &&
+      this.membs[i].postcode
+  
+      
+  
+    )
+  
+  
+    ) {
+  
+  
+      this.enableStep2SubmissionEdit = false;
+    return false;
+    } else {
+  
+      this.enableStep2SubmissionEdit = true;
+    return true;
+  
+    }
+  }
+
+  
 
 
 }
@@ -1365,9 +1447,10 @@ validateMembEdit(i=0) {
 editMembDataArray(i= 0) {
   const data = {
     id: 0,
-    showEditPaneForPresident: 0,
+    showEditPaneForMemb: 0,
     firstname: this.membs[i]['firstname'],
     lastname: this.membs[i]['lastname'],
+    country: this.membs[i]['country'],
     designation_soc: this.membs[i]['designation_soc'],
     province: this.membs[i]['province'],
     district: this.membs[i]['district'],
@@ -1376,14 +1459,34 @@ editMembDataArray(i= 0) {
     localAddress2: this.membs[i]['localAddress2'],
     postcode: this.membs[i]['postcode'],
     nic: this.membs[i]['nic'],
+    passport: this.membs[i]['passport'],
+    type: this.membs[i].type,
     contact_number: this.membs[i]['contact_number'],
     designation_type: 5
+
   };
+  if(data.nic){
+    if(this.validateNICrepEdit(data.nic,i,'m')){
+      this.membs.splice(i,1,data);
+    this.enableStep2SubmissionEdit = true;
+    this.hideAndshowM = false;
+    console.log(this.membs);
+    }
+    else{
+      alert('NIC Already Exist');
+            return false;
+    }
+  }
+  else{
+    this.membs.splice(i,1,data);
+    this.enableStep2SubmissionEdit = true;
+    this.hideAndshowM = false;
+    console.log(this.membs);
+  }
+
   
-  this.membs.splice(i,1,data);
-  this.enableStep2SubmissionEdit = true;
-  this.hideAndshowM = false;
-  console.log(this.membs);
+  
+  
 }
 
 
@@ -1405,70 +1508,319 @@ editMembDataArray(i= 0) {
     return inputtxt.match(phoneno);
   }
 
-  private validateNICrep(ni,ty='') {
+
+  nicRepMessage = '';
+  private validateNICrep(ni) {
     if (!ni) {
       return true;
     }
-    if(ty==='m'){
-      this.membs.forEach( (element) => {
-        if(element.nic = ni){
-          return false;
-        }
-        else{
-          return true;
-        }
+    for(let s=0; s<this.secretaries.length; s++){
+      
+      if(this.secretaries[s].nic == ni){
+        console.log('found in s');
+        this.nicRepMessage = 'NIC Already exist';
+        return false;
         
-    });
-
+      }
     }
-    if(ty==='p'){
-      this.presidents.forEach( (element) => {
-        if(element.nic = ni){
-          return false;
-        }
-        else{
-          return true;
-        }
+    for(let s=0; s<this.treasurers.length; s++){
+      
+      if(this.treasurers[s].nic == ni){
+        console.log('found in t');
+        this.nicRepMessage = 'NIC Already exist';
+        return false;
         
-    });
-
+      }
     }
-    if(ty==='s'){
-      this.secretaries.forEach( (element) => {
-        if(element.nic = ni){
-          return false;
-        }
-        else{
-          return true;
-        }
+    for(let s=0; s<this.addits.length; s++){
+      
+      if(this.addits[s].nic == ni){
+        console.log('found in a');
+        this.nicRepMessage = 'NIC Already exist';
+        return false;
         
-    });
-
+      }
     }
-    if(ty==='t'){
-      this.treasurers.forEach( (element) => {
-        if(element.nic = ni){
-          return false;
-        }
-        else{
-          return true;
-        }
+    for(let s=0; s<this.presidents.length; s++){
+      
+      if(this.presidents[s].nic == ni){
+        console.log('found in p');
+        this.nicRepMessage = 'NIC Already exist';
+        return false;
         
-    });
-
+      }
     }
-    if(ty==='a'){
-      this.addits.forEach( (element) => {
-        if(element.nic = ni){
-          return false;
-        }
-        else{
-          return true;
-        }
+    for(let s=0; s<this.membs.length; s++){
+      
+      if(this.membs[s].nic == ni){
+        console.log('found in m');
+        this.nicRepMessage = 'NIC Already exist';
+        return false;
         
-    });
-
+      }
     }
+    
+    
+      console.log('not found');
+      this.nicRepMessage = '';
+      return true;  
+    
+  }
+
+  private validateNICrepEdit(ni,i,t='') {
+    if (!ni && !i && !t) {
+      return true;
+    }
+    if(t==='s'){
+      for(let s=0; s<this.secretaries.length; s++){
+      
+        if(this.secretaries[s].nic == ni && s != i){
+          
+          console.log('found in s');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.treasurers.length; s++){
+        
+        if(this.treasurers[s].nic == ni){
+          console.log('found in t');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.addits.length; s++){
+        
+        if(this.addits[s].nic == ni){
+          console.log('found in a');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.presidents.length; s++){
+        
+        if(this.presidents[s].nic == ni){
+          console.log('found in p');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.membs.length; s++){
+        
+        if(this.membs[s].nic == ni){
+          console.log('found in m');
+          
+          return false;
+          
+        }
+      }
+    }
+    if(t==='p'){
+      for(let s=0; s<this.secretaries.length; s++){
+      
+        if(this.secretaries[s].nic == ni){
+          
+          console.log('found in s');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.treasurers.length; s++){
+        
+        if(this.treasurers[s].nic == ni){
+          console.log('found in t');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.addits.length; s++){
+        
+        if(this.addits[s].nic == ni){
+          console.log('found in a');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.presidents.length; s++){
+        
+        if(this.presidents[s].nic == ni && s != i){
+          console.log('found in p');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.membs.length; s++){
+        
+        if(this.membs[s].nic == ni){
+          console.log('found in m');
+          
+          return false;
+          
+        }
+      }
+    }
+    if(t==='a'){
+      for(let s=0; s<this.secretaries.length; s++){
+      
+        if(this.secretaries[s].nic == ni){
+          
+          console.log('found in s');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.treasurers.length; s++){
+        
+        if(this.treasurers[s].nic == ni){
+          console.log('found in t');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.addits.length; s++){
+        
+        if(this.addits[s].nic == ni && s != i){
+          console.log('found in a');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.presidents.length; s++){
+        
+        if(this.presidents[s].nic == ni){
+          console.log('found in p');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.membs.length; s++){
+        
+        if(this.membs[s].nic == ni){
+          console.log('found in m');
+          
+          return false;
+          
+        }
+      }
+    }
+    if(t==='t'){
+      for(let s=0; s<this.secretaries.length; s++){
+      
+        if(this.secretaries[s].nic == ni){
+          
+          console.log('found in s');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.treasurers.length; s++){
+        
+        if(this.treasurers[s].nic == ni && s != i){
+          console.log('found in t');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.addits.length; s++){
+        
+        if(this.addits[s].nic == ni){
+          console.log('found in a');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.presidents.length; s++){
+        
+        if(this.presidents[s].nic == ni){
+          console.log('found in p');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.membs.length; s++){
+        
+        if(this.membs[s].nic == ni){
+          console.log('found in m');
+          
+          return false;
+          
+        }
+      }
+    }
+    if(t==='m'){
+      for(let s=0; s<this.secretaries.length; s++){
+      
+        if(this.secretaries[s].nic == ni){
+          
+          console.log('found in s');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.treasurers.length; s++){
+        
+        if(this.treasurers[s].nic == ni){
+          console.log('found in t');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.addits.length; s++){
+        
+        if(this.addits[s].nic == ni){
+          console.log('found in a');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.presidents.length; s++){
+        
+        if(this.presidents[s].nic == ni){
+          console.log('found in p');
+          
+          return false;
+          
+        }
+      }
+      for(let s=0; s<this.membs.length; s++){
+        
+        if(this.membs[s].nic == ni && s != i){
+          console.log('found in m');
+          
+          return false;
+          
+        }
+      }
+    }
+    
+    
+    
+      console.log('not found');
+      
+      return true;
+    
+    
+    
+    
     
   }
 

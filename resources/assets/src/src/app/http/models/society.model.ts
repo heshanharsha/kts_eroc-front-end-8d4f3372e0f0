@@ -121,4 +121,5 @@ export interface IPresident {
     contact_number: number;
     showEditPaneForMemb: boolean;
     passport:string;
+    country:string;
   }
