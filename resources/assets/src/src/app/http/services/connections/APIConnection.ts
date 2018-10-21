@@ -66,7 +66,7 @@ _getSocietySEUrlPages: string;
   constructor() {
     //this._apiUrl = `http://220.247.219.173/frontend/API/eRoc/public/`;
     //this._apiUrl = `http://localhost:8000`;
-    this._apiUrl = `http://localhost/kts_eroc-front-end-8d4f3372e0f0/public/`;
+    this._apiUrl = `http://localhost:8080/kts_eroc-front-end-8d4f3372e0f0/public/`;
     this._getauthLogin = `${this._apiUrl}/api/v1/eroc/login`;
     this._getauthRegister = `${this._apiUrl}/api/v1/eroc/register`;
     this._getauthlogout = `${this._apiUrl}/api/v1/eroc/logout`;

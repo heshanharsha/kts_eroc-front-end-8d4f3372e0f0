@@ -388,7 +388,12 @@ export class SocietyIncorporationComponent implements OnInit {
       name: this.data.storage1['name'],
       sinhalaName: this.data.storage1['sinhalaName'],
       tamilname: this.data.storage1['tamilname'],
-      abreviations: this.data.storage1['abreviations']
+      abreviations: this.data.storage1['abreviations'],
+      presidentsArr: this.presidents,
+      secretariesArr: this.secretaries,
+      treasurersArr: this.treasurers,
+      additsArr: this.addits,
+      membsArr: this.membs 
       
     };
 
@@ -398,7 +403,7 @@ export class SocietyIncorporationComponent implements OnInit {
         req => {
           console.log(req['message']);
           console.log("society added sucessfuly!!!");
-          this.changeProgressStatuses(1);
+          this.changeProgressStatuses(2);
           this.data.storage2 = {
             societyid: req['socID'] 
           };
@@ -409,6 +414,8 @@ export class SocietyIncorporationComponent implements OnInit {
       );
 
   }
+
+  
 
 
 

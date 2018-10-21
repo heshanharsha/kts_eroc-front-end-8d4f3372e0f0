@@ -16,8 +16,8 @@ export class SocietyService {
 
 
   // to submit society data...
-  societyDataSubmit(data: ISocietyData): Observable<ISocietyData> {
-    return this.http.post<ISocietyData>(this.url.getSocietyDataSubmit(), data);
+  societyDataSubmit(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyDataSubmit(), data);
   }
 
 
