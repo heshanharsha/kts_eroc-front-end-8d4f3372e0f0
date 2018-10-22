@@ -97,18 +97,18 @@ class SEOController extends Controller
             //         ->first();
            
             $data = Society::select('name')
-            ->Where('name', 'ilike', '%'. $iLikeSearch  .'%')
-                    ->paginate(10);
+            ->Where('name', 'ilike', '%'. $iLikeSearch  .'%')->orWhere('name', '=', $originalWord)->paginate(10);
 					 
             $hasData = Society::select('name')
-                ->when($request, function ($query) use ($request, $originalWord) {
+                ->when($request, function ($query) use ($request, $originalWord ) {
                     $query->where(\DB::raw("TRIM(eroc_societies.name)"), '=', $originalWord);
                 })
                 ->first();
            
             $req = [
                 'available' => is_null($hasData) ? true : false,
-                'data' => is_null($hasData) ? $this->availableNameSociety($request) : array()
+                'data' => is_null($hasData) ? $this->availableNameSociety($request) : array(),
+                'data1' => $originalWord
             ];
 
             $merge = [

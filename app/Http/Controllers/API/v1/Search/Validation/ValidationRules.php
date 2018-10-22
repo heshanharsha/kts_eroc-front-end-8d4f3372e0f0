@@ -38,8 +38,8 @@ trait ValidationRules
     //--sahani-----
 	function checkRulesSociety($name="",$company_id=""){
 		$data = array();
+		
 		$name = trim(strtoupper(preg_replace('/\s+/', ' ',$name)));
-
 		$data[] = $this->_checkSocietyRule($name);
 		$data[] = $this->_checkNameSuitabilityRule($name); //2
 		$data[] = $this->_checkSpecialPermissionNeededWords($name); //3
@@ -607,10 +607,12 @@ function _wordcombos ($words) {
 	//-----sahani-------------
 	function _checkSocietyRule($name){
 		$data = array('status' => 'success', 'message' => 'Name Suitability Rules.');
-		$sWords = "SOCIETY LIMITED";	
+		$sWords = "SOCIETY";
+		$sWords1 = "LIMITED";			
 			$pos = strpos($name, $sWords);
-				if ($pos == false) {
-						$data = array('status' => 'fail', 'message' => $sWords.' has to be used.');
+			$pos1 = strpos($name, $sWords1);
+				if (($pos == false) && ($pos1 == false)) {
+						$data = array('status' => 'fail', 'message' => $sWords.' words has to be used.');
 				}
 			
 		return $data;
