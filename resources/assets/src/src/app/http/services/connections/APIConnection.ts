@@ -60,6 +60,10 @@ _societyDataSubmit: string;
 _societyProfileData: string;
 _societyPay: string;
 
+//----------------heshan------------------//
+_societyGetDownloadUrl: string;
+_societyApplicantGetDownloadUrl: string;
+
 //------------sahani------------
 _getSocietySEUrlPages: string;
 
@@ -130,6 +134,10 @@ _getSocietySEUrlPages: string;
     this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
     this._societyProfileData = `${this._apiUrl}/api/v1/society-profile-load`;
     this._societyPay = `${this._apiUrl}/api/v1/society-pay`;
+
+    /*-------heshan-----------------*/
+    this._societyGetDownloadUrl = `${this._apiUrl}/api/v1/society-view-document`;
+    this._societyApplicantGetDownloadUrl = `${this._apiUrl}/api/v1/society-application-document`;
 
     /* ---------- sahani -----------*/
   
@@ -316,6 +324,15 @@ _getSocietySEUrlPages: string;
 
   public getSocietyPay() {
     return this._societyPay;
+  }
+
+  /* ---------- heshan -----------*/
+  public getSocietyDocumentDownloadAPI() {
+    return this._societyGetDownloadUrl;
+  }
+    
+  public getSocietyApplicationDownloadAPI() {
+    return this._societyApplicantGetDownloadUrl;
   }
 
   /* ---------- sahani -----------*/

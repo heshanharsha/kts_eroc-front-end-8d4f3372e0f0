@@ -101,6 +101,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
     /* ---------------------- thilan -------------------------*/       
     Route::post('/society-data-submit', 'Society\SocietyController@saveSocietyData')->name('society-data-submit');
     Route::post('/society-profile-load', 'Society\SocietyController@loadRegisteredSocietyData')->name('society-profile-load'); 
-    Route::post('/society-pay', 'Society\SocietyController@societyPay')->name('society-pay');      
+    Route::post('/society-pay', 'Society\SocietyController@societyPay')->name('society-pay');
+    
+    /* ---------------------- heshan-------------------------*/
+
+    Route::post('/society-view-document', 'Society\SocietyController@generate_pdf')->name('society-view-document');
+    Route::post('/society-application-document', 'Society\SocietyController@generate_App_pdf')->name('society-application-document');
     
 });

@@ -1487,16 +1487,34 @@
           <fieldset [hidden]="stepOn != 2">
 
             <div class="container download-container">
-              <h3>Document List</h3>
-              <div class="doc-block-wrapper">
-                <div class="doc-block">
-                  <h4>Application Form Download</h4>
-                  <div class="download-application-row">
-                    <div class="download-application-block">Application</div>
-                    <div class="doc-download">
-                      <a [href]="sanitize(downloadLink)" target="_blank" download="doc.pdf" class="btn btn-primary btn-sm download doc-download-link">
-                        <i class="fas fa-cloud-download-alt"></i> Download
-                      </a>
+              
+
+              <div class="container download-container">
+                <h3>Document List</h3>
+                <div class="doc-block-wrapper">
+                  <div class="doc-block">
+                    <h4>Affidavit Form Download</h4>
+                    <div class="download-application-row">
+                      <div class="download-application-block">Affidative</div>
+                      <div class="doc-download">
+                        <button (click)="affidativeDownload()" type="button" class="btn btn-next">Download <i class="fas fa-forward"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="container download-container">
+
+                <div class="doc-block-wrapper">
+                  <div class="doc-block">
+                    <h4>Application Form Download</h4>
+                    <div class="download-application-row">
+                      <div class="download-application-block">Application</div>
+                      <div class="doc-download">
+
+                        <button (click)="societyGeneratePDF()" type="button" class="btn btn-next">Download <i class="fas fa-forward"></i></button>
+                      </div>
                     </div>
                   </div>
                 </div>

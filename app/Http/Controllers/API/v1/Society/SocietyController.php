@@ -10,6 +10,7 @@ use App\Address;
 use App\SocietyMember;
 use App\Setting;
 use App\Http\Helper\_helper;
+use PDF;
 
 class SocietyController extends Controller
 {
@@ -312,6 +313,100 @@ public function societyPay(Request $request){
             'status' =>true,
         ], 200);
     }
+}
+
+//for view society pdf...
+public function generate_pdf() {
+    $pdf = PDF::loadView('society-forms/affidavit');
+    return $pdf->stream('affidavit.pdf');
+}
+
+
+public function generate_App_pdf(Request $request) {
+
+       $societyid = $request->societyid;
+       $societyRecord = Society::where('id',$societyid)->first();
+
+       $president = SocietyMember::where('society_id',$societyid)->where('designation_type',1)->first();
+       $presidentAddRecord = Address::where('id',$president->address_id)->first();
+
+       $secretary = SocietyMember::where('society_id',$societyid)->where('designation_type',2)->first();
+       $secretaryAddRecord = Address::where('id',$secretary->address_id)->first();
+
+       $treasurer = SocietyMember::where('society_id',$societyid)->where('designation_type',3)->first();
+       $treasurerAddRecord = Address::where('id',$treasurer->address_id)->first();
+
+       $memberlist=array();
+    
+       $members = SocietyMember::where('society_id',$societyid)->where('designation_type',4)->limit(5)->get();
+       foreach($members as $member)
+       {   
+           $imember = array();
+
+           $memberAddRecord = Address::where('id',$member->address_id)->first();
+
+           $imember['m_full_name'] = $member->first_name." ".$member->last_name;
+           $imember['m_nic'] = $member->nic;
+           $imember['m_personal_address'] = $memberAddRecord->address1." ".$memberAddRecord->address2." ".$memberAddRecord->city;
+           $imember['m_contact_number'] = $member->contact_no;
+           array_push($memberlist,$imember);
+       }
+  
+       
+       $fieldset = array(
+            'english_name_of_society' =>$societyRecord->name,
+            'name_of_society' => $societyRecord->name_of_society, 
+            'place_of_office' => $societyRecord->place_of_office, 
+            'whole_of_the_objects' => $societyRecord->whole_of_the_objects,
+            'funds' => $societyRecord->funds, 
+            'terms_of_admission' => $societyRecord->terms_of_admission, 
+            'condition_under_which_any' => $societyRecord->condition_under_which_any,
+            'fines_and_foreitures' => $societyRecord->fines_and_foreitures, 
+            'mode_of_holding_meetings' => $societyRecord->mode_of_holding_meetings, 
+            'manner_of_rules' => $societyRecord->manner_of_rules, 
+            'investment_of_funds' => $societyRecord->investment_of_funds, 
+            'keeping_accounts' => $societyRecord->keeping_accounts, 
+            'audit_of_the_accounts' => $societyRecord->audit_of_the_accounts,
+            'annual_returns' => $societyRecord->annual_returns,
+            'number_of_members' => $societyRecord->number_of_members,
+            'inspection_of_the_books' => $societyRecord->inspection_of_the_books,
+            'appointment_and_removal_committee' => $societyRecord->appointment_and_removal_committee,
+            'disputes_manner' => $societyRecord->disputes_manner, 
+            'case_of_society' => $societyRecord->case_of_society,
+            'p_full_name' => $president->first_name." ".$president->last_name,
+            'p_nic' => $president->nic,
+            'p_personal_address' =>$presidentAddRecord->address1." ".$presidentAddRecord->address2." ".$presidentAddRecord->city,
+            'p_contact_number' => $president->contact_no,
+            's_full_name' => $secretary->first_name." ".$secretary->last_name,
+            's_nic' => $secretary->nic,
+            's_personal_address' =>$secretaryAddRecord->address1." ".$secretaryAddRecord->address2." ".$secretaryAddRecord->city,
+            's_contact_number' => $secretary->contact_no,
+            't_full_name' => $treasurer->first_name." ".$treasurer->last_name,
+            't_nic' => $treasurer->nic,
+            't_personal_address' =>$treasurerAddRecord->address1." ".$treasurerAddRecord->address2." ".$treasurerAddRecord->city,
+            't_contact_number' => $treasurer->contact_no,
+            'member'=>$memberlist,
+            
+
+        );
+    
+    
+    
+    
+     $pdf = PDF::loadView('society-forms/application',$fieldset);
+
+    //  return response()->json([
+    //     'message' => 'Sucess!!!',
+    //     'user' => true, // to check applicant already registered as roc user...  
+    //     'status' =>true,
+    //     'data'   => $fieldset,
+    // ], 200);
+
+    $pdf->stream('application.pdf');
+
+    // $pdf = PDF::loadView('society-forms/society-application');
+    // return $pdf->stream('society-application.pdf');
+    //,$presidentdetails
 }
 
 

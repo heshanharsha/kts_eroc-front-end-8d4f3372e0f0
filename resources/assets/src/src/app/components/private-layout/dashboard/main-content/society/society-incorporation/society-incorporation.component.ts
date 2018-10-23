@@ -619,70 +619,38 @@ export class SocietyIncorporationComponent implements OnInit {
       this.enableStep1Submission = false;
     }
   }
+// download functions
+  affidativeDownload() {
+    this.societyService.getPDFService().subscribe(
+      response => {
+          this.helper.download(response);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    
+  }
+
+  societyGeneratePDF(societyid) {
+    societyid=societyid=this.data.storage2['societyid'];
+    this.societyService.getApplicationPDFService(societyid)
+      .subscribe(
+        response => {
+          //console.log(response['data']);
+          this.helper.download(response);
+        },
+        error => {
+          console.log('Heshan');
+          
+        }
+      );
+  }
+
+// end download functions
 
 
-
-
-
-
-  // secretaryValidationStep2() {
-  //   if (
-  //     this.secretaryDetails.pQualification &&
-  //     this.secretaryDetails.eQualification &&
-  //     this.secretaryDetails.wExperience &&
-  //     // (this.workHistory != null) &&
-  //     (typeof this.workHistory != "undefined" && this.workHistory != null && this.workHistory.length != null && this.workHistory.length > 0) &&//for check aray is not null
-  //     (this.secretaryDetails.isUnsoundMind === 'yes' || this.secretaryDetails.isUnsoundMind === 'no') &&
-  //     (this.secretaryDetails.isInsolventOrBankrupt === 'yes' || this.secretaryDetails.isInsolventOrBankrupt === 'no') &&
-  //     (this.secretaryDetails.isCompetentCourt === 'yes' || this.secretaryDetails.isCompetentCourt === 'no')
-  //   ) {
-  //     this.enableStep2Submission = true;
-
-  //     if (this.secretaryDetails.isInsolventOrBankrupt === 'yes') {
-  //       if (this.secretaryDetails.reason1) {
-  //         this.enableStep2Submission = true;
-  //         if (this.secretaryDetails.isCompetentCourt === 'yes') {
-  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-  //             this.enableStep2Submission = true;
-  //           } else {
-  //             this.enableStep2Submission = false;
-  //           }
-  //         } else if (this.secretaryDetails.isCompetentCourt === 'no') {
-  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-  //             this.enableStep2Submission = false;
-  //           } else {
-  //             this.enableStep2Submission = true;
-  //           }
-  //         }
-  //       } else {
-  //         this.enableStep2Submission = false;
-  //       }
-
-  //     } else if (this.secretaryDetails.isInsolventOrBankrupt === 'no') {
-  //       if (this.secretaryDetails.reason1) {
-  //         this.enableStep2Submission = false;
-  //       } else {
-  //         this.enableStep2Submission = true;
-
-  //         if (this.secretaryDetails.isCompetentCourt === 'yes') {
-  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-  //             this.enableStep2Submission = true;
-  //           } else {
-  //             this.enableStep2Submission = false;
-  //           }
-  //         } else if (this.secretaryDetails.isCompetentCourt === 'no') {
-  //           if (this.secretaryDetails.reason2 === 'pardoned' || this.secretaryDetails.reason2 === 'appeal') {
-  //             this.enableStep2Submission = false;
-  //           } else {
-  //             this.enableStep2Submission = true;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     this.enableStep2Submission = false;
-  //   }
-  // }
+  
 
   //validate add work history modal...  
   resetPresidentRecord() {

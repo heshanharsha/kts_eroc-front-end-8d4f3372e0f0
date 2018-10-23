@@ -25,9 +25,22 @@ export class SocietyService {
     return this.http.post(this.url.getSocietyProfileData(), data);
   }
 
-  // to secretary payments...
+  // to society payments...
   societyPay(data: any): Observable<any> {
     return this.http.post(this.url.getSocietyPay(), data);
+  }
+
+  // to download affidavit pdf...
+  getDocumenttoServer(token: string) {
+    return this.http.post(this.url.getSocietyDocumentDownloadAPI(), { token: token }, { responseType: 'arraybuffer' });
+  }
+
+  getPDFService() {
+    return this.http.post(this.url.getSocietyDocumentDownloadAPI(),{},{ responseType: 'arraybuffer' });
+  }
+
+  getApplicationPDFService(societyid): Observable<any> {
+    return this.http.post(this.url.getSocietyApplicationDownloadAPI(), { societyid: societyid }, { responseType: 'arraybuffer' });
   }
 
 
