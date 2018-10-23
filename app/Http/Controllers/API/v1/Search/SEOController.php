@@ -96,7 +96,7 @@ class SEOController extends Controller
             // $pvdata = Company::select('name')
             //         ->first();
            
-            $data = Society::select('name')
+            $data = Society::select('name','status')
             ->Where('name', 'ilike', '%'. $iLikeSearch  .'%')->orWhere('name', '=', $originalWord)->paginate(10);
 					 
             $hasData = Society::select('name')

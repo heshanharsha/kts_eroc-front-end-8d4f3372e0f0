@@ -70,41 +70,11 @@ export class SocietyNameReservationComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private societyService: SocietyService) {
       
-      this.loggedinUserEmail = localStorage.getItem('currentUser');
-      this.loggedinUserEmail = this.loggedinUserEmail.replace(/^"(.*)"$/, '$1');
-      this.loadSecretaryProfileCard(this.loggedinUserEmail);
+      
 
     }
 
-    loadSecretaryProfileCard(loggedUsr) {
-      const data = {
-        loggedInUser: loggedUsr,
-      };
-      this.societyService.societyProfile(data)
-        .subscribe(
-          req => {
-            if (req['data']) {
-              if (req['data']['society']) {
-                for (let i in req['data']['secretary']) {
-                  const data1 = {
-                    id: req['data']['society'][i]['id'],
-                    name: req['data']['society'][i]['name'],
-                    type_id: req['data']['society'][i]['type_id'],
-                    created_at: req['data']['society'][i]['created_at'],
-                    status: req['data']['society'][i]['value'],
-                    statuskey: req['data']['society'][i]['status'],
-                  };
-                  this.registeredSocieties.push(data1);
-                }
-              }
-              
-            }
-          },
-          error => {
-            console.log(error);
-          }
-        );
-    }
+    
 
   ngOnInit() {
     this.setPage(10);

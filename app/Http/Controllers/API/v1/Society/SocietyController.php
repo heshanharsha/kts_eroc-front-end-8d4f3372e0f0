@@ -9,10 +9,18 @@ use App\User;
 use App\Address;
 use App\SocietyMember;
 use App\Setting;
+use App\Http\Helper\_helper;
 
 class SocietyController extends Controller
 {
+    use _helper;
     public function saveSocietyData (Request $request){
+        if($request->input('approval_need')){
+            $typeId = 1;
+        }
+        else{
+            $typeId = 0;
+        }
 
         $peopleId = User::where('email', $request->input('email'))->value('id');
 
@@ -40,7 +48,7 @@ class SocietyController extends Controller
         $society->name = $request->input('name');
         $society->name_si = $request->input('sinhalaName');
         $society->name_ta = $request->input('tamilname');
-        $society->type_id = 1;
+        $society->type_id = $typeId;
         $society->abbreviation_desc = $request->input('abreviations');
         $society->status = $this->settings('SOCIETY_PROCESSING','key')->id;
         $society->save();
@@ -274,7 +282,7 @@ public function loadRegisteredSocietyData(Request $request){
 
         $society = Society::leftJoin('settings','societies.status','=','settings.id')
                     ->where('societies.created_by',$loggedUserId)
-                    ->get(['societies.id','societies.name','societies.type_id','societies.created_at','settings.key as status','settings.value as value']);
+                    ->get(['societies.id','societies.name','societies.name_si','societies.name_ta','societies.abbreviation_desc','societies.type_id','societies.created_at','settings.key as status','settings.value as value']);
       
         
        
@@ -287,6 +295,22 @@ public function loadRegisteredSocietyData(Request $request){
                             )
             ], 200);
         }
+    }
+}
+
+// for individual society payments...
+public function societyPay(Request $request){
+    if(isset($request)){
+        $socId = $request->socId;
+        $societyPay =  array(
+            'status'    => $this->settings('SOCIETY_PENDING','key')->id
+        );
+        Society::where('id',  $socId)->update($societyPay);
+        
+        return response()->json([
+            'message' => 'Payment Successful.',
+            'status' =>true,
+        ], 200);
     }
 }
 

@@ -1464,7 +1464,7 @@
             <div class="f1-buttons">
               <button (click)="changeProgressStatuses(0)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
                 Previous</button>
-              <button (click)="societyDataSubmit()"  type="button"
+              <button (click)="areYouSureYes()"  type="button"
                 class="btn btn-next">Next <i class="fas fa-forward"></i></button>
             </div>
             <!-- [disabled]="!(addits.length == 5 && treasurers.length && secretaries.length && presidents.length)" -->
@@ -1667,6 +1667,7 @@
                 Previous</button>
               <button (click)="changeProgressStatuses(4)" type="button" class="btn btn-next">Next
                 <i class="fas fa-forward"></i></button>
+                <!-- (click)="gotoPay()" -->
             </div>
 
 
@@ -1677,20 +1678,16 @@
           <fieldset class="{{stepOn}}" [hidden]="stepOn != 4">
 
             <div class="alert alert-warning" role="alert">
-
               <p>
                 <small>For registration of individuals as Company Secretaries :Rs 5,000.00</small>
               </p>
               <p>
                 <small>Follow the guidelines to payment process</small>.</p>
             </div>
-
-
-
             <div class="f1-buttons">
               <button (click)="changeProgressStatuses(3)" type="button" class="btn btn-previous"><i class="fas fa-backward"></i>
                 Previous</button>
-              <button (click)="changeProgressStatuses(5)" type="button" class="btn btn-submit">PAY</button>
+              <button (click)="areYouSurePayYes()" type="button" class="btn btn-submit">PAY</button>
             </div>
           </fieldset>
           <!--end of fifth step-->
@@ -2846,6 +2843,35 @@
         <button [disabled]="!validMemb" (click)="addMembDataToArray()" type="button" mdbBtn color="secondary" class="btn btn-sm relative waves-light add-new-stakeholder add-memb"
           mdbWavesEffect>ADD</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="payment-success-wrapper pay-block-wrapper" *ngIf="blockBackToForm">
+  <div class="payment-success-body">
+    <div class="header">
+      <h2>Are you sure ?</h2>
+    </div>
+    <div class="body">
+      <p>You won't be able to revert this</p>
+    </div>
+    <div class="footer">
+      <button class="btn btn-success" (click)="societyDataSubmit()">Yes</button>
+      <button class="btn btn-danger" (click)="areYouSureNo()">No</button>
+    </div>
+  </div>
+</div>
+<div class="payment-success-wrapper pay-block-wrapper" *ngIf="blockPayment">
+  <div class="payment-success-body">
+    <div class="header">
+      <h2>Are you sure ?</h2>
+    </div>
+    <div class="body">
+      <p>You won't be able to revert this</p>
+    </div>
+    <div class="footer">
+      <button class="btn btn-success" (click)="societyPay()">Yes</button>
+      <button class="btn btn-danger" (click)="areYouSurePayNo()">No</button>
     </div>
   </div>
 </div>

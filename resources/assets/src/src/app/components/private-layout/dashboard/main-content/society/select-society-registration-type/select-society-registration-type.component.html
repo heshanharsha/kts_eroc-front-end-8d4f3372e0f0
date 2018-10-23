@@ -42,6 +42,67 @@
     </div>
   </div>
   <hr>
+  <div>
+    <div class="row mb-5">
+      <div class="col-xl-12">
+        <div *ngFor="let item of registeredSocieties; let i = index" class="dashboard-box">
+          <ul class="dashboard-box-list">
+            <li>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="job-listing">
+                    <div class="job-listing-details">
+                      
+                      <div class="job-listing-description">
+                        <h3 class="job-listing-title">
+                          <strong>
+                            <a>
+                              {{item.name}}
+                            </a>
+                          </strong>
+                        </h3>
+                        <div class="job-listing-footer">
+                          <ul>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-business"></i>
+                                id: {{item.id}}
+                              </small>
+                            </li>
+                            <li>
+                              <small>
+                                <i class="icon-material-outline-access-time"></i>
+                                created at: {{item.created_at}}
+                              </small>
+                            </li>
+                          </ul>
+                        </div>
+                        <small>
+                          <strong>{{item.status}}</strong>
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md">
+                  <div class="float-right">
+                    <button (click)="continueRegistration(item.statuskey,item.id,item.name,item.name_si,item.name_ta,item.abbreviation_desc,item.type_id)" class="button button-sliding-icon ripple-effect">
+                      <i class="icon-material-outline-arrow-right-alt"></i>
+                      <strong style="color:white;">{{item.status}}</strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
 </section>
 
 

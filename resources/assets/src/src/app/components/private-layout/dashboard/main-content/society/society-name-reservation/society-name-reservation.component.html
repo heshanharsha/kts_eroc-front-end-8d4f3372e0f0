@@ -123,8 +123,8 @@
                   </h3>
                 </div>
                 <div class="mr-auto" style="text-align: right;font-weight: bold;">
-                  <small class="dashboard-status-button yellow"  *ngIf="result.registration_no == null">Under Incorporation</small>
-                  <b *ngIf="result.registration_no != null">{{ result.registration_no }}</b>
+                  <small class="dashboard-status-button yellow"  *ngIf="result.status == 77">SOCIETY_PROCESSING</small>
+                  <b *ngIf="result.status == 78">SOCIETY_PENDING</b>
                 </div>
               </div>
             </div>

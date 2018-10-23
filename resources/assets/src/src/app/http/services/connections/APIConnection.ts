@@ -58,6 +58,7 @@ export class APIConnection {
 /* ---------- thilan 20181010-----------*/
 _societyDataSubmit: string;
 _societyProfileData: string;
+_societyPay: string;
 
 //------------sahani------------
 _getSocietySEUrlPages: string;
@@ -128,6 +129,7 @@ _getSocietySEUrlPages: string;
     /* ---------- thilan 20181010-----------*/
     this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
     this._societyProfileData = `${this._apiUrl}/api/v1/society-profile-load`;
+    this._societyPay = `${this._apiUrl}/api/v1/society-pay`;
 
     /* ---------- sahani -----------*/
   
@@ -310,6 +312,10 @@ _getSocietySEUrlPages: string;
 
   public getSocietyProfileData() {
     return this._societyProfileData;
+  }
+
+  public getSocietyPay() {
+    return this._societyPay;
   }
 
   /* ---------- sahani -----------*/

@@ -16,6 +16,7 @@ import { APIConnection } from '../../../../../../http/services/connections/APICo
 import { SocietyService } from '../../../../../../http/services/society.service';
 import { IDirectors, IDirector, ISecretories, ISecretory, IShareHolders, IShareHolder } from '../../../../../../http/models/stakeholder.model';
 import { forEach } from '@angular/router/src/utils/collection';
+import { SocietyDataService } from '../society-data.service';
 
 
 @Component({
@@ -29,6 +30,9 @@ export class SocietyIncorporationComponent implements OnInit {
   tamilname: string;
   abreviations: string;
   needApproval: boolean;
+  enableGoToPay = false;
+  blockBackToForm = false;
+  blockPayment = false;
 
   @ViewChild('content') content: ElementRef;
 
@@ -181,7 +185,17 @@ export class SocietyIncorporationComponent implements OnInit {
   hideAndShow = false;
   
 
-  constructor(public data: DataService, private helper: HelperService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) {
+  constructor(public data: DataService, private helper: HelperService,private SocData: SocietyDataService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) 
+  {
+
+    this.data.storage2 = {societyid: this.SocData.getSocId }; // for continue upload process after canceled...
+    if (!(this.data.storage2['societyid'] === undefined)) {
+      this.downloadLink = this.SocData.getDownloadlink;
+      //this.loadUploadedFile(this.socId);
+      this.changeProgressStatuses(3);
+      this.SocData.socId = undefined;
+      this.SocData.downloadlink = undefined;
+    }
 
 
     this.nic = route.snapshot.paramMap.get('nic');
@@ -189,12 +203,9 @@ export class SocietyIncorporationComponent implements OnInit {
 
     this.loggedinUserEmail = localStorage.getItem('currentUser');
     this.loggedinUserEmail = this.loggedinUserEmail.replace(/^"(.*)"$/, '$1');
+    
+    
 
-
-
-    // if (this.secretaryDetails.isCompetentCourt === 'no') {
-    //   this.secretaryDetails.reason2 = undefined
-    // }
 
   }
 
@@ -391,6 +402,7 @@ export class SocietyIncorporationComponent implements OnInit {
       sinhalaName: this.data.storage1['sinhalaName'],
       tamilname: this.data.storage1['tamilname'],
       abreviations: this.data.storage1['abreviations'],
+      approval_need: this.needApproval,
       presidentsArr: this.presidents,
       secretariesArr: this.secretaries,
       treasurersArr: this.treasurers,
@@ -1920,6 +1932,50 @@ editMembDataArray(i= 0) {
       return true;
     }
 
+  }
+
+  // for the payment process...
+  societyPay() {
+    const data = {
+      socId: this.data.storage2['societyid'],
+      socType: 'individual',
+    };
+    this.societyService.societyPay(data)
+      .subscribe(
+        req => {
+          if (req['status']) {
+            alert('Payment Successful');
+            this.router.navigate(['dashboard/selectregistersociety']);
+          }
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  gotoPay() {
+    if (typeof this.application !== 'undefined' && this.application != null && this.application.length != null && this.application.length > 0) {
+      this.enableGoToPay = true;
+    } else {
+      this.enableGoToPay = false;
+    }
+
+  }
+
+  // for confirm to going document download step...
+  areYouSureYes() {
+    this.blockBackToForm = true;
+  }
+  areYouSureNo() {
+    this.blockBackToForm = false;
+  }
+  // for confirm to complete payment step...
+  areYouSurePayYes() {
+    this.blockPayment = true;
+  }
+  areYouSurePayNo() {
+    this.blockPayment = false;
   }
   
 

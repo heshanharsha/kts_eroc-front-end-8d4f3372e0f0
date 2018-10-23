@@ -25,6 +25,11 @@ export class SocietyService {
     return this.http.post(this.url.getSocietyProfileData(), data);
   }
 
+  // to secretary payments...
+  societyPay(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyPay(), data);
+  }
+
 
 
 
