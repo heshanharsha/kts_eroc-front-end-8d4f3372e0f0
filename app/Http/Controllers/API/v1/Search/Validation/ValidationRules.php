@@ -612,7 +612,7 @@ function _wordcombos ($words) {
 			$pos = strpos($name, $sWords);
 			$pos1 = strpos($name, $sWords1);
 				if (($pos == false) && ($pos1 == false)) {
-						$data = array('status' => 'fail', 'message' => $sWords.' words has to be used.');
+						$data = array('status' => 'fail', 'message' => 'SOCIETY and LIMITED both words has to be used.');
 				}
 			
 		return $data;

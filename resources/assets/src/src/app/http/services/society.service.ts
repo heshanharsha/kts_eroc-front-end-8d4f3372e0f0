@@ -20,6 +20,11 @@ export class SocietyService {
     return this.http.post(this.url.getSocietyDataSubmit(), data);
   }
 
+  // to load registered secretary profile card...
+  societyProfile(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyProfileData(), data);
+  }
+
 
 
 

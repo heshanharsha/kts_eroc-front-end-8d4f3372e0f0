@@ -12,6 +12,7 @@ import { SnotifyService } from 'ng-snotify';
 })
 export class NameWithAgreeReservationComponent implements OnInit {
   name: string;
+  needApproval: boolean;
   postfixname: string;
   companyType: number;
   applicantName: string;
@@ -34,6 +35,7 @@ export class NameWithAgreeReservationComponent implements OnInit {
     this.name = this.data.storage['name'];
     this.postfixname = this.data.storage['postfix'];
     this.companyType = this.data.storage['comType'];
+    this.needApproval = this.data.storage['needApproval'];
     
     this.nameResForm = this.formBuilder.group({
       sinhalaName: [null],
@@ -83,8 +85,8 @@ export class NameWithAgreeReservationComponent implements OnInit {
       name: this.name.toUpperCase(),
       sinhalaName: this.getControler.sinhalaName.value,
       tamilname: this.getControler.tamilname.value,
-      abreviations: this.getControler.abreviations.value
-      
+      abreviations: this.getControler.abreviations.value,
+      needApproval: this.needApproval
     };
     console.log(this.data.storage1);
     this.route.navigate(['/dashboard/societyincorporation']);

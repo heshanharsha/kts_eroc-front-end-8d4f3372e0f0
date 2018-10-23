@@ -28,7 +28,7 @@ export class SocietyIncorporationComponent implements OnInit {
   sinhalaName: string;
   tamilname: string;
   abreviations: string;
-  
+  needApproval: boolean;
 
   @ViewChild('content') content: ElementRef;
 
@@ -207,6 +207,8 @@ export class SocietyIncorporationComponent implements OnInit {
     this.sinhalaName = this.data.storage1['sinhalaName'];
     this.tamilname = this.data.storage1['tamilname'];
     this.abreviations = this.data.storage1['abreviations'];
+    this.needApproval = this.data.storage1['needApproval'];
+    console.log(this.needApproval);
 
   }
 

@@ -129,6 +129,7 @@ class SEOController extends Controller
 
         return $this->getfailsValidation($result);
     }
+    
  // --------end ----sahani--------------------
     function seo_friendly_url($string){
         $string = str_replace(array('[\', \']'), '', $string);

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { SnotifyService } from 'ng-snotify';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { SocietyService } from '../../../../../../http/services/society.service';
 
 @Component({
   selector: 'app-society-name-reservation',
@@ -26,6 +27,7 @@ export class SocietyNameReservationComponent implements OnInit {
   companyTypes: ICompanyType;
 
   public current_page: number;
+  registeredSocieties = [];
 
   public availableData: IHasMeny;
   public notHasData: IHasMeny;
@@ -54,6 +56,7 @@ export class SocietyNameReservationComponent implements OnInit {
 
   public selected = this.criterias[0].value; // default selected 1 element for a criteria
 
+  loggedinUserEmail: any;
 
   constructor(
     private router: Router,
@@ -64,8 +67,43 @@ export class SocietyNameReservationComponent implements OnInit {
     private data: DataService,
     private general: GeneralService,
     private snotifyService: SnotifyService,
-    private spinner: NgxSpinnerService) { 
+    private spinner: NgxSpinnerService,
+    private societyService: SocietyService) {
+      
+      this.loggedinUserEmail = localStorage.getItem('currentUser');
+      this.loggedinUserEmail = this.loggedinUserEmail.replace(/^"(.*)"$/, '$1');
+      this.loadSecretaryProfileCard(this.loggedinUserEmail);
 
+    }
+
+    loadSecretaryProfileCard(loggedUsr) {
+      const data = {
+        loggedInUser: loggedUsr,
+      };
+      this.societyService.societyProfile(data)
+        .subscribe(
+          req => {
+            if (req['data']) {
+              if (req['data']['society']) {
+                for (let i in req['data']['secretary']) {
+                  const data1 = {
+                    id: req['data']['society'][i]['id'],
+                    name: req['data']['society'][i]['name'],
+                    type_id: req['data']['society'][i]['type_id'],
+                    created_at: req['data']['society'][i]['created_at'],
+                    status: req['data']['society'][i]['value'],
+                    statuskey: req['data']['society'][i]['status'],
+                  };
+                  this.registeredSocieties.push(data1);
+                }
+              }
+              
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
     }
 
   ngOnInit() {
@@ -185,6 +223,15 @@ export class SocietyNameReservationComponent implements OnInit {
     this.ngOnInit();
   }
 
+  needMinisterApproval(){
+    for(let data of this.notHasData.data){
+      if(data.message == 'SOCIETY and LIMITED both words has to be used.'){
+        return true;
+      }      
+    }
+    return false;
+  }
+
   onResavation() {
 
     this.Resarvation.isCheckPostfix(this.companyType.value)
@@ -203,8 +250,10 @@ export class SocietyNameReservationComponent implements OnInit {
     this.data.storage = {
       name: this.searchName,
       postfix: this.postfixName,
-      comType: this.comType
+      comType: this.comType,
+      needApproval: this.needMinisterApproval()
     };
+    console.log(this.data.storage);
 
     this.router.navigate(['namewithagreesociety']);
   }

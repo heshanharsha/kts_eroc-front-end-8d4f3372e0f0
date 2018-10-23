@@ -57,6 +57,7 @@ export class APIConnection {
 
 /* ---------- thilan 20181010-----------*/
 _societyDataSubmit: string;
+_societyProfileData: string;
 
 //------------sahani------------
 _getSocietySEUrlPages: string;
@@ -66,7 +67,7 @@ _getSocietySEUrlPages: string;
   constructor() {
     //this._apiUrl = `http://220.247.219.173/frontend/API/eRoc/public/`;
     //this._apiUrl = `http://localhost:8000`;
-    this._apiUrl = `http://localhost:8080/kts_eroc-front-end-8d4f3372e0f0/public/`;
+    this._apiUrl = `http://localhost/kts_eroc-front-end-8d4f3372e0f0/public/`;
     this._getauthLogin = `${this._apiUrl}/api/v1/eroc/login`;
     this._getauthRegister = `${this._apiUrl}/api/v1/eroc/register`;
     this._getauthlogout = `${this._apiUrl}/api/v1/eroc/logout`;
@@ -126,6 +127,7 @@ _getSocietySEUrlPages: string;
 
     /* ---------- thilan 20181010-----------*/
     this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
+    this._societyProfileData = `${this._apiUrl}/api/v1/society-profile-load`;
 
     /* ---------- sahani -----------*/
   
@@ -304,6 +306,10 @@ _getSocietySEUrlPages: string;
   /* ---------- thilan 20181010-----------*/
   public getSocietyDataSubmit() {
     return this._societyDataSubmit;
+  }
+
+  public getSocietyProfileData() {
+    return this._societyProfileData;
   }
 
   /* ---------- sahani -----------*/

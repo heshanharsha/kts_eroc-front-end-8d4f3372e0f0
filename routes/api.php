@@ -99,6 +99,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
 
 
     /* ---------------------- thilan -------------------------*/       
-    Route::post('/society-data-submit', 'Society\SocietyController@saveSocietyData')->name('society-data-submit');       
+    Route::post('/society-data-submit', 'Society\SocietyController@saveSocietyData')->name('society-data-submit');
+    Route::post('/society-profile-load', 'Society\SocietyController@loadRegisteredSocietyData')->name('society-profile-load');       
     
 });

@@ -8,6 +8,7 @@ use App\Society;
 use App\User;
 use App\Address;
 use App\SocietyMember;
+use App\Setting;
 
 class SocietyController extends Controller
 {
@@ -41,6 +42,7 @@ class SocietyController extends Controller
         $society->name_ta = $request->input('tamilname');
         $society->type_id = 1;
         $society->abbreviation_desc = $request->input('abreviations');
+        $society->status = $this->settings('SOCIETY_PROCESSING','key')->id;
         $society->save();
         $societyid = $society->id;
 
@@ -262,4 +264,33 @@ class SocietyController extends Controller
 
 
     }
+
+
+    // for load individual and firm registered secretary data to profile card...
+public function loadRegisteredSocietyData(Request $request){
+    if($request){
+        $loggedUserEmail = $request->input('loggedInUser');
+        $loggedUserId = User::where('email', $loggedUserEmail)->value('id');
+
+        $society = Society::leftJoin('settings','societies.status','=','settings.id')
+                    ->where('societies.created_by',$loggedUserId)
+                    ->get(['societies.id','societies.name','societies.type_id','societies.created_at','settings.key as status','settings.value as value']);
+      
+        
+       
+        if($society){
+            return response()->json([
+                'message' => 'Sucess!!!',
+                'status' =>true,
+                'data'   => array(
+                                'society'     => $society                      
+                            )
+            ], 200);
+        }
+    }
 }
+
+
+}
+
+
