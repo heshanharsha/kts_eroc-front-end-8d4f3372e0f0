@@ -1586,13 +1586,13 @@
                       <label for="af" class="upload-wrapper btn btn-primary btn-sm download">
                         <i class="fas fa-cloud-upload-alt"></i> Upload
                       </label>
-                      <input style="display:block;position: fixed;top:-100000px" id="af" type="file" (change)="fileUpload($event,'none','applicationUpload'); gotoPay();"
+                      <input style="display:block;position: fixed;top:-100000px" id="af" type="file" (change)="fileUpload($event,'none','applicationUpload')"
                         placeholder="Upload file" accept=".pdf">
                     </div>
                   </div>
                   <div class="col-12 uploaded-doc" *ngFor="let item of application; let i = index">
                     <span><i class="fas fa-file-pdf"></i></span>{{item.pdfname}}
-                    <button class="button red button-sm" (click)="fileDelete(item.id,'applicationUpload',i); gotoPay();">
+                    <button class="button red button-sm" (click)="fileDelete(item.id,'applicationUpload',i)">
                       <i class="fas fa-trash-alt"></i> Delete
                     </button>
                     <button class="button blue button-sm " (click)="ngOnDownload(item.token)">
@@ -1614,13 +1614,13 @@
                       <label for="cf" class="upload-wrapper btn btn-primary btn-sm download">
                         <i class="fas fa-cloud-upload-alt"></i> Upload
                       </label>
-                      <input style="display:block;position: fixed;top:-100000px" id="cf" type="file" (change)="fileUpload($event,'none','approvalUpload'); gotoPay();"
+                      <input style="display:block;position: fixed;top:-100000px" id="cf" type="file" (change)="fileUpload($event,'none','approvalUpload')"
                         placeholder="Upload file" accept=".pdf">
                     </div>
                   </div>
                   <div class="col-12 uploaded-doc" *ngFor="let item of approvalUploadList; let i = index">
                     <span><i class="fas fa-file-pdf"></i></span>{{item.pdfname}}
-                    <button class="button red button-sm" (click)="fileDelete(item.id,'approvalUpload',i); gotoPay();">
+                    <button class="button red button-sm" (click)="fileDelete(item.id,'approvalUpload',i)">
                       <i class="fas fa-trash-alt"></i> Delete
                     </button>
                     <button class="button blue button-sm " (click)="ngOnDownload(item.token)">
@@ -1646,13 +1646,13 @@
                       <label for="af{{member.id}}" class="upload-wrapper btn btn-primary btn-sm download">
                         <i class="fas fa-cloud-upload-alt"></i> Upload
                       </label>
-                      <input style="display:block;position: fixed;top:-100000px" id="af{{member.id}}" type="file" (change)="fileUpload($event,member.id,'affidavitUpload'); gotoPay();"
+                      <input style="display:block;position: fixed;top:-100000px" id="af{{member.id}}" type="file" (change)="fileUpload($event,member.id,'affidavitUpload')"
                         placeholder="Upload file" accept=".pdf">
                     </div>
                   </div>
                   <div class="col-12 uploaded-doc" *ngIf="affidavitUploadList[member.id]">
                     <span><i class="fas fa-file-pdf"></i></span>{{affidavitUploadList[member.id].pdfname}}
-                    <button class="button red button-sm" (click)="fileDelete(affidavitUploadList[member.id].id,'affidavitUpload',member.id); gotoPay();">
+                    <button class="button red button-sm" (click)="fileDelete(affidavitUploadList[member.id].id,'affidavitUpload',member.id)">
                       <i class="fas fa-trash-alt"></i> Delete
                     </button>
                     <button class="button blue button-sm " (click)="ngOnDownload(affidavitUploadList[member.id].token)">

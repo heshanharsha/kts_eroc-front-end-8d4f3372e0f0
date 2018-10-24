@@ -373,13 +373,13 @@ export class SocietyIncorporationComponent implements OnInit {
             };
             if (docType === 'applicationUpload') {
               this.application.push(datas);
-              this.gotoPay();
             } else if (docType === 'affidavitUpload') {
               this.affidavitUploadList[description]=datas;
             } else if (docType === 'approvalUpload') {
               this.approvalUploadList.push(datas);
             } 
             this.spinner.hide();
+            this.gotoPay();
             this.description1 = '';
             this.description2 = '';
             this.description3 = '';
@@ -424,6 +424,7 @@ export class SocietyIncorporationComponent implements OnInit {
                 }
               }
               this.gotoPay();
+              console.log(this.affidavitUploadList);
             }
             
             
@@ -448,8 +449,6 @@ export class SocietyIncorporationComponent implements OnInit {
           this.application = [];
           this.approvalUploadList = [];
           this.loadUploadedFile();
-          console.log(this.affidavitUploadList);
-          this.gotoPay();
           this.spinner.hide();
         }
       },
@@ -1975,9 +1974,12 @@ editMembDataArray(i= 0) {
     if(this.needApproval==false){
       let x = 0;
       for(let item of this.affidavitUploadList){
-        
-        x =x +1;
-
+        if(item){
+          x =x +1;
+        }
+        else{
+          continue;
+        }       
       }
       if(this.application.length==1 && this.approvalUploadList.length ==1 && x==8){
         this.enableGoToPay = true;
@@ -1993,9 +1995,13 @@ editMembDataArray(i= 0) {
     else{
       let x = 0;
       for(let item of this.affidavitUploadList){
+        if(item){
+          x =x +1;
+        }
+        else{
+          continue;
+        }
         
-        x =x +1;
-
       }
       if(this.application.length==1 && x==8){
         this.enableGoToPay = true;
