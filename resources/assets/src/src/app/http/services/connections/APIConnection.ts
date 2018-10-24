@@ -59,6 +59,8 @@ export class APIConnection {
 _societyDataSubmit: string;
 _societyProfileData: string;
 _societyPay: string;
+_societyUpload: string;
+_societyMemberData: string;
 
 //----------------heshan------------------//
 _societyGetDownloadUrl: string;
@@ -134,6 +136,8 @@ _getSocietySEUrlPages: string;
     this._societyDataSubmit = `${this._apiUrl}/api/v1/society-data-submit`;
     this._societyProfileData = `${this._apiUrl}/api/v1/society-profile-load`;
     this._societyPay = `${this._apiUrl}/api/v1/society-pay`;
+    this._societyUpload = `${this._apiUrl}/api/v1/society-upload-pdf`;
+    this._societyMemberData = `${this._apiUrl}/api/v1/society-member-data-load`;
 
     /*-------heshan-----------------*/
     this._societyGetDownloadUrl = `${this._apiUrl}/api/v1/society-view-document`;
@@ -324,6 +328,14 @@ _getSocietySEUrlPages: string;
 
   public getSocietyPay() {
     return this._societyPay;
+  }
+
+  public getSocietyFileUploadUrl() {
+    return this._societyUpload;
+  }
+
+  public getSocietyMemberData() {
+    return this._societyMemberData;
   }
 
   /* ---------- heshan -----------*/

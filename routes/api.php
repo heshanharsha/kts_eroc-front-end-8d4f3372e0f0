@@ -98,10 +98,12 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
     Route::post('/secretary-view-document', 'Secretary\SecretaryController@getDocumentSecretary')->name('secretary-view-document');
 
 
-    /* ---------------------- thilan -------------------------*/       
+    /* ---------------------- thilan -------------------------*/      
     Route::post('/society-data-submit', 'Society\SocietyController@saveSocietyData')->name('society-data-submit');
     Route::post('/society-profile-load', 'Society\SocietyController@loadRegisteredSocietyData')->name('society-profile-load'); 
     Route::post('/society-pay', 'Society\SocietyController@societyPay')->name('society-pay');
+    Route::post('/society-upload-pdf', 'Society\SocietyController@societyUploadPdf')->name('society-upload-pdf');
+    Route::post('/society-member-data-load', 'Society\SocietyController@societyMemberLoad')->name('society-member-data-load');
     
     /* ---------------------- heshan-------------------------*/
 

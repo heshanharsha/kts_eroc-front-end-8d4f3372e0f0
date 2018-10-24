@@ -9,8 +9,12 @@ use App\User;
 use App\Address;
 use App\SocietyMember;
 use App\Setting;
+use App\SocietyDocument;
+use App\Documents;
+use App\DocumentsGroup;
 use App\Http\Helper\_helper;
 use PDF;
+
 
 class SocietyController extends Controller
 {
@@ -407,6 +411,91 @@ public function generate_App_pdf(Request $request) {
     // $pdf = PDF::loadView('society-forms/society-application');
     // return $pdf->stream('society-application.pdf');
     //,$presidentdetails
+}
+
+// main 8 members load societyMemberLoad
+public function societyMemberLoad(Request $request){
+
+    if(isset($request)){
+        $socID = $request->input('societyid');
+        $members = SocietyMember::where('society_id',$socID)->limit(8)->get();
+
+
+        if($members){
+            return response()->json([
+                'message' => 'Sucess!!!',
+                'status' =>true,
+                'data'   => array(
+                                'member'     => $members                      
+                            )
+            ], 200);
+        }
+    }
+
+}
+
+
+//for upload secretary individual pdf...
+public function societyUploadPdf(Request $request){
+
+    if(isset($request)){
+
+    $fileName =  uniqid().'.pdf';
+    $token = md5(uniqid());
+
+    $socId = $request->socId;
+    $docType = $request->docType;
+    $pdfName = $request->filename;
+
+    $path = 'society/'.$socId;
+    $path=  $request->file('uploadFile')->storeAs($path,$fileName,'sftp');
+
+
+    $docId;
+    if($docType=='applicationUpload'){
+        $docIdArray = DocumentsGroup::leftJoin('documents','document_groups.id','=','documents.document_group_id')
+                                       ->where('document_groups.request_type','SOCIETY')		
+                                       ->where('documents.name','Application')
+                                       ->get(['documents.id']);
+    $docId = $docIdArray[0]['id'];
+    }elseif($docType=='affidavitUpload'){
+        $docIdArray = DocumentsGroup::leftJoin('documents','document_groups.id','=','documents.document_group_id')
+                                       ->where('document_groups.request_type','SOCIETY')		
+                                       ->where('documents.name','Affidavit')
+                                       ->get(['documents.id']);
+    $docId = $docIdArray[0]['id'];   
+    }elseif($docType=='approvalUpload'){
+        $docIdArray = DocumentsGroup::leftJoin('documents','document_groups.id','=','documents.document_group_id')
+                                       ->where('document_groups.request_type','SOCIETY')		
+                                       ->where('documents.name','Approval Letter')
+                                       ->get(['documents.id']);
+    $docId = $docIdArray[0]['id'];  
+    }
+   
+    $socDoc = new SocietyDocument;
+    $socDoc->document_id = $docId;
+    $socDoc->society_id = $socId;
+    $socDoc->name = $pdfName;
+    $socDoc->description = $request->description;
+    $socDoc->file_token = $token;
+    $socDoc->path = $path;
+    $socDoc->status =  $this->settings('DOCUMENT_PENDING','key')->id;
+    $socDoc->save();
+    
+    $socdocId = $socDoc->id;
+
+      return response()->json([
+        'message' => 'File uploaded successfully.',
+        'status' =>true,
+        'name' =>basename($path),
+        'doctype' =>$docType,
+        'docid' =>$socdocId, // for delete pdf...
+        'token' =>$token,
+        'pdfname' =>$pdfName,
+        ], 200);
+
+    }
+
 }
 
 

@@ -73,9 +73,10 @@ export class SocietyIncorporationComponent implements OnInit {
   downloadLink: string;
   secId: string;
   application = [];
-  eCertificateUploadList = [];
-  pCertificateUploadList = [];
-  experienceUploadList = [];
+  affidavitUploadList = [];
+  approvalUploadList = [];
+  mainMembers = [];
+ 
   description1: string;
   description2: string;
   description3: string;
@@ -187,15 +188,20 @@ export class SocietyIncorporationComponent implements OnInit {
 
   constructor(public data: DataService, private helper: HelperService,private SocData: SocietyDataService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) 
   {
-
-    this.data.storage2 = {societyid: this.SocData.getSocId }; // for continue upload process after canceled...
+    // for continue upload process after canceled...
+    if(this.SocData.getSocId){
+      this.data.storage2 = {societyid: this.SocData.getSocId }; 
     if (!(this.data.storage2['societyid'] === undefined)) {
       this.downloadLink = this.SocData.getDownloadlink;
+      this.mainMembers = this.SocData.getMembArray;
+      console.log(this.mainMembers);
       //this.loadUploadedFile(this.socId);
       this.changeProgressStatuses(3);
       this.SocData.socId = undefined;
       this.SocData.downloadlink = undefined;
     }
+    }
+    
 
 
     this.nic = route.snapshot.paramMap.get('nic');
@@ -325,43 +331,71 @@ export class SocietyIncorporationComponent implements OnInit {
     return this.progress;
   }
 
+  // for uplaod secretary pdf files...
+  fileUpload(event, description, docType) {
 
-  // loadSecretaryData(nic) {
-  //   const data = {
-  //     nic: nic,
-  //   };
-    
-  //   // load secretary data from the server
-  //   this.secretaryService.secretaryData(data)
-  //     .subscribe(
-  //       req => {
-  //         this.societyDetails.name_of_society = req['data']['secretaryTitle'];
-  //         this.societyDetails.place_of_office = req['data']['secretary']['first_name'];
-  //         this.societyDetails.whole_of_the_objects = req['data']['secretary']['last_name'];
-  //         this.societyDetails.funds = req['data']['secretary']['other_name'];
-  //         this.societyDetails.terms_of_admission = req['data']['secretaryAddress']['address1'];
-  //         this.societyDetails.condition_under_which_any = req['data']['secretaryAddress']['address2'];
-  //         this.societyDetails.fines_and_foreitures = req['data']['secretaryAddress']['city'];
-  //         this.societyDetails.mode_of_holding_meetings = req['data']['secretaryAddress']['district'];
-  //         this.societyDetails.manner_of_rules = req['data']['secretaryAddress']['province'];
-  //         this.societyDetails.investment_of_funds = req['user'];
-  //         this.societyDetails.audit_of_the_accounts = req['data']['secretaryAddress']['district'];
-  //         this.societyDetails.annual_returns = req['data']['secretaryAddress']['province'];
-  //         this.societyDetails.number_of_members = req['user'];
-  //         this.societyDetails.inspection_of_the_books = req['data']['secretaryAddress']['district'];
-  //         this.societyDetails.disputes_manner = req['data']['secretaryAddress']['province'];
-  //         this.societyDetails.case_of_society = req['user'];
-          
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      let fileSize = fileList[0].size;
+      let filetype = fileList[0].type;
+      if (fileSize > 1024 * 1024 * 4) { // 4mb restriction
+        alert('File size should be less than 4 MB');
+        return false;
+      }
+      if (!filetype.match('application/pdf')) {
+        alert('Please upload pdf files only');
+        return false;
+      }
+
+      let formData: FormData = new FormData();
+
+      formData.append('uploadFile', file, file.name);
+      formData.append('docType', docType);
+      formData.append('socId', this.data.storage2['societyid']);
+      formData.append('description', description);
+      formData.append('filename', file.name);
+
+      let headers = new HttpHeaders();
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+
+      let uploadurl = this.url.getSocietyFileUploadUrl();
+      this.spinner.show();
+
+      this.httpClient.post(uploadurl, formData, { headers: headers })
+        .subscribe(
+          (data: any) => {
+            const datas = {
+              id: data['docid'],
+              name: data['name'],
+              token: data['token'],
+              pdfname: data['pdfname'],
+            };
+            if (docType === 'applicationUpload') {
+              this.application.push(datas);
+              this.gotoPay();
+            } else if (docType === 'affidavitUpload') {
+              this.affidavitUploadList[description]=datas;
+            } else if (docType === 'approvalUpload') {
+              this.approvalUploadList.push(datas);
+            } 
+            this.spinner.hide();
+            this.description1 = '';
+            this.description2 = '';
+            this.description3 = '';
+          },
+          error => {
+            console.log(error);
+            this.spinner.hide();
+          }
+        );
+    }
 
 
-  //         //console.log(this.nicStatus);
-  //         console.log(req['data']['secretaryTitle']);
 
-  //         this.societyValidationStep1();
-  //       }
-  //     );
-
-  // }
+  }
+  
   email ='';
   
   getEmail(){
@@ -460,109 +494,40 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
 
-  // for uplaod secretary pdf files...
-  fileUpload(event, description, docType) {
-
-    let fileList: FileList = event.target.files;
-
-    if (fileList.length > 0) {
-
-      let file: File = fileList[0];
-
-      let fileSize = fileList[0].size;
-
-      if (fileSize > 1024 * 1024 * 4) { // 4mb restriction
-        alert('File size should be less than 4 MB');
-        return false;
-      }
-
-
-      let formData: FormData = new FormData();
-
-      formData.append('uploadFile', file, file.name);
-      formData.append('docType', docType);
-      formData.append('secId', this.secId);
-      formData.append('description', description);
-
-      let headers = new HttpHeaders();
-      headers.append('Content-Type', 'multipart/form-data');
-      headers.append('Accept', 'application/json');
-
-      let uploadurl = this.url.getSecretaryNaturalFileUploadUrl();
-      //console.log(uploadurl);
-
-      this.spinner.show();
-
-      this.httpClient.post(uploadurl, formData, { headers: headers })
-        .subscribe(
-          (data: any) => {
-
-            const datas = {
-              id: data['docid'],
-              name: data['name'],
-              token: data['token'],
-
-            };
-
-
-            //console.log(data);
-            if (docType === 'applicationUpload') {
-              this.application.push(datas);
-            } else if (docType === 'eCertificateUpload') {
-              this.eCertificateUploadList.push(datas);
-            } else if (docType === 'pCertificateUpload') {
-              this.pCertificateUploadList.push(datas);
-            } else if (docType === 'experienceUpload') {
-              this.experienceUploadList.push(datas);
-            }
-            this.spinner.hide();
-            this.description1 = '';
-            this.description2 = '';
-            this.description3 = '';
-          },
-          error => {
-            console.log(error);
-            this.spinner.hide();
-          }
-        );
-    }
-
-
-
-  }
+  
 
   // for delete the uploaded pdf from the database...
-  fileDelete(docId, docType, index) {
+  // fileDelete(docId, docType, index) {
 
-    const data = {
-      documentId: docId,
-    };
-    this.spinner.show();
-    this.secretaryService.secretaryDeleteUploadedPdf(data)
-      .subscribe(
-        rq => {
-          this.spinner.hide();
+  //   const data = {
+  //     documentId: docId,
+  //   };
+  //   this.spinner.show();
+  //   this.secretaryService.secretaryDeleteUploadedPdf(data)
+  //     .subscribe(
+  //       rq => {
+  //         this.spinner.hide();
 
-          if (index > -1) {
-            if (docType === 'applicationUpload') {
-              this.application.splice(index, 1);
-            } else if (docType === 'eCertificateUpload') {
-              this.eCertificateUploadList.splice(index, 1);
-            } else if (docType === 'pCertificateUpload') {
-              this.pCertificateUploadList.splice(index, 1);
-            } else if (docType === 'experienceUpload') {
-              this.experienceUploadList.splice(index, 1);
-            }
-          }
-        },
-        error => {
-          this.spinner.hide();
-          console.log(error);
-        }
+  //         if (index > -1) {
+  //           if (docType === 'applicationUpload') {
+  //             this.application.splice(index, 1);
+  //           } else if (docType === 'eCertificateUpload') {
+  //             this.eCertificateUploadList.splice(index, 1);
+  //           } else if (docType === 'pCertificateUpload') {
+  //             this.pCertificateUploadList.splice(index, 1);
+  //           } else if (docType === 'experienceUpload') {
+  //             this.experienceUploadList.splice(index, 1);
+  //           }
+  //         }
+  //       },
+  //       error => {
+  //         this.spinner.hide();
+  //         console.log(error);
+  //       }
 
-      );
+  //     );
 
-  }
+  // }
 
 
   // for view the uploaded pdf...
@@ -648,6 +613,56 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
 // end download functions
+designation_type: any;
+// main 8 members load function
+memberload() {
+  const data = {
+    societyid: this.data.storage2['societyid'],
+  };
+  
+  this.societyService.memberload(data)
+    .subscribe(
+      req => {
+        //console.log(response['data']);
+        if (req['data']) {
+          if (req['data']['member']) {
+            let x = 1;
+            for (let i in req['data']['member']) {
+              if(req['data']['member'][i]['designation_type']==1){
+                this.designation_type = 'President';
+              }
+              else if(req['data']['member'][i]['designation_type']==2){
+                this.designation_type = 'Secretary';
+              }
+              else if(req['data']['member'][i]['designation_type']==3){
+                this.designation_type = 'Treasurer';
+              }
+              else if(req['data']['member'][i]['designation_type']==4){
+                this.designation_type = 'Member'+x;
+                x= x+1;
+              }
+              const data1 = {
+                id: req['data']['member'][i]['id'],
+                first_name: req['data']['member'][i]['first_name'],
+                last_name: req['data']['member'][i]['last_name'],
+                designation_type: this.designation_type,
+                nic: req['data']['member'][i]['nic']
+                  
+              };
+              this.mainMembers.push(data1);
+              this.designation_type='';
+            }
+          }
+          
+        }
+        console.log(this.mainMembers);
+      },
+      error => {
+        console.log(error);
+        
+      }
+    );
+}
 
 
   

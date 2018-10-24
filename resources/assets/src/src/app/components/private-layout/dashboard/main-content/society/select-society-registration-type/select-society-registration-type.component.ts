@@ -29,6 +29,7 @@ export class SelectSocietyRegistrationTypeComponent implements OnInit {
   loggedinUserEmail: any;
   registeredSocieties = [];
   needApproval1: any;
+  mainMembers = [];
 
   loadSecretaryProfileCard(loggedUsr) {
     const data = {
@@ -81,9 +82,66 @@ export class SelectSocietyRegistrationTypeComponent implements OnInit {
       };
        this.SocData.setSocId(socId);
       this.SocData.setDownloadlink(localStorage.getItem(socId));
+      this.memberload(socId);
+      this.SocData.setMembArray(this.mainMembers);
+      console.log(this.mainMembers)
       this.router.navigate(['/dashboard/societyincorporation']);
     }
   }
+
+  designation_type: any;
+  x: any;
+
+  // main 8 members load function setMembArray
+memberload(societyid) {
+  const data = {
+    societyid: societyid,
+  };
+  
+  this.societyService.memberload(data)
+    .subscribe(
+      req => {
+        //console.log(response['data']);
+        if (req['data']) {
+          if (req['data']['member']) {
+            let x = 1;
+            for (let i in req['data']['member']) {
+              if(req['data']['member'][i]['designation_type']==1){
+                this.designation_type = 'President';
+              }
+              else if(req['data']['member'][i]['designation_type']==2){
+                this.designation_type = 'Secretary';
+              }
+              else if(req['data']['member'][i]['designation_type']==3){
+                this.designation_type = 'Treasurer';
+              }
+              else if(req['data']['member'][i]['designation_type']==4){
+                
+                this.designation_type = 'Member'+x;
+                x = x +1;
+
+              }
+              const data1 = {
+                id: req['data']['member'][i]['id'],
+                first_name: req['data']['member'][i]['first_name'],
+                last_name: req['data']['member'][i]['last_name'],
+                designation_type: this.designation_type,
+                nic: req['data']['member'][i]['nic']
+                  
+              };
+              this.mainMembers.push(data1);
+              this.designation_type='';
+            }
+          }
+          
+        }
+      },
+      error => {
+        console.log(error);
+        
+      }
+    );
+}
 
 
 

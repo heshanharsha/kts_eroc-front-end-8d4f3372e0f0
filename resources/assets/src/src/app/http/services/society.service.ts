@@ -43,6 +43,10 @@ export class SocietyService {
     return this.http.post(this.url.getSocietyApplicationDownloadAPI(), { societyid: societyid }, { responseType: 'arraybuffer' });
   }
 
+  memberload(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyMemberData(), data);
+  }
+
 
 
 

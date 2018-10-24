@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class SocietyDataService {
 
   socId: string;
+  membArray = [];
   
   downloadlink: string;
   constructor() { }
@@ -17,6 +18,14 @@ export class SocietyDataService {
 
   get getSocId() {
     return this.socId;
+  }
+
+  setMembArray(membarray) {
+    this.membArray = membarray;
+  }
+
+  get getMembArray() {
+    return this.membArray;
   }
 
   
