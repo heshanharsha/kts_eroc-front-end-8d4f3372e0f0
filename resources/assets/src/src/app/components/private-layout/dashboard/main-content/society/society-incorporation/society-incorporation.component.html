@@ -1586,7 +1586,7 @@
                       <label for="af" class="upload-wrapper btn btn-primary btn-sm download">
                         <i class="fas fa-cloud-upload-alt"></i> Upload
                       </label>
-                      <input style="display:block;position: fixed;top:-100000px" id="af" type="file" (change)="fileUpload($event,description1,'applicationUpload'); gotoPay();"
+                      <input style="display:block;position: fixed;top:-100000px" id="af2" type="file" (change)="fileUpload($event,description1,'applicationUpload'); gotoPay();"
                         placeholder="Upload file" accept=".pdf">
                     </div>
                   </div>
@@ -1604,7 +1604,7 @@
 
               <hr>
 
-              <div class="container uploaded-container" *ngIf="needApproval">
+              <div class="container uploaded-container" *ngIf="!needApproval">
                 <div class="row upload-row">
                   <div class="col-9 doc">
                     Clarify Form
@@ -1614,7 +1614,7 @@
                       <label for="af" class="upload-wrapper btn btn-primary btn-sm download">
                         <i class="fas fa-cloud-upload-alt"></i> Upload
                       </label>
-                      <input style="display:block;position: fixed;top:-100000px" id="af" type="file" (change)="fileUpload($event,description1,'applicationUpload'); gotoPay();"
+                      <input style="display:block;position: fixed;top:-100000px" id="af1" type="file" (change)="fileUpload($event,description1,'applicationUpload'); gotoPay();"
                         placeholder="Upload file" accept=".pdf">
                     </div>
                   </div>
