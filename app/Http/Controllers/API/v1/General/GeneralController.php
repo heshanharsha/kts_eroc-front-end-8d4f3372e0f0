@@ -14,6 +14,7 @@ use App\DocumentsGroup;
 use App\TempFile;
 use App\CompanyDocuments;
 use Storage;
+use App\SocietyDocument;
 
 class GeneralController extends Controller
 {
@@ -106,14 +107,27 @@ class GeneralController extends Controller
     }
 
     public function getDocument(Request $request)
-    {
-        $document = CompanyDocuments::where('file_token', $request->token)->first();
-        
-        if (!empty($document)) {
-            // return response()->download(Storage::disk('sftp')->get($document->path));
-            return Storage::disk('sftp')->get($document->path);
-        } else {
-            return response()->json(['error' => 'Error decoding authentication request.'], 401);
+    {  
+		if($this->getDocModel($request->type)){
+	        $document = $this->getDocModel($request->type)->where('file_token', $request->token)->first();
+	        if (!empty($document)) {
+	            return Storage::disk('sftp')->get($document->path);
+	        } 
+        } 
+		return response()->json(['error' => 'Unavailable data request.'], 401);
+    }
+
+    public function getDocModel($type){
+        if($type == 'CAT_COMPANY_DOCUMENT'){
+            return new CompanyDocuments();
+        } else if($type == 'CAT_SECRETARY_DOCUMENT'){
+            return new SecretaryDocument();
+        } else if($type == 'CAT_TENDER_DOCUMENT'){
+            return new TenderDocument();
+        }else if($type == 'CAT_SOCIETY_DOCUMENT'){
+            return new SocietyDocument();
+        }else{
+            return false;
         }
     }
 

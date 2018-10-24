@@ -61,10 +61,12 @@ _societyProfileData: string;
 _societyPay: string;
 _societyUpload: string;
 _societyMemberData: string;
+_societyFile: string;
 
 //----------------heshan------------------//
 _societyGetDownloadUrl: string;
 _societyApplicantGetDownloadUrl: string;
+_societyFileUploadedDelete: string;
 
 //------------sahani------------
 _getSocietySEUrlPages: string;
@@ -138,10 +140,12 @@ _getSocietySEUrlPages: string;
     this._societyPay = `${this._apiUrl}/api/v1/society-pay`;
     this._societyUpload = `${this._apiUrl}/api/v1/society-upload-pdf`;
     this._societyMemberData = `${this._apiUrl}/api/v1/society-member-data-load`;
+    this._societyFile = `${this._apiUrl}/api/v1/society-file`;
 
     /*-------heshan-----------------*/
     this._societyGetDownloadUrl = `${this._apiUrl}/api/v1/society-view-document`;
     this._societyApplicantGetDownloadUrl = `${this._apiUrl}/api/v1/society-application-document`;
+    this._societyFileUploadedDelete = `${this._apiUrl}/api/v1/society-delete-pdf`;
 
     /* ---------- sahani -----------*/
   
@@ -197,10 +201,6 @@ _getSocietySEUrlPages: string;
 
   public getNameReceived(): string {
     return this._getReceivedUrl;
-  }
-
-  public getDocumentDownloadAPI(): string {
-    return this._getDownloadUrl;
   }
 
   public getFileDestroyAPI(): string {
@@ -338,6 +338,10 @@ _getSocietySEUrlPages: string;
     return this._societyMemberData;
   }
 
+  public getSocietyFile() {
+    return this._societyFile;
+  }
+
   /* ---------- heshan -----------*/
   public getSocietyDocumentDownloadAPI() {
     return this._societyGetDownloadUrl;
@@ -345,6 +349,13 @@ _getSocietySEUrlPages: string;
     
   public getSocietyApplicationDownloadAPI() {
     return this._societyApplicantGetDownloadUrl;
+  }
+
+  public getSocietyFileUploadedDelete() {
+    return this._societyFileUploadedDelete;
+  }
+  public getDocumentDownloadAPI(): string {
+    return this._getDownloadUrl;
   }
 
   /* ---------- sahani -----------*/

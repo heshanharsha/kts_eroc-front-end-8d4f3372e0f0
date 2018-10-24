@@ -104,10 +104,11 @@ Route::group(['prefix' => '/v1', 'namespace' => 'API\v1'], function () {
     Route::post('/society-pay', 'Society\SocietyController@societyPay')->name('society-pay');
     Route::post('/society-upload-pdf', 'Society\SocietyController@societyUploadPdf')->name('society-upload-pdf');
     Route::post('/society-member-data-load', 'Society\SocietyController@societyMemberLoad')->name('society-member-data-load');
+    Route::post('/society-file', 'Society\SocietyController@societyFile')->name('society-file');
     
     /* ---------------------- heshan-------------------------*/
 
     Route::post('/society-view-document', 'Society\SocietyController@generate_pdf')->name('society-view-document');
     Route::post('/society-application-document', 'Society\SocietyController@generate_App_pdf')->name('society-application-document');
-    
+    Route::post('/society-delete-pdf', 'Society\SocietyController@deleteSocietyPdf')->name('society-delete-pdf');
 });

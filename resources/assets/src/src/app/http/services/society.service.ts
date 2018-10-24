@@ -47,6 +47,15 @@ export class SocietyService {
     return this.http.post(this.url.getSocietyMemberData(), data);
   }
 
+  societyFiles(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyFile(), data);
+  }
+
+  // to delete uploaded society pdf files...
+  societyDeleteUploadedPdf(data: any): Observable<any> {
+    return this.http.post(this.url.getSocietyFileUploadedDelete(), data);
+  }
+
 
 
 

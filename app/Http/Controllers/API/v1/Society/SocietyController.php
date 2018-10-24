@@ -498,6 +498,50 @@ public function societyUploadPdf(Request $request){
 
 }
 
+// for load society uploaded files...
+public function societyFile(Request $request){
+    if(isset($request)){
+        
+        $socId = $request->socId;
+        //$uploadedPdf =  SecretaryDocument::where('secretary_id', $secId)->get(['id','document_id','name','file_token']);
+        $uploadedPdf = SocietyDocument::leftJoin('documents','society_documents.document_id','=','documents.id')
+                                   ->where('society_documents.society_id',$socId)
+                                     ->get(['society_documents.id','society_documents.name','society_documents.description','society_documents.file_token','documents.name as docname']);
+        if(isset($uploadedPdf)){
+            return response()->json([
+                'file' => $uploadedPdf,
+                'status' =>true,
+                'data'   => array(
+                    'file'     => $uploadedPdf,
+                )
+            ], 200);
+
+            }
+        
+        
+
+    }else{
+        return response()->json([
+            'status' =>false,
+        ], 200);
+    }
+
+}
+
+// to delete pdfs
+function deleteSocietyPdf(Request $request){
+    if(isset($request)){
+    $docId = $request->documentId;
+    if($docId){
+       $remove = SocietyDocument::where('id', $docId)->delete();
+    }
+    return response()->json([
+        'message' => 'File removed successfully.',
+        'status' =>true,
+    ], 200);
+    }
+}
+
 
 }
 

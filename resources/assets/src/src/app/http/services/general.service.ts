@@ -46,4 +46,8 @@ export class GeneralService {
     return this.http.delete<any>(this.url.getFileDestroyAPI() + '?token=' + token );
   }
 
+  getSocietyDocumenttoServer(token: string, type: string = 'CAT_SOCIETY_DOCUMENT') {
+    return this.http.post(this.url.getDocumentDownloadAPI(), { token : token , type: type }, { responseType: 'arraybuffer'});
+  }
+
 }

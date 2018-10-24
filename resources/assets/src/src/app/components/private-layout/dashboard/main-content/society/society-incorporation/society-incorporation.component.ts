@@ -17,6 +17,7 @@ import { SocietyService } from '../../../../../../http/services/society.service'
 import { IDirectors, IDirector, ISecretories, ISecretory, IShareHolders, IShareHolder } from '../../../../../../http/models/stakeholder.model';
 import { forEach } from '@angular/router/src/utils/collection';
 import { SocietyDataService } from '../society-data.service';
+import { GeneralService } from '../../../../../../http/services/general.service';
 
 
 @Component({
@@ -186,7 +187,7 @@ export class SocietyIncorporationComponent implements OnInit {
   hideAndShow = false;
   
 
-  constructor(public data: DataService, private helper: HelperService,private SocData: SocietyDataService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) 
+  constructor(public data: DataService,private general: GeneralService, private helper: HelperService,private SocData: SocietyDataService, private secretaryService: SecretaryService,private societyService: SocietyService, private sanitizer: DomSanitizer, private route: ActivatedRoute, private router: Router, private iNcoreService: IncorporationService, private spinner: NgxSpinnerService, private httpClient: HttpClient) 
   {
     // for continue upload process after canceled...
     if(this.SocData.getSocId){
@@ -195,7 +196,7 @@ export class SocietyIncorporationComponent implements OnInit {
       this.downloadLink = this.SocData.getDownloadlink;
       this.mainMembers = this.SocData.getMembArray;
       console.log(this.mainMembers);
-      //this.loadUploadedFile(this.socId);
+      this.loadUploadedFile();
       this.changeProgressStatuses(3);
       this.SocData.socId = undefined;
       this.SocData.downloadlink = undefined;
@@ -216,9 +217,7 @@ export class SocietyIncorporationComponent implements OnInit {
   }
 
   ngOnInit() {
-    // document.getElementById('div1').style.display = 'none';
-    // document.getElementById('div2').style.display = 'none';
-    // document.getElementById('div3').style.display = 'none';
+  
     document.getElementById('div3').style.display = 'none';
     this.name = this.data.storage1['name'];
     this.sinhalaName = this.data.storage1['sinhalaName'];
@@ -395,6 +394,73 @@ export class SocietyIncorporationComponent implements OnInit {
 
 
   }
+
+  loadUploadedFile() {
+    
+    const data = {
+      socId: this.data.storage2['societyid']
+    };
+    this.societyService.societyFiles(data)
+      .subscribe(
+        req => {
+          if (req['status']) {
+            if (req['data']['file']) {
+              for (let i in req['data']['file']) {
+                console.log("going");
+                const data1 = {
+                  id: req['data']['file'][i]['id'],
+                  name: req['data']['file'][i]['docname'],
+                  token: req['data']['file'][i]['file_token'],
+                  pdfname: req['data']['file'][i]['name'],
+                  description: req['data']['file'][i]['description'],
+                };
+                if (req['data']['file'][i]['docname'] === 'Application') {
+                  this.application.push(data1);
+                  
+                } else if (req['data']['file'][i]['docname'] === 'Approval Letter') {
+                  this.approvalUploadList.push(data1);
+                } else if (req['data']['file'][i]['docname'] === 'Affidavit') {
+                  this.affidavitUploadList[req['data']['file'][i]['description']]=data1;
+                }
+              }
+              this.gotoPay();
+            }
+            
+            
+          }
+        }
+      );
+  }
+
+  // for delete the uploaded pdf from the database...
+ fileDelete(docId, docType, index) {
+  const data = {
+    documentId: docId,
+  };
+  this.spinner.show();
+  this.societyService.societyDeleteUploadedPdf(data)
+    .subscribe(
+      response => {
+        
+        
+        if (response['status']) {
+          this.affidavitUploadList = [];
+          this.application = [];
+          this.approvalUploadList = [];
+          this.loadUploadedFile();
+          console.log(this.affidavitUploadList);
+          this.gotoPay();
+          this.spinner.hide();
+        }
+      },
+      error => {
+        this.spinner.hide();
+        console.log(error);
+      }
+    );
+    console.log("go in");
+    
+}
   
   email ='';
   
@@ -496,45 +562,13 @@ export class SocietyIncorporationComponent implements OnInit {
 
   
 
-  // for delete the uploaded pdf from the database...
-  // fileDelete(docId, docType, index) {
-
-  //   const data = {
-  //     documentId: docId,
-  //   };
-  //   this.spinner.show();
-  //   this.secretaryService.secretaryDeleteUploadedPdf(data)
-  //     .subscribe(
-  //       rq => {
-  //         this.spinner.hide();
-
-  //         if (index > -1) {
-  //           if (docType === 'applicationUpload') {
-  //             this.application.splice(index, 1);
-  //           } else if (docType === 'eCertificateUpload') {
-  //             this.eCertificateUploadList.splice(index, 1);
-  //           } else if (docType === 'pCertificateUpload') {
-  //             this.pCertificateUploadList.splice(index, 1);
-  //           } else if (docType === 'experienceUpload') {
-  //             this.experienceUploadList.splice(index, 1);
-  //           }
-  //         }
-  //       },
-  //       error => {
-  //         this.spinner.hide();
-  //         console.log(error);
-  //       }
-
-  //     );
-
-  // }
+  
 
 
   // for view the uploaded pdf...
   ngOnDownload(token: string): void {
-    alert(token);
     this.spinner.show();
-    this.secretaryService.getDocumenttoServer(token)
+    this.general.getSocietyDocumenttoServer(token, 'CAT_SOCIETY_DOCUMENT')
       .subscribe(
         response => {
           this.helper.download(response);
@@ -1938,10 +1972,41 @@ editMembDataArray(i= 0) {
   }
 
   gotoPay() {
-    if (typeof this.application !== 'undefined' && this.application != null && this.application.length != null && this.application.length > 0) {
-      this.enableGoToPay = true;
-    } else {
-      this.enableGoToPay = false;
+    if(this.needApproval==false){
+      let x = 0;
+      for(let item of this.affidavitUploadList){
+        
+        x =x +1;
+
+      }
+      if(this.application.length==1 && this.approvalUploadList.length ==1 && x==8){
+        this.enableGoToPay = true;
+        console.log(x);
+      }
+      else{
+        this.enableGoToPay = false;
+        console.log(x);
+      }
+      
+      
+    }
+    else{
+      let x = 0;
+      for(let item of this.affidavitUploadList){
+        
+        x =x +1;
+
+      }
+      if(this.application.length==1 && x==8){
+        this.enableGoToPay = true;
+        console.log(x);
+      }
+      else{
+        this.enableGoToPay = false;
+        console.log(x);
+      }
+      
+      
     }
 
   }
